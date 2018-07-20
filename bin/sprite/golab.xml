@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<sprite name="golab">
+	<image name="default">golab.png</image>
+
+	<animation name="standing">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="0" y="0" w="64" h="64" offsetx="31" offsety="62">
+			</frame>
+		</direction>
+	</animation>
+</sprite>
