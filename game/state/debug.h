@@ -8,7 +8,6 @@
 #pragma once
 
 #include "../../engine/base/applicationstate.h"
-
 #include "../../engine/core/appeventlistener.h"
 
 namespace Game

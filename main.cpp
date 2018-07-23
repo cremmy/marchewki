@@ -4,6 +4,17 @@
  *  Created on: 20 lip 2018
  *      Author: crm
  */
+/* Opis gry:
+ *  - Siatka pól - neutralne, gracza i przeciwnika
+ *  - Utrzymanie każdego pola kosztuje gracza zasoby
+ *  - Neutralne pola co jakiś czas zmieniają się w pola przeciwnika (przeciwnik się powoli rozrasta?)
+ *  - Pola przeciwnika falami emitują jednostki
+ *  - Im więcej pól zajęte przez przeciwnika, tym silniejsze jednostki idą
+ *
+ *  - Gracz może zbudować wieżę, która zajmuje sąsiednie pola (o ile nie są wrogie)
+ *  - Gracz może zbudowć farmę marchewek, która nie zużywa zasobów i nie zajmuje sąsiednich pól
+ *
+ */
 // SDL_main
 #include <SDL2/SDL.h>
 
