@@ -24,6 +24,7 @@
 #include "engine/sound/soundplayer.h"
 
 #include "game/state/debug.h"
+#include "game/state/towerdefense.h"
 
 int main(int, char**)
 	{
@@ -52,7 +53,8 @@ int main(int, char**)
 		return __LINE__;
 		}
 
-	if(app.pushState(new Game::State::Debug()))
+	//if(app.pushState(new Game::State::Debug()))
+	if(app.pushState(new Game::State::TowerDefense()))
 		{
 		app.run();
 		}

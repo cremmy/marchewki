@@ -12,20 +12,23 @@
 
 namespace Game
 	{
-	class TowerDefense: public Engine::Base::ApplicationState, public Engine::Base::AppEventListener
+	namespace State
 		{
-		public:
-			TowerDefense();
-			virtual ~TowerDefense();
+		class TowerDefense: public Engine::Base::ApplicationState, public Engine::Core::AppEventListener
+			{
+			public:
+				TowerDefense();
+				virtual ~TowerDefense();
 
-			virtual bool init(Engine::Core::Application *application);
-			virtual bool update(float dt);
-			virtual void print(float tinterp);
-			virtual bool isOverlay() const {return false;}
-			virtual void clear();
-			virtual void pause();
-			virtual void resume();
+				virtual bool init(Engine::Core::Application *application);
+				virtual bool update(float dt);
+				virtual void print(float tinterp);
+				virtual bool isOverlay() const {return false;}
+				virtual void clear();
+				virtual void pause();
+				virtual void resume();
 
-			virtual std::string getName() const {return "game";}
-		};
+				virtual std::string getName() const {return "game";}
+			};
+		} /* namespace State */
 	} /* namespace Game */

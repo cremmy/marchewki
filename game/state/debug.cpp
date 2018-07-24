@@ -14,7 +14,7 @@
 #include "../../engine/graphics/imageptr.h"
 #include "../../engine/graphics/spriteptr.h"
 
-//#include "../level.h"
+#include "../level.h"
 
 using namespace Game;
 using namespace Game::State;
@@ -23,9 +23,9 @@ namespace Local
 	{
 	Engine::Render::Camera cam;
 
-	Engine::Graphics::ImagePtr grid;
+	Engine::Graphics::SpritePtr img;
 
-	Engine::Graphics::SpritePtr sprite;
+	Level level;
 	}
 
 Debug::Debug(): ApplicationState()
@@ -52,16 +52,20 @@ bool Debug::init(Engine::Core::Application *application)
 	this->application->addListener(Core::AppEvent::Type::MOUSE_KEY_DOWN, *this);
 	this->application->addListener(Core::AppEvent::Type::MOUSE_KEY_UP, *this);
 
-	//cam.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 1000.0f);
-	cam.perspective(Render::getInstance().getWindowWidth(), Render::getInstance().getWindowHeight(), 0.1);
+	cam.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 2048.0f);
+	//cam.perspective(Render::getInstance().getWindowWidth(), Render::getInstance().getWindowHeight(), 0.1);
 	//cam.lookAt(Engine::Math::Vector(0, 0, 0), Engine::Math::Vector(0, 0, 500), Engine::Math::Vector(0, 1, 0));
-	cam.lookAt(Vector(0, 0, 24), Vector(-64, -64, 64));
+	cam.lookAt(Vector(4*70, 3*70, 24), 45.0f, 30.0f, 512.0f);
 
-	if(!(grid=Graphics::ImagePtr("image/grid.png")))
+	img=Engine::Graphics::SpritePtr("sprite/golab.xml");
+
+	/*if(!(grid=Graphics::ImagePtr("image/grid.png")))
 		return false;
 
 	if(!(sprite=Graphics::SpritePtr("sprite/golab.xml")))
-		return false;
+		return false;*/
+
+	level.init(8, 6);
 
 	return true;
 	}
@@ -118,11 +122,29 @@ bool Debug::update(float dt)
 			{
 			this->application->setGrabMouse(false);
 			}
+		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_KEY_DOWN && e.data.mouse.key==1)
+			{
+			Engine::Math::Vector raypos;
+			Engine::Math::Vector raydir;
+
+			cam.getRay(e.data.mouse.x, e.data.mouse.y, raypos, raydir);
+
+			unsigned x=0u;
+			unsigned y=0u;
+			if(level.getFieldByRay(raypos, raydir, x, y))
+				{
+				LOG_DEBUG("HIT: %d, %d", x, y);
+				}
+			else
+				{
+				LOG_DEBUG("MISS");
+				}
+			}
 		}
 
-	sprite.update(dt);
+	//sprite.update(dt);
 
-	//lvl->update(dt);
+	level.update(dt);
 
 	return false; // nie, nie aktualizuj stanów poniżej
 	}
@@ -137,10 +159,14 @@ void Debug::print(float tinterp)
 	Engine::Render::getInstance().drawLine(Vector(0, 0, 0), Vector(2, 0, 0), Vector(1, 0, 0, 1));
 	Engine::Render::getInstance().drawLine(Vector(0, 0, 0), Vector(0, 2, 0), Vector(0, 1, 0, 1));
 	Engine::Render::getInstance().drawLine(Vector(0, 0, 0), Vector(0, 0, 2), Vector(0, 0, 1, 1));
-	Engine::Render::getInstance().draw(Orientation::FLAT_XY+Vector(-grid->getW()*0.5f, grid->getH()*0.5f, -0.125f), grid);
+	//Engine::Render::getInstance().draw(Orientation::FLAT_XY+Vector(-grid->getW()*0.5f, grid->getH()*0.5f, -0.125f), grid);
 
-	Engine::Render::getInstance().draw(cam.getBillboard(Vector(0, 0, 32)), sprite);
+	//Engine::Render::getInstance().draw(cam.getBillboard(Vector(0, 0, 32)), sprite);
 	//Engine::Render::getInstance().draw(Orientation::FLAT_XZ+Vector(0, 0, 32), sprite);
+
+	level.print(tinterp);
+
+	Engine::Render::getInstance().draw(cam.getBillboard(Vector(2*70+35, 3*70+35, 0)), img);
 
 	//return false; // Tak, wyświetlaj stany poniżej
 	}
@@ -151,8 +177,8 @@ void Debug::clear()
 
 	LOG_DEBUG("State.Debug.clear");
 
-	grid=nullptr;
-	sprite=nullptr;
+	level.clear();
+	img=nullptr;
 	}
 
 void Debug::pause()

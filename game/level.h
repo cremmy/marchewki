@@ -9,6 +9,7 @@
 
 #include <vector>
 
+#include "../engine/graphics/imageptr.h"
 #include "../engine/graphics/spriteptr.h"
 
 namespace Game
@@ -20,9 +21,16 @@ namespace Game
 		protected:
 			struct Field
 				{
-				Field(): sprite(), turret(nullptr), collectibles() {}
+				enum class Owner
+					{
+					NONE,
+					PLAYER,
+					ENEMY,
+					};
 
-				Engine::Graphics::SpritePtr sprite;
+				Field(): owner(Owner::NONE), turret(nullptr), collectibles() {}
+
+				Owner owner;
 
 				Turret* turret;
 				std::vector<void*> collectibles;
@@ -30,6 +38,8 @@ namespace Game
 
 			// field[Y][X]
 			std::vector<std::vector<Field*>> field;
+
+			Engine::Graphics::ImagePtr fieldSprite;
 
 		public:
 			Level()
@@ -54,6 +64,9 @@ namespace Game
 			const Field* getField(unsigned x, unsigned y) const;
 			unsigned getWidth() const {return field.empty()?0u:field[0u].size();}
 			unsigned getHeight() const {return field.size();}
+
+			Engine::Math::Vector getFieldPosition(unsigned x, unsigned y) const;
+			bool getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction, unsigned& x, unsigned& y);
 		};
 
 	} /* namespace Game */
