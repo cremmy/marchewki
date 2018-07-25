@@ -15,6 +15,10 @@
  *  - Gracz może zbudowć farmę marchewek, która nie zużywa zasobów i nie zajmuje sąsiednich pól
  *
  */
+/* Pomysły:
+ *  - Muzyka z 'pozytywki' - pojedyncze sample odtwarzane według pewnego wzoru, im wyższy poziom bazy tym większa część sampli przełączana jest na przesterowane/fałszywe
+ *
+ */
 // SDL_main
 #include <SDL2/SDL.h>
 
@@ -43,7 +47,7 @@ int main(int, char**)
 		return __LINE__;
 		}
 
-	if(!Engine::Render::getInstance().init(1024, 768, "Tower Defence Tycoon", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED))
+	if(!Engine::Render::getInstance().init(1024, 768, "Marchewki", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED))
 		{
 		return __LINE__;
 		}

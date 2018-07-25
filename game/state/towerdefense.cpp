@@ -19,17 +19,11 @@
 using namespace Game;
 using namespace Game::State;
 
-//namespace Local
-//	{
-	Engine::Render::Camera cam;
+const float CAMERA_ANGLE=45.0f;
+const float CAMERA_ELEVATION=30.0f;
+const float CAMERA_DISTANCE=1024.0f;
 
-	Level level;
-
-	int camTargetAngle=1;
-	float camCurrentAngle=camTargetAngle;
-//	}
-
-TowerDefense::TowerDefense()
+TowerDefense::TowerDefense(): mode(Mode::NONE), level(), selected(nullptr), camera(), camTargetAngle(1), camCurrentAngle(1)
 	{
 	//
 	}
@@ -42,7 +36,6 @@ TowerDefense::~TowerDefense()
 
 bool TowerDefense::init(Engine::Core::Application *application)
 	{
-	//using namespace Local;
 	using namespace Engine::Math;
 
 	this->application=application;
@@ -53,12 +46,29 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_KEY_UP, *this);
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_WHEEL, *this);
 
-	cam.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 1000.0f);
+	if(!level.init(8, 6))
+		{
+		LOG_ERROR("Nie udalo sie zainicjowac poziomu");
+		return false;
+		}
+
+	camera.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 2000.0f);
 	//cam.perspective(Render::getInstance().getWindowWidth(), Render::getInstance().getWindowHeight(), 0.1);
 	//cam.lookAt(Engine::Math::Vector(0, 0, 0), Engine::Math::Vector(0, 0, 500), Engine::Math::Vector(0, 1, 0));
-	cam.lookAt(Vector(0, 0, 0), 45.0f, 30.0f, 512.0f);
+	camera.lookAt(level.getFieldPosition(0u, 0u), CAMERA_ANGLE, CAMERA_ELEVATION, CAMERA_DISTANCE);
 
-	return level.init(8, 8);
+	if(!level.buildTurret(0, 0, TurretType::PLAYER_BASE))
+		{
+		LOG_ERROR("Nie udalo sie wstawic bazy gracza");
+		return false;
+		}
+	if(!level.buildTurret(level.getWidth()-1, level.getHeight()-1, TurretType::ENEMY_SPAWNER))
+		{
+		LOG_ERROR("Nie udalo sie wstawic spawnera");
+		return false;
+		}
+
+	return true;
 	}
 
 bool TowerDefense::update(float dt)
@@ -78,11 +88,11 @@ bool TowerDefense::update(float dt)
 				}
 			if(e.data.keyboard.key==SDLK_1)
 				{
-				cam.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight());
+				camera.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 2000.0f);
 				}
 			else if(e.data.keyboard.key==SDLK_2)
 				{
-				cam.perspective(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight());
+				camera.perspective(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 4000.0f);
 				}
 #endif
 			}
@@ -96,20 +106,43 @@ bool TowerDefense::update(float dt)
 			Vector raypos;
 			Vector raydir;
 
-			cam.getRay(mx-e.data.mouse.x, my-e.data.mouse.y, raypos, raydir);
+			camera.getRay(mx-e.data.mouse.x, my-e.data.mouse.y, raypos, raydir);
 			const Vector POS_PREV=MathUtils::getPositionAtZ0ByRay(raypos, raydir);
 
-			cam.getRay(mx, my, raypos, raydir);
+			camera.getRay(mx, my, raypos, raydir);
 			const Vector POS_CUR=MathUtils::getPositionAtZ0ByRay(raypos, raydir);
 
-			cam.move((POS_PREV-POS_CUR));
+			camera.move((POS_PREV-POS_CUR));
+
+			// Zapobieganie zbytniemu oddaleniu kamery
+			const Vector LEVEL_MIN=level.getFieldPosition(0u, 0u);
+			const Vector LEVEL_MAX=level.getFieldPosition(level.getWidth(), level.getHeight());
+			const Vector CAMERA_CENTER=MathUtils::getPositionAtZ0ByRay(camera.getPosition(), camera.getForward());
+
+			if(CAMERA_CENTER.x<LEVEL_MIN.x)
+				{
+				camera.move(Vector(LEVEL_MIN.x-CAMERA_CENTER.x, 0.0f));
+				}
+			else if(CAMERA_CENTER.x>LEVEL_MAX.x)
+				{
+				camera.move(Vector(LEVEL_MAX.x-CAMERA_CENTER.x, 0.0f));
+				}
+
+			if(CAMERA_CENTER.y<LEVEL_MIN.y)
+				{
+				camera.move(Vector(0.0f, LEVEL_MIN.y-CAMERA_CENTER.y));
+				}
+			else if(CAMERA_CENTER.y>LEVEL_MAX.y)
+				{
+				camera.move(Vector(0.0f, LEVEL_MAX.y-CAMERA_CENTER.y));
+				}
 			}
 		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_KEY_DOWN && e.data.mouse.key==1)
 			{
 			Engine::Math::Vector raypos;
 			Engine::Math::Vector raydir;
 
-			cam.getRay(e.data.mouse.x, e.data.mouse.y, raypos, raydir);
+			camera.getRay(e.data.mouse.x, e.data.mouse.y, raypos, raydir);
 
 			unsigned x=0u;
 			unsigned y=0u;
@@ -124,7 +157,7 @@ bool TowerDefense::update(float dt)
 			}
 		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_WHEEL)
 			{
-			camTargetAngle+=e.data.mouse.y;
+			camTargetAngle+=e.data.mouse.y*2;
 			/*if(camTargetAngle<0)
 				{
 				camTargetAngle+=8;
@@ -136,9 +169,14 @@ bool TowerDefense::update(float dt)
 			}
 		}
 
+	//
+	// Obracanie kamery
+	//
 	if(camTargetAngle!=camCurrentAngle)
 		{
-		const float MOD=((camTargetAngle>camCurrentAngle)?dt:-dt) * 8.0f * (std::abs(camTargetAngle-camCurrentAngle));
+		const float MOD=((camTargetAngle>camCurrentAngle)?1.0f:-1.0f) *
+			(1.0f*dt +
+			(8.0f*dt*(std::abs(camTargetAngle-camCurrentAngle))));
 
 		if(std::abs(camTargetAngle-camCurrentAngle)>MOD)
 			{
@@ -154,9 +192,28 @@ bool TowerDefense::update(float dt)
 		Vector raypos;
 		Vector raydir;
 
-		const Vector HIT=MathUtils::getPositionAtZ0ByRay(cam.getPosition(), cam.getForward());
+		const Vector HIT=MathUtils::getPositionAtZ0ByRay(camera.getPosition(), camera.getForward());
 
-		cam.lookAt(HIT, camCurrentAngle*45.0f, 30.0f, VectorLength(HIT-cam.getPosition()));
+		camera.lookAt(HIT, camCurrentAngle*CAMERA_ANGLE, CAMERA_ELEVATION, CAMERA_DISTANCE);
+		}
+
+	//
+	// Sterowanie
+	//
+	switch(mode)
+		{
+		case Mode::BUILDING:
+			updateModeBuilding(dt);
+		break;
+
+		case Mode::SELECTED:
+			updateModeSelected(dt);
+		break;
+
+		default:
+		case Mode::NONE:
+			//
+		break;
 		}
 
 	level.update(dt);
@@ -164,19 +221,26 @@ bool TowerDefense::update(float dt)
 	return false;
 	}
 
+void TowerDefense::updateModeBuilding(float dt)
+	{
+	//
+	}
+
+void TowerDefense::updateModeSelected(float dt)
+	{
+	//
+	}
+
+
 void TowerDefense::print(float tinterp)
 	{
-	//using namespace Local;
-
-	Engine::Render::getInstance().setCamera(cam);
+	Engine::Render::getInstance().setCamera(camera);
 
 	level.print(tinterp);
 	}
 
 void TowerDefense::clear()
 	{
-	//using namespace Local;
-
 	level.clear();
 	}
 

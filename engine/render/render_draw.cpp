@@ -273,9 +273,9 @@ void Render::draw(const Orientation& orientation, const Graphics::SpritePtr& spt
 	{
 	assert(!!sptr);
 
-	drawLine(orientation.getPosition(), orientation.getPosition()+orientation.getRight()*32, Vector(1, 0, 0, 1));
-	drawLine(orientation.getPosition(), orientation.getPosition()+orientation.getForward()*32, Vector(0, 1, 0, 1));
-	drawLine(orientation.getPosition(), orientation.getPosition()+orientation.getUp()*32, Vector(0, 0, 1, 1));
+	//drawLine(orientation.getPosition(), orientation.getPosition()+orientation.getRight()*32, Vector(1, 0, 0, 1));
+	//drawLine(orientation.getPosition(), orientation.getPosition()+orientation.getForward()*32, Vector(0, 1, 0, 1));
+	//drawLine(orientation.getPosition(), orientation.getPosition()+orientation.getUp()*32, Vector(0, 0, 1, 1));
 
 	State& state=states.back();
 

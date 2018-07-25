@@ -7,7 +7,13 @@
 
 #include "turret.h"
 
-namespace Game
-	{
+using namespace Game;
 
-	} /* namespace Game */
+bool Turret::init(Level* level, int x, int y)
+	{
+	this->level=level;
+	this->x=x;
+	this->y=y;
+
+	return true;
+	}

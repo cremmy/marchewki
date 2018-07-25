@@ -9,6 +9,9 @@
 
 #include "../../engine/base/applicationstate.h"
 #include "../../engine/core/appeventlistener.h"
+#include "../../engine/render/camera.h"
+
+#include "../level.h"
 
 namespace Game
 	{
@@ -16,6 +19,25 @@ namespace Game
 		{
 		class TowerDefense: public Engine::Base::ApplicationState, public Engine::Core::AppEventListener
 			{
+			protected:
+				enum class Mode
+					{
+					NONE,
+					BUILDING,
+					SELECTED,
+					} mode;
+
+				void updateModeBuilding(float dt);
+				void updateModeSelected(float dt);
+
+				Level level;
+				Level::Field* selected;
+
+				Engine::Render::Camera camera;
+
+				int camTargetAngle;
+				float camCurrentAngle;
+
 			public:
 				TowerDefense();
 				virtual ~TowerDefense();
