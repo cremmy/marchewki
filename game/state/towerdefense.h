@@ -12,6 +12,7 @@
 #include "../../engine/render/camera.h"
 
 #include "../level.h"
+#include "../turret_type.h"
 
 namespace Game
 	{
@@ -27,6 +28,9 @@ namespace Game
 					SELECTED,
 					} mode;
 
+				void initModeBuilding(TurretType turret);
+				void initModeSelected(int x, int y);
+
 				void updateModeBuilding(float dt);
 				void updateModeSelected(float dt);
 
@@ -37,6 +41,11 @@ namespace Game
 
 				int camTargetAngle;
 				float camCurrentAngle;
+
+				struct
+					{
+					TurretType turret;
+					} modeBuildData;
 
 			public:
 				TowerDefense();

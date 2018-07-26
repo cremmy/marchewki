@@ -52,8 +52,13 @@ namespace Game
 			virtual void update(float dt)=0;
 			virtual void print(float tinterp)=0;
 
-			virtual bool isWalkable() const {return false;}
 			virtual TurretType getType() const=0;
+			virtual bool isWalkable() const {return false;}
+			virtual bool isUpgradable() const {return false;}
+			virtual bool isRemovable() const {return false;}
+			virtual float getConstructionCost() const {return 0.0f;}
+			virtual float getUpgradeCost() const {return 0.0f;}
+			virtual float getRemovalCost() const {return 0.0f;}
 			bool isReady() const {return cooldown<=0.0f;}
 			bool isAlive() const {return hp>0.0f;}
 			int getPositionX() const {return x;}

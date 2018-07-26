@@ -33,8 +33,13 @@ namespace Game
 			virtual void update(float dt) override;
 			virtual void print(float tinterp) override;
 
-			virtual bool isWalkable() const override {return true;}
-			virtual TurretType getType() const override {return TurretType::PLAYER_BASE;}
+			virtual TurretType getType() const override {return TurretType::ENEMY_SPAWNER;}
+			virtual bool isWalkable() const override {return false;}
+//			virtual bool isUpgradable() const override {return false;}
+//			virtual bool isRemovable() const override {return false;}
+//			virtual float getConstructionCost() const override {return 0.0f;}
+//			virtual float getUpgradeCost() const override {return 0.0f;}
+//			virtual float getRemovalCost() const override {return 0.0f;}
 		};
 
 	} /* namespace Game */

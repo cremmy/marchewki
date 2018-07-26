@@ -29,24 +29,11 @@ bool TSpawner::init()
 
 bool TSpawner::updateFieldOwners() const
 	{
-	level->setFieldOwner(x, y, Level::Field::Owner::ENEMY);
-
-	if(level->getFieldOwner(x-1, y)!=Level::Field::Owner::PLAYER)
-		{
-		level->setFieldOwner(x-1, y, Level::Field::Owner::ENEMY);
-		}
-	if(level->getFieldOwner(x+1, y)!=Level::Field::Owner::PLAYER)
-		{
-		level->setFieldOwner(x+1, y, Level::Field::Owner::ENEMY);
-		}
-	if(level->getFieldOwner(x, y-1)!=Level::Field::Owner::PLAYER)
-		{
-		level->setFieldOwner(x, y-1, Level::Field::Owner::ENEMY);
-		}
-	if(level->getFieldOwner(x, y+1)!=Level::Field::Owner::PLAYER)
-		{
-		level->setFieldOwner(x, y+1, Level::Field::Owner::ENEMY);
-		}
+	level->setFieldOwner(x  , y  , Level::Field::Owner::ENEMY);
+	level->setFieldOwner(x-1, y  , Level::Field::Owner::ENEMY);
+	level->setFieldOwner(x+1, y  , Level::Field::Owner::ENEMY);
+	level->setFieldOwner(x  , y-1, Level::Field::Owner::ENEMY);
+	level->setFieldOwner(x  , y+1, Level::Field::Owner::ENEMY);
 
 	return true;
 	}

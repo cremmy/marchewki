@@ -116,6 +116,12 @@ void Level::clear()
 
 	field.clear();
 
+	for(unsigned y=0u; y<nodes.size(); ++y)
+		{
+		nodes[y].clear();
+		}
+	nodes.clear();
+
 	fieldSprite=nullptr;
 	}
 
@@ -220,6 +226,17 @@ Engine::Math::Vector Level::getFieldPosition(unsigned x, unsigned y) const
 	return Engine::Math::Vector(x*fieldSprite->getW()+fieldSprite->getW()*0.5, y*fieldSprite->getH()+fieldSprite->getH()*0.5);
 	}
 
+Engine::Math::VectorI Level::getPositionOnField(const Engine::Math::Vector& position) const
+	{
+	// Odwazne zalozenie: postacie nigdy nie wyjda poza poziom
+	// Potencjalne problemy: co jeśli plansza się zmniejszy i ucieknie im spod nóg?
+	// Proponowane rozwiązanie: Cóż.
+
+	return Engine::Math::VectorI(
+		floor(position.x/fieldSprite->getW()),
+		floor(position.y/fieldSprite->getH()));
+	}
+
 Level::Field* Level::getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction)
 	{
 	unsigned x;
@@ -276,10 +293,20 @@ bool Level::setFieldOwner(unsigned x, unsigned y, Field::Owner owner)
 	switch(field->owner)
 		{
 		case Field::Owner::PLAYER:
+			if(owner==Field::Owner::ENEMY)
+				{
+				return false;
+				}
+
 			--ownedByPlayer;
 		break;
 
 		case Field::Owner::ENEMY:
+			if(owner==Field::Owner::PLAYER)
+				{
+				return false;
+				}
+
 			--ownedByEnemy;
 		break;
 
@@ -379,6 +406,18 @@ bool Level::buildTurret(unsigned x, unsigned y, TurretType type)
 		{
 		LOG_WARNING("Nie udalo sie umiescic wiezy w poziomie");
 		return destroyTurret(x, y);
+		}
+
+	if(!refreshPath())
+		{
+		LOG_WARNING("Nie mozna umiescic wiezy w %d,%d", x, y);
+
+		if(!destroyTurret(x, y))
+			{
+			LOG_ERROR("...i nie udalo sie tez jej skasowac, AAAAaaaaa");
+			}
+
+		return false;
 		}
 
 	updateFieldOwners();

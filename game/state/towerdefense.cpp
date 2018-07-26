@@ -62,7 +62,7 @@ bool TowerDefense::init(Engine::Core::Application *application)
 		LOG_ERROR("Nie udalo sie wstawic bazy gracza");
 		return false;
 		}
-	if(!level.buildTurret(level.getWidth()-1, level.getHeight()-1, TurretType::ENEMY_SPAWNER))
+	if(!level.buildTurret(level.getWidth()-2, level.getHeight()-1, TurretType::ENEMY_SPAWNER))
 		{
 		LOG_ERROR("Nie udalo sie wstawic spawnera");
 		return false;

@@ -38,11 +38,27 @@ namespace Game
 				};
 
 		protected:
+			struct GraphNode // out od date
+				{
+				enum
+					{
+					NEIGHBOUR_UP=0,
+					NEIGHBOUR_LEFT=1,
+					NEIGHBOUR_DOWN=2,
+					NEIGHBOUR_RIGHT=3,
+					};
+
+				int x, y;
+				int distance;
+				GraphNode *prev;
+				};
+
 			Field* getField(unsigned x, unsigned y);
 			void updateFieldOwners();
 
 			// field[Y][X]
 			std::vector<std::vector<Field*>> field;
+			std::vector<std::vector<GraphNode>> nodes;
 
 			Engine::Graphics::ImagePtr fieldSprite;
 
@@ -71,7 +87,8 @@ namespace Game
 			bool resizeIncreaseYByOne();
 
 			bool refreshPath();
-			Engine::Math::VectorI FindPath(int x, int y);
+			Engine::Math::VectorI findPath(int x, int y);
+			Engine::Math::Vector findPath(const Engine::Math::Vector& from);
 
 			const Field* getField(unsigned x, unsigned y) const;
 			Field::Owner getFieldOwner(unsigned x, unsigned y) const;
@@ -83,6 +100,7 @@ namespace Game
 			unsigned getEnemyTurretCount() const {return turretsEnemy;}
 
 			Engine::Math::Vector getFieldPosition(unsigned x, unsigned y) const;
+			Engine::Math::VectorI getPositionOnField(const Engine::Math::Vector& position) const;
 			Field* getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction);
 			Field* getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction, unsigned& x, unsigned& y);
 
