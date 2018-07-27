@@ -7,7 +7,7 @@
 
 #include "unit.h"
 
-namespace Game
-	{
+using namespace Game;
 
-	} /* namespace Game */
+
+

@@ -11,7 +11,6 @@
 
 namespace Game
 	{
-
 	class TSpawner: public Turret
 		{
 		protected:
@@ -34,7 +33,7 @@ namespace Game
 			virtual void print(float tinterp) override;
 
 			virtual TurretType getType() const override {return TurretType::ENEMY_SPAWNER;}
-			virtual bool isWalkable() const override {return false;}
+			virtual bool isWalkable() const override {return true;}
 //			virtual bool isUpgradable() const override {return false;}
 //			virtual bool isRemovable() const override {return false;}
 //			virtual float getConstructionCost() const override {return 0.0f;}

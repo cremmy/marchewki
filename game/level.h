@@ -7,16 +7,19 @@
 
 #pragma once
 
+#include <list>
 #include <vector>
 
 #include "../engine/graphics/imageptr.h"
 #include "../engine/graphics/spriteptr.h"
 
 #include "turret_type.h"
+#include "unit_type.h"
 
 namespace Game
 	{
 	class Turret;
+	class Unit;
 
 	class Level
 		{
@@ -59,6 +62,7 @@ namespace Game
 			// field[Y][X]
 			std::vector<std::vector<Field*>> field;
 			std::vector<std::vector<GraphNode>> nodes;
+			std::list<Unit*> units;
 
 			Engine::Graphics::ImagePtr fieldSprite;
 
@@ -67,8 +71,10 @@ namespace Game
 			unsigned turretsPlayer;
 			unsigned turretsEnemy;
 
+			unsigned pathVersion; // Zwiększane o 1 za każdym razem gdy ścieżki są przeliczane
+
 		public:
-			Level(): ownedByPlayer(0u), ownedByEnemy(0u), turretsPlayer(0u), turretsEnemy(0u)
+			Level(): ownedByPlayer(0u), ownedByEnemy(0u), turretsPlayer(0u), turretsEnemy(0u), pathVersion(0u)
 				{
 				//
 				}
@@ -89,15 +95,19 @@ namespace Game
 			bool refreshPath();
 			Engine::Math::VectorI findPath(int x, int y);
 			Engine::Math::Vector findPath(const Engine::Math::Vector& from);
+			void findPath(std::list<Engine::Math::VectorI>& path, const Engine::Math::Vector& from);
 
 			const Field* getField(unsigned x, unsigned y) const;
 			Field::Owner getFieldOwner(unsigned x, unsigned y) const;
+			unsigned getFieldWidth() const {return fieldSprite->getW();}
+			unsigned getFieldHeight() const {return fieldSprite->getH();}
 			unsigned getWidth() const {return field.empty()?0u:field[0u].size();}
 			unsigned getHeight() const {return field.size();}
 			unsigned getPlayerFieldCount() const {return ownedByPlayer;}
 			unsigned getEnemyFieldCount() const {return ownedByEnemy;}
 			unsigned getPlayerTurretCount() const {return turretsPlayer;}
 			unsigned getEnemyTurretCount() const {return turretsEnemy;}
+			unsigned getPathVersion() const {return pathVersion;}
 
 			Engine::Math::Vector getFieldPosition(unsigned x, unsigned y) const;
 			Engine::Math::VectorI getPositionOnField(const Engine::Math::Vector& position) const;
@@ -107,6 +117,8 @@ namespace Game
 			bool setFieldOwner(unsigned x, unsigned y, Field::Owner owner);
 			bool buildTurret(unsigned x, unsigned y, TurretType type);
 			bool destroyTurret(unsigned x, unsigned y);
+
+			bool spawnUnit(UnitType type, const Engine::Math::VectorI& position, const Engine::Math::VectorI& target, float hp, float speed);
 		};
 
 	} /* namespace Game */

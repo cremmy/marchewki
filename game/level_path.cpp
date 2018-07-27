@@ -139,6 +139,8 @@ bool Level::refreshPath()
 			}
 		}
 
+	++pathVersion;
+
 	return true;
 	}
 
@@ -165,3 +167,23 @@ Engine::Math::Vector Level::findPath(const Engine::Math::Vector& from)
 	return getFieldPosition(next.x, next.y);
 	}
 
+void Level::findPath(std::list<Engine::Math::VectorI>& path, const Engine::Math::Vector& from)
+	{
+	const Engine::Math::VectorI posfield=getPositionOnField(from);
+
+	path.clear();
+
+	if(!getField(posfield.x, posfield.y))
+		{
+		return;
+		}
+
+	GraphNode* node=&nodes[posfield.y][posfield.x];
+
+	while(node)
+		{
+		path.push_back(Engine::Math::VectorI(posfield.x, posfield.y));
+
+		node=node->prev;
+		}
+	}

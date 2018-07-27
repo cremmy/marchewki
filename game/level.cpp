@@ -13,6 +13,8 @@
 #include "turret.h"
 #include "tplayerbase.h"
 #include "tspawner.h"
+#include "unit.h"
+#include "uenemyinfantry.h"
 
 using namespace Game;
 
@@ -44,6 +46,21 @@ void Level::update(float dt)
 				field->turret->update(dt);
 				}
 			}
+		}
+
+	//for(auto unit: units)
+	for(auto it=units.begin(); it!=units.end(); ++it)
+		{
+		Unit* unit=*it;
+
+		if(!unit->isAlive())
+			{
+			units.erase(it--);
+			delete unit;
+			continue;
+			}
+
+		unit->update(dt);
 		}
 	}
 
@@ -94,6 +111,11 @@ void Level::print(float tinterp)
 				field->turret->print(tinterp);
 				}
 			}
+		}
+
+	for(auto unit: units)
+		{
+		unit->print(tinterp);
 		}
 	}
 
@@ -346,9 +368,11 @@ bool Level::buildTurret(unsigned x, unsigned y, TurretType type)
 
 	if(field->turret)
 		{
-		LOG_WARNING("Pole %d,%d jest juz zajete");
+		LOG_WARNING("Pole %d,%d jest juz zajete", x, y);
 		return false;
 		}
+
+	// TODO Sprawdzić czy na polu nie ma jednostek
 
 	Turret* turret=nullptr;
 
@@ -472,6 +496,8 @@ bool Level::destroyTurret(unsigned x, unsigned y)
 
 	updateFieldOwners();
 
+	refreshPath();
+
 	return true;
 	}
 
@@ -494,3 +520,59 @@ void Level::updateFieldOwners()
 		}
 	}
 
+bool Level::spawnUnit(UnitType type, const Engine::Math::VectorI& position, const Engine::Math::VectorI& target, float hp, float speed)
+	{
+	using namespace Engine::Math;
+
+	Field* field=getField(position.x, position.y);
+
+	if(!field)
+		return false;
+
+	if(field->turret && !field->turret->isWalkable())
+		{
+		LOG_WARNING("Pole %d,%d jest juz zajete i nie mozna po nim chodzic", position.x, position.y);
+		return false;
+		}
+
+	Unit* unit=nullptr;
+
+	switch(type)
+		{
+		case UnitType::PLAYER_ACOLYTE:
+			//unit=new UEnemyInfantry();
+		break;
+
+		case UnitType::ENEMY_INFANTRY:
+			unit=new UEnemyInfantry();
+		break;
+
+		case UnitType::ENEMY_ARMORED:
+			//unit=new UEnemyInfantry();
+		break;
+
+		default:
+			//
+		break;
+		}
+
+	if(!unit)
+		{
+		LOG_ERROR("Nie udalo sie utworzyc jednostki");
+		return false;
+		}
+
+	if(!unit->init(this, position, target))
+		{
+		LOG_WARNING("Nie udalo sie zainicjowac jednostki");
+		delete unit;
+		return false;
+		}
+
+	unit->setHP(hp);
+	unit->setSpeed(speed);
+
+	units.push_back(unit);
+
+	return true;
+	}

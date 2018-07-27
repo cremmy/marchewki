@@ -65,6 +65,8 @@ void TPlayerBase::update(float dt)
 	const unsigned FIELDS_PLAYER=level->getPlayerFieldCount();
 	const float PERCENT=(float)FIELDS_PLAYER/FIELDS_ALL;
 
+	sprite.update(dt);
+
 	if(PERCENT<0.10f)
 		{
 		setUpgrade(0);

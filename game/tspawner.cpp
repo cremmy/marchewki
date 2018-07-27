@@ -22,7 +22,7 @@ bool TSpawner::init()
 		return false;
 		}
 
-	cooldown=2.0f;
+	cooldown=10.0f;
 
 	return true;
 	}
@@ -57,13 +57,15 @@ bool TSpawner::removeFromLevel()
 
 void TSpawner::update(float dt)
 	{
+	sprite.update(dt);
+
 	cooldown-=dt;
 
 	if(cooldown<=0.0f)
 		{
-		cooldown=1.0f;
+		cooldown=2.0f;
 
-		// TODO Spawn przeciwnika
+		level->spawnUnit(UnitType::ENEMY_INFANTRY, Engine::Math::VectorI(x, y), Engine::Math::VectorI(0, 0), 1.0f, 32.0f);
 		}
 	}
 
