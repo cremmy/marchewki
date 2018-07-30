@@ -56,7 +56,7 @@ namespace Game
 				GraphNode *prev;
 				};
 
-			Field* getField(unsigned x, unsigned y);
+			Field* getField(const Engine::Math::VectorI& fposition);
 			void updateFieldOwners();
 
 			// field[Y][X]
@@ -93,30 +93,30 @@ namespace Game
 			bool resizeIncreaseYByOne();
 
 			bool refreshPath();
-			Engine::Math::VectorI findPath(int x, int y);
+			Engine::Math::VectorI findPath(const Engine::Math::VectorI& from);
 			Engine::Math::Vector findPath(const Engine::Math::Vector& from);
 			void findPath(std::list<Engine::Math::VectorI>& path, const Engine::Math::Vector& from);
 
-			const Field* getField(unsigned x, unsigned y) const;
-			Field::Owner getFieldOwner(unsigned x, unsigned y) const;
+			const Field* getField(const Engine::Math::VectorI& fposition) const;
+			Field::Owner getFieldOwner(const Engine::Math::VectorI& fposition) const;
 			unsigned getFieldWidth() const {return fieldSprite->getW();}
 			unsigned getFieldHeight() const {return fieldSprite->getH();}
-			unsigned getWidth() const {return field.empty()?0u:field[0u].size();}
-			unsigned getHeight() const {return field.size();}
+			int getWidth() const {return field.empty()?0:field[0u].size();}
+			int getHeight() const {return field.size();}
 			unsigned getPlayerFieldCount() const {return ownedByPlayer;}
 			unsigned getEnemyFieldCount() const {return ownedByEnemy;}
 			unsigned getPlayerTurretCount() const {return turretsPlayer;}
 			unsigned getEnemyTurretCount() const {return turretsEnemy;}
 			unsigned getPathVersion() const {return pathVersion;}
 
-			Engine::Math::Vector getFieldPosition(unsigned x, unsigned y) const;
+			Engine::Math::Vector getFieldPosition(const Engine::Math::VectorI& fposition) const;
 			Engine::Math::VectorI getPositionOnField(const Engine::Math::Vector& position) const;
 			Field* getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction);
-			Field* getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction, unsigned& x, unsigned& y);
+			Field* getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction, Engine::Math::VectorI& fposition);
 
-			bool setFieldOwner(unsigned x, unsigned y, Field::Owner owner);
-			bool buildTurret(unsigned x, unsigned y, TurretType type);
-			bool destroyTurret(unsigned x, unsigned y);
+			bool setFieldOwner(const Engine::Math::VectorI& fposition, Field::Owner owner);
+			bool buildTurret(const Engine::Math::VectorI& fposition, TurretType type);
+			bool destroyTurret(const Engine::Math::VectorI& fposition);
 
 			bool spawnUnit(UnitType type, const Engine::Math::VectorI& position, const Engine::Math::VectorI& target, float hp, float speed);
 		};

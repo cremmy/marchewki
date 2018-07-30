@@ -27,18 +27,18 @@ bool TPlayerBase::init()
 
 bool TPlayerBase::updateFieldOwners() const
 	{
-	if(!level->setFieldOwner(x, y, Level::Field::Owner::PLAYER))
+	if(!level->setFieldOwner(fposition, Level::Field::Owner::PLAYER))
 		{
-		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", x, y);
+		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
 		}
 
 	return true;
 	}
 
-bool TPlayerBase::attachToLevel(Level* level, int x, int y)
+bool TPlayerBase::attachToLevel(Level* level, const Engine::Math::VectorI& fposition)
 	{
-	if(!Turret::init(level, x, y))
+	if(!Turret::init(level, fposition))
 		{
 		LOG_ERROR("Nie udalo sie zainicjowac wiezy");
 		return false;
@@ -100,7 +100,7 @@ void TPlayerBase::print(float tinterp)
 
 	const Camera& cam=*Render::getInstance().getCurrentCamera();
 
-	const Vector pos=level->getFieldPosition(x, y);
+	const Vector pos=level->getFieldPosition(fposition);
 
 	Render::getInstance().draw(cam.getBillboard(pos), sprite);
 	}

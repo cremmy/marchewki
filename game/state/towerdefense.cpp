@@ -55,14 +55,14 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	camera.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 2000.0f);
 	//cam.perspective(Render::getInstance().getWindowWidth(), Render::getInstance().getWindowHeight(), 0.1);
 	//cam.lookAt(Engine::Math::Vector(0, 0, 0), Engine::Math::Vector(0, 0, 500), Engine::Math::Vector(0, 1, 0));
-	camera.lookAt(level.getFieldPosition(0u, 0u), CAMERA_ANGLE, CAMERA_ELEVATION, CAMERA_DISTANCE);
+	camera.lookAt(level.getFieldPosition({0, 0}), CAMERA_ANGLE, CAMERA_ELEVATION, CAMERA_DISTANCE);
 
-	if(!level.buildTurret(0, 0, TurretType::PLAYER_BASE))
+	if(!level.buildTurret({0, 0}, TurretType::PLAYER_BASE))
 		{
 		LOG_ERROR("Nie udalo sie wstawic bazy gracza");
 		return false;
 		}
-	if(!level.buildTurret(level.getWidth()-2, level.getHeight()-1, TurretType::ENEMY_SPAWNER))
+	if(!level.buildTurret({level.getWidth()-1, level.getHeight()-1}, TurretType::ENEMY_SPAWNER))
 		{
 		LOG_ERROR("Nie udalo sie wstawic spawnera");
 		return false;
@@ -115,8 +115,8 @@ bool TowerDefense::update(float dt)
 			camera.move((POS_PREV-POS_CUR));
 
 			// Zapobieganie zbytniemu oddaleniu kamery
-			const Vector LEVEL_MIN=level.getFieldPosition(0u, 0u);
-			const Vector LEVEL_MAX=level.getFieldPosition(level.getWidth(), level.getHeight());
+			const Vector LEVEL_MIN=level.getFieldPosition({0, 0});
+			const Vector LEVEL_MAX=level.getFieldPosition({level.getWidth(), level.getHeight()});
 			const Vector CAMERA_CENTER=MathUtils::getPositionAtZ0ByRay(camera.getPosition(), camera.getForward());
 
 			if(CAMERA_CENTER.x<LEVEL_MIN.x)
@@ -144,11 +144,10 @@ bool TowerDefense::update(float dt)
 
 			camera.getRay(e.data.mouse.x, e.data.mouse.y, raypos, raydir);
 
-			unsigned x=0u;
-			unsigned y=0u;
-			if(level.getFieldByRay(raypos, raydir, x, y))
+			Engine::Math::VectorI fposition;
+			if(level.getFieldByRay(raypos, raydir, fposition))
 				{
-				LOG_DEBUG("HIT: %d, %d", x, y);
+				LOG_DEBUG("HIT: %d, %d", fposition.x, fposition.y);
 				}
 			else
 				{

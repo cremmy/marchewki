@@ -15,11 +15,11 @@
 
 using namespace Game;
 
-bool UEnemyInfantry::init(Level* level, const Engine::Math::VectorI& position, const Engine::Math::VectorI& /*target*/)
+bool UEnemyInfantry::init(Level* level, const Engine::Math::VectorI& fposition, const Engine::Math::VectorI& /*target*/)
 	{
 	this->level=level;
 
-	this->position=level->getFieldPosition(position.x, position.y);
+	this->position=level->getFieldPosition(fposition);
 	this->target=this->position;//level->getFieldPosition(target.x, target.y);
 	// Target ignorowany, jednostki domyślnie idą do 0,0
 
@@ -58,11 +58,17 @@ void UEnemyInfantry::update(float dt)
 		const float OX=(rand()/(RAND_MAX+1.0f)*FW-FW/2.0f)*0.45f;
 		const float OY=(rand()/(RAND_MAX+1.0f)*FH-FH/2.0f)*0.45f;
 
-		const VectorI nextFieldXY=level->findPath(fieldXY.x, fieldXY.y);
-		target=level->getFieldPosition(nextFieldXY.x, nextFieldXY.y) + Vector(OX, OY);
+		const VectorI nextFieldXY=level->findPath(fieldXY);
+		target=level->getFieldPosition(nextFieldXY) + Vector(OX, OY);
 		}
 	else
 		{
+		/*if(const Level::Field* field=level->getField(level->getPositionOnField(position)) && field->turret)
+			{
+			target=position;
+			return;
+			}*/
+
 		position=position + VectorNormalize(target-position)*DISTANCE;
 		}
 	}

@@ -32,14 +32,14 @@ bool Level::init(unsigned w, unsigned h)
 
 void Level::update(float dt)
 	{
-	const unsigned W=getWidth();
-	const unsigned H=getHeight();
+	const int W=getWidth();
+	const int H=getHeight();
 
-	for(unsigned y=0u; y<H; ++y)
+	for(int y=0; y<H; ++y)
 		{
-		for(unsigned x=0u; x<W; ++x)
+		for(int x=0; x<W; ++x)
 			{
-			Field* field=getField(x, y);
+			Field* field=getField({x, y});
 
 			if(field->turret)
 				{
@@ -68,15 +68,19 @@ void Level::print(float tinterp)
 	{
 	using namespace Engine::Math;
 
-	const unsigned W=getWidth();
-	const unsigned H=getHeight();
+	const int W=getWidth();
+	const int H=getHeight();
 
 	glDisable(GL_DEPTH_TEST);
-	for(unsigned y=0u; y<H; ++y)
+	for(int y=0u; y<H; ++y)
 		{
-		for(unsigned x=0u; x<W; ++x)
+		for(int x=0u; x<W; ++x)
 			{
-			Field* field=getField(x, y);
+			Field* field=getField({x, y});
+
+			const Vector position=Engine::Math::Vector(
+					(x  )*fieldSprite->getW(),
+					(y+1)*fieldSprite->getH());
 
 			switch(field->owner)
 				{
@@ -94,17 +98,31 @@ void Level::print(float tinterp)
 				break;
 				}
 
-			Engine::Render::getInstance().draw(Orientation::FLAT_XY+Vector(x*fieldSprite->getW(), (y+1u)*fieldSprite->getH()), fieldSprite);
+			Engine::Render::getInstance().draw(Orientation::FLAT_XY+position, fieldSprite);
+
+			const GraphNode& node=nodes[y][x];
+			if(node.prev)
+				{
+				const Vector center=getFieldPosition({x, y});
+				const Vector dir=VectorNormalize(getFieldPosition({node.prev->x, node.prev->y}) - center);
+				const Vector head=center+dir*32.0f;
+				const Vector headL=MatrixRotZ<float>(135.0f)*dir*16.0f;
+				const Vector headR=MatrixRotZ<float>(-135.0f)*dir*16.0f;
+
+				Engine::Render::getInstance().drawLine(center+Vector(0, 0, 8), head+Vector(0, 0, 8), Vector(1.0f, 1.0f, 1.0f, 0.75f));
+				Engine::Render::getInstance().drawLine(head+Vector(0, 0, 8), head+headL+Vector(0, 0, 8), Vector(1.0f, 1.0f, 1.0f, 0.75f));
+				Engine::Render::getInstance().drawLine(head+Vector(0, 0, 8), head+headR+Vector(0, 0, 8), Vector(1.0f, 1.0f, 1.0f, 0.75f));
+				}
 			}
 		}
 	glEnable(GL_DEPTH_TEST);
 
 	Engine::Render::getInstance().setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
-	for(unsigned y=0u; y<H; ++y)
+	for(int y=0; y<H; ++y)
 		{
-		for(unsigned x=0u; x<W; ++x)
+		for(int x=0; x<W; ++x)
 			{
-			Field* field=getField(x, y);
+			Field* field=getField({x, y});
 
 			if(field->turret)
 				{
@@ -219,23 +237,23 @@ bool Level::resizeIncreaseYByOne()
 	}
 
 
-Level::Field* Level::getField(unsigned x, unsigned y)
+Level::Field* Level::getField(const Engine::Math::VectorI& fposition)
 	{
-	if(x>=getWidth() || y>=getHeight())
+	if(fposition.x>=getWidth() || fposition.y>=getHeight())
 		return nullptr;
-	return field[y][x];
+	return field[fposition.y][fposition.x];
 	}
 
-const Level::Field* Level::getField(unsigned x, unsigned y) const
+const Level::Field* Level::getField(const Engine::Math::VectorI& fposition) const
 	{
-	if(x>=getWidth() || y>=getHeight())
+	if(fposition.x>=getWidth() || fposition.y>=getHeight())
 		return nullptr;
-	return field[y][x];
+	return field[fposition.y][fposition.x];
 	}
 
-Level::Field::Owner Level::getFieldOwner(unsigned x, unsigned y) const
+Level::Field::Owner Level::getFieldOwner(const Engine::Math::VectorI& fposition) const
 	{
-	if(const Field* field=getField(x, y))
+	if(const Field* field=getField(fposition))
 		{
 		return field->owner;
 		}
@@ -243,9 +261,11 @@ Level::Field::Owner Level::getFieldOwner(unsigned x, unsigned y) const
 	return Field::Owner::NONE;
 	}
 
-Engine::Math::Vector Level::getFieldPosition(unsigned x, unsigned y) const
+Engine::Math::Vector Level::getFieldPosition(const Engine::Math::VectorI& fposition) const
 	{
-	return Engine::Math::Vector(x*fieldSprite->getW()+fieldSprite->getW()*0.5, y*fieldSprite->getH()+fieldSprite->getH()*0.5);
+	return Engine::Math::Vector(
+		fposition.x*fieldSprite->getW()+fieldSprite->getW()*0.5,
+		fposition.y*fieldSprite->getH()+fieldSprite->getH()*0.5);
 	}
 
 Engine::Math::VectorI Level::getPositionOnField(const Engine::Math::Vector& position) const
@@ -261,13 +281,12 @@ Engine::Math::VectorI Level::getPositionOnField(const Engine::Math::Vector& posi
 
 Level::Field* Level::getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction)
 	{
-	unsigned x;
-	unsigned y;
+	Engine::Math::VectorI fposition;
 
-	return getFieldByRay(position, direction, x, y);
+	return getFieldByRay(position, direction, fposition);
 	}
 
-Level::Field* Level::getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction, unsigned& x, unsigned& y)
+Level::Field* Level::getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction, Engine::Math::VectorI& fposition)
 	{
 	//LOG_DEBUG(LOG_STR_VECTOR(position));
 	//LOG_DEBUG(LOG_STR_VECTOR(direction));
@@ -287,22 +306,22 @@ Level::Field* Level::getFieldByRay(const Engine::Math::Vector& position, const E
 
 	//LOG_DEBUG("Dist: %f; Hit: %f, %f, %f; %d %d", Z_DISTANCE, HIT.x, HIT.y, HIT.z, HIT_X, HIT_Y);
 
-	if(/*HIT_X<0 ||*/ HIT_X>=(int)getWidth() ||
-	   /*HIT_Y<0 ||*/ HIT_Y>=(int)getHeight())
+	if(/*HIT_X<0 ||*/ HIT_X>=getWidth() ||
+	   /*HIT_Y<0 ||*/ HIT_Y>=getHeight())
 		{
 		return nullptr;
 		}
 
-	x=HIT_X;
-	y=HIT_Y;
+	fposition.x=HIT_X;
+	fposition.y=HIT_Y;
 
-	return getField(x, y);
+	return getField(fposition);
 	}
 
 
-bool Level::setFieldOwner(unsigned x, unsigned y, Field::Owner owner)
+bool Level::setFieldOwner(const Engine::Math::VectorI& fposition, Field::Owner owner)
 	{
-	Field* field=getField(x, y);
+	Field* field=getField(fposition);
 
 	if(!field)
 		return false;
@@ -359,16 +378,16 @@ bool Level::setFieldOwner(unsigned x, unsigned y, Field::Owner owner)
 	return true;
 	}
 
-bool Level::buildTurret(unsigned x, unsigned y, TurretType type)
+bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 	{
-	Field* field=getField(x, y);
+	Field* field=getField(fposition);
 
 	if(!field)
 		return false;
 
 	if(field->turret)
 		{
-		LOG_WARNING("Pole %d,%d jest juz zajete", x, y);
+		LOG_WARNING("Pole %d,%d jest juz zajete", fposition.x, fposition.y);
 		return false;
 		}
 
@@ -424,19 +443,19 @@ bool Level::buildTurret(unsigned x, unsigned y, TurretType type)
 	if(!turret->init())
 		{
 		LOG_WARNING("Nie udalo sie zainicjowac wiezy");
-		return destroyTurret(x, y);
+		return destroyTurret(fposition);
 		}
-	if(!turret->attachToLevel(this, x, y))
+	if(!turret->attachToLevel(this, fposition))
 		{
 		LOG_WARNING("Nie udalo sie umiescic wiezy w poziomie");
-		return destroyTurret(x, y);
+		return destroyTurret(fposition);
 		}
 
 	if(!refreshPath())
 		{
-		LOG_WARNING("Nie mozna umiescic wiezy w %d,%d", x, y);
+		LOG_WARNING("Nie mozna umiescic wiezy w %d,%d", fposition.x, fposition.y);
 
-		if(!destroyTurret(x, y))
+		if(!destroyTurret(fposition))
 			{
 			LOG_ERROR("...i nie udalo sie tez jej skasowac, AAAAaaaaa");
 			}
@@ -449,9 +468,9 @@ bool Level::buildTurret(unsigned x, unsigned y, TurretType type)
 	return true;
 	}
 
-bool Level::destroyTurret(unsigned x, unsigned y)
+bool Level::destroyTurret(const Engine::Math::VectorI& fposition)
 	{
-	Field* field=getField(x, y);
+	Field* field=getField(fposition);
 
 	if(!field)
 		return false;
@@ -503,14 +522,14 @@ bool Level::destroyTurret(unsigned x, unsigned y)
 
 void Level::updateFieldOwners()
 	{
-	const unsigned W=getWidth();
-	const unsigned H=getHeight();
+	const int W=getWidth();
+	const int H=getHeight();
 
-	for(unsigned y=0u; y<H; ++y)
+	for(int y=0; y<H; ++y)
 		{
-		for(unsigned x=0u; x<W; ++x)
+		for(int x=0; x<W; ++x)
 			{
-			Field* field=getField(x, y);
+			Field* field=getField({x, y});
 
 			if(!field->turret)
 				continue;
@@ -520,18 +539,18 @@ void Level::updateFieldOwners()
 		}
 	}
 
-bool Level::spawnUnit(UnitType type, const Engine::Math::VectorI& position, const Engine::Math::VectorI& target, float hp, float speed)
+bool Level::spawnUnit(UnitType type, const Engine::Math::VectorI& fposition, const Engine::Math::VectorI& target, float hp, float speed)
 	{
 	using namespace Engine::Math;
 
-	Field* field=getField(position.x, position.y);
+	Field* field=getField(fposition);
 
 	if(!field)
 		return false;
 
 	if(field->turret && !field->turret->isWalkable())
 		{
-		LOG_WARNING("Pole %d,%d jest juz zajete i nie mozna po nim chodzic", position.x, position.y);
+		LOG_WARNING("Pole %d,%d jest juz zajete i nie mozna po nim chodzic", fposition.x, fposition.y);
 		return false;
 		}
 
@@ -562,7 +581,7 @@ bool Level::spawnUnit(UnitType type, const Engine::Math::VectorI& position, cons
 		return false;
 		}
 
-	if(!unit->init(this, position, target))
+	if(!unit->init(this, fposition, target))
 		{
 		LOG_WARNING("Nie udalo sie zainicjowac jednostki");
 		delete unit;

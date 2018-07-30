@@ -129,11 +129,10 @@ bool Debug::update(float dt)
 
 			cam.getRay(e.data.mouse.x, e.data.mouse.y, raypos, raydir);
 
-			unsigned x=0u;
-			unsigned y=0u;
-			if(level.getFieldByRay(raypos, raydir, x, y))
+			Engine::Math::VectorI fposition;
+			if(level.getFieldByRay(raypos, raydir, fposition))
 				{
-				LOG_DEBUG("HIT: %d, %d", x, y);
+				LOG_DEBUG("HIT: %d, %d", fposition.x, fposition.y);
 				}
 			else
 				{

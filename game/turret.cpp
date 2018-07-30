@@ -9,11 +9,10 @@
 
 using namespace Game;
 
-bool Turret::init(Level* level, int x, int y)
+bool Turret::init(Level* level, const Engine::Math::VectorI& fposition)
 	{
 	this->level=level;
-	this->x=x;
-	this->y=y;
+	this->fposition=fposition;
 
 	return true;
 	}

@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <initializer_list>
+
 #define LOG_STR_VECTOR(v) "Vector " #v ": [%7.4f %7.4f %7.4f %7.4f]", v[0], v[1], v[2], v[3]
 #define LOG_STR_VECTORI(v) "Vector " #v ": [%7d %7d %7d %7d]", v[0], v[1], v[2], v[3]
 
@@ -27,6 +29,12 @@ namespace Engine
 				x(a.x), y(y), z(z), w(w) {}
 			TVector(const TVector<T>& a):
 				x(a.x), y(a.y), z(a.z), w(a.w) {}
+			TVector(std::initializer_list<T> args)
+				{
+				int i=0;
+				for(auto v: args)
+					(*this)[i++]=v;
+				}
 
 			TVector<T>& operator=(const TVector<T>& a) {x=a.x; y=a.y; z=a.z; w=a.w; return *this;}
 			T& operator[](int i)

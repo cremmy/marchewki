@@ -101,7 +101,7 @@ bool Level::refreshPath()
 			if(!neighbour)
 				continue;
 
-			const Field* field=getField(neighbour->x, neighbour->y);
+			const Field* field=getField({neighbour->x, neighbour->y});
 
 			if(field->turret && !field->turret->isWalkable())
 				{
@@ -123,7 +123,7 @@ bool Level::refreshPath()
 		{
 		for(auto& node: row)
 			{
-			const Field* field=getField(node.x, node.y);
+			const Field* field=getField({node.x, node.y});
 
 			if(field->turret && !field->turret->isWalkable())
 				{
@@ -144,16 +144,16 @@ bool Level::refreshPath()
 	return true;
 	}
 
-Engine::Math::VectorI Level::findPath(int x, int y)
+Engine::Math::VectorI Level::findPath(const Engine::Math::VectorI& from)
 	{
-	if(!getField(x, y))
-		return Engine::Math::VectorI(x, y);
+	if(!getField(from))
+		return from;
 
-	GraphNode& node=nodes[y][x];
+	GraphNode& node=nodes[from.y][from.x];
 
 	if(!node.prev)
 		{
-		return Engine::Math::VectorI(x, y);
+		return from;
 		}
 
 	return Engine::Math::VectorI(node.prev->x, node.prev->y);
@@ -162,27 +162,27 @@ Engine::Math::VectorI Level::findPath(int x, int y)
 Engine::Math::Vector Level::findPath(const Engine::Math::Vector& from)
 	{
 	const Engine::Math::VectorI posfield=getPositionOnField(from);
-	const Engine::Math::VectorI next=findPath(posfield.x, posfield.y);
+	const Engine::Math::VectorI next=findPath(posfield);
 
-	return getFieldPosition(next.x, next.y);
+	return getFieldPosition(next);
 	}
 
 void Level::findPath(std::list<Engine::Math::VectorI>& path, const Engine::Math::Vector& from)
 	{
-	const Engine::Math::VectorI posfield=getPositionOnField(from);
+	const Engine::Math::VectorI fposition=getPositionOnField(from);
 
 	path.clear();
 
-	if(!getField(posfield.x, posfield.y))
+	if(!getField(fposition))
 		{
 		return;
 		}
 
-	GraphNode* node=&nodes[posfield.y][posfield.x];
+	GraphNode* node=&nodes[fposition.y][fposition.x];
 
 	while(node)
 		{
-		path.push_back(Engine::Math::VectorI(posfield.x, posfield.y));
+		path.push_back({node->x, node->y});
 
 		node=node->prev;
 		}

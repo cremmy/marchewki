@@ -18,13 +18,12 @@ namespace Game
 	class Turret
 		{
 		protected:
-			bool init(Level* level, int x, int y);
+			bool init(Level* level, const Engine::Math::VectorI& fposition);
 
 			Level* level;
 
 			// Pozycja w poziomie (numer pola)
-			int x;
-			int y;
+			Engine::Math::VectorI fposition;
 
 			float hp;
 
@@ -36,7 +35,7 @@ namespace Game
 			Engine::Graphics::SpritePtr sprite;
 
 		public:
-			Turret(int maxUpgrade=0): level(nullptr), x(-1), y(-1), hp(1.0f), upgrade(0), MAX_UPGRADE(maxUpgrade), cooldown(0.0f)
+			Turret(int maxUpgrade=0): level(nullptr), fposition(-1, -1), hp(1.0f), upgrade(0), MAX_UPGRADE(maxUpgrade), cooldown(0.0f)
 				{
 				//
 				}
@@ -46,7 +45,7 @@ namespace Game
 				}
 
 			virtual bool init()=0;
-			virtual bool attachToLevel(Level* level, int x, int y)=0;
+			virtual bool attachToLevel(Level* level, const Engine::Math::VectorI& fposition)=0;
 			virtual bool updateFieldOwners() const=0;
 			virtual bool removeFromLevel()=0;
 			virtual void update(float dt)=0;
@@ -61,8 +60,8 @@ namespace Game
 			virtual float getRemovalCost() const {return 0.0f;}
 			bool isReady() const {return cooldown<=0.0f;}
 			bool isAlive() const {return hp>0.0f;}
-			int getPositionX() const {return x;}
-			int getPositionY() const {return y;}
+			int getPositionX() const {return fposition.x;}
+			int getPositionY() const {return fposition.y;}
 			float getHP() const {return hp;}
 			int getUpgrade() const {return upgrade;}
 			const Engine::Graphics::SpritePtr& getSprite() const {return sprite;}

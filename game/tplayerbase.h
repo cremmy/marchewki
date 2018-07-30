@@ -27,7 +27,7 @@ namespace Game
 				}
 
 			virtual bool init() override;
-			virtual bool attachToLevel(Level* level, int x, int y) override;
+			virtual bool attachToLevel(Level* level, const Engine::Math::VectorI& fposition) override;
 			virtual bool removeFromLevel() override;
 			virtual void update(float dt) override;
 			virtual void print(float tinterp) override;

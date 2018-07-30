@@ -29,18 +29,20 @@ bool TSpawner::init()
 
 bool TSpawner::updateFieldOwners() const
 	{
-	level->setFieldOwner(x  , y  , Level::Field::Owner::ENEMY);
-	level->setFieldOwner(x-1, y  , Level::Field::Owner::ENEMY);
-	level->setFieldOwner(x+1, y  , Level::Field::Owner::ENEMY);
-	level->setFieldOwner(x  , y-1, Level::Field::Owner::ENEMY);
-	level->setFieldOwner(x  , y+1, Level::Field::Owner::ENEMY);
+	using namespace Engine::Math;
+
+	level->setFieldOwner(fposition                , Level::Field::Owner::ENEMY);
+	level->setFieldOwner(fposition+VectorI(-1,  0), Level::Field::Owner::ENEMY);
+	level->setFieldOwner(fposition+VectorI( 1,  0), Level::Field::Owner::ENEMY);
+	level->setFieldOwner(fposition+VectorI( 0, -1), Level::Field::Owner::ENEMY);
+	level->setFieldOwner(fposition+VectorI( 0,  1), Level::Field::Owner::ENEMY);
 
 	return true;
 	}
 
-bool TSpawner::attachToLevel(Level* level, int x, int y)
+bool TSpawner::attachToLevel(Level* level, const Engine::Math::VectorI& fposition)
 	{
-	if(!Turret::init(level, x, y))
+	if(!Turret::init(level, fposition))
 		{
 		LOG_ERROR("Nie udalo sie zainicjowac wiezy");
 		return false;
@@ -65,7 +67,7 @@ void TSpawner::update(float dt)
 		{
 		cooldown=2.0f;
 
-		level->spawnUnit(UnitType::ENEMY_INFANTRY, Engine::Math::VectorI(x, y), Engine::Math::VectorI(0, 0), 1.0f, 32.0f);
+		level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 1.0f, 32.0f);
 		}
 	}
 
@@ -76,7 +78,7 @@ void TSpawner::print(float tinterp)
 
 	const Camera& cam=*Render::getInstance().getCurrentCamera();
 
-	const Vector pos=level->getFieldPosition(x, y);
+	const Vector pos=level->getFieldPosition(fposition);
 
 	Render::getInstance().draw(cam.getBillboard(pos), sprite);
 	}
