@@ -30,6 +30,8 @@
 #include "game/state/debug.h"
 #include "game/state/towerdefense.h"
 
+#include "game/ui/panel.h"
+
 int main(int, char**)
 	{
 #ifdef BUILD_RELEASE
@@ -39,6 +41,35 @@ int main(int, char**)
 
 	LOG_INFO("Start");
 	LOG_INFO("Build %s %s", __DATE__, __TIME__);
+
+	/*{
+	using namespace Engine::Math;
+	using namespace Game::UI;
+
+	Panel* panel=new Panel({0, 0});
+	panel->addChild(new Panel({0, 0}), {0, 1}, true);
+	panel->addChild(new Panel({0, 0}), {0, 2}, true);
+	panel->addChild(new Panel({0, 0}), {0, 3}, true);
+	Panel* window=new Panel({0, 0});
+	window->addChild(panel, {1, 1});
+	window->addChild(new Panel({0, 0}), {1, 1}, true);
+	window->addChild(new Panel({0, 0}), {1, 2}, false);
+	window->addChild(new Panel({0, 0}), {1, 3}, true);
+	window->addChild(new Panel({0, 0}), {1, 4}, false);
+	window->addChild(new Panel({0, 0}), {1, 5}, true);
+	window->addChild(new Panel({0, 0}), {1, 6}, false);
+
+
+	window->dump();
+	for(int i=0; i<10; ++i)
+		{
+		LOG_DEBUG("------------------------------");
+		window->selectPrevious();
+		window->dump();
+		}
+
+	return 0;
+	}*/
 
 	Engine::Core::Application app;
 
