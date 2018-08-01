@@ -25,7 +25,7 @@ namespace Game
 				Window(const Engine::Math::VectorI& size, const Engine::Graphics::SpritePtr& background, bool resizeBackground=false):
 					Panel(size), resizeBackground(resizeBackground), background(background)
 					{
-					//
+					selectable=false;
 					}
 				virtual ~Window()
 					{

@@ -28,14 +28,17 @@ namespace Game
 					SELECTED,
 					} mode;
 
+				void initModeNone();
 				void initModeBuilding(TurretType turret);
-				void initModeSelected(int x, int y);
+				void initModeSelected(const Engine::Math::VectorI fposition);
 
 				void updateModeBuilding(float dt);
 				void updateModeSelected(float dt);
 
+				void printModeBuilding(float tinterp);
+				void printModeSelected(float tinterp);
+
 				Level level;
-				Level::Field* selected;
 
 				Engine::Render::Camera camera;
 
@@ -46,6 +49,10 @@ namespace Game
 					{
 					TurretType turret;
 					} modeBuildData;
+				struct
+					{
+					const Level::Field* field;
+					} modeSelectedData;
 
 			public:
 				TowerDefense();

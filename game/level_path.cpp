@@ -119,7 +119,8 @@ bool Level::refreshPath()
 		}
 
 	// TODO Sprawdzic czy nie ma miejsc z ktorych nie da sie dojsc do bazy
-	for(auto& row: nodes)
+	// TODO Zamiast sprawdzać spójnośc, proponuję wyznaczyć ścieżkę
+	/*for(auto& row: nodes)
 		{
 		for(auto& node: row)
 			{
@@ -136,6 +137,34 @@ bool Level::refreshPath()
 			LOG_WARNING("Graf niespojny: %d,%d", node.x, node.y);
 
 			return false;
+			}
+		}*/
+	for(int y=0; y<getHeight(); ++y)
+		{
+		for(int x=0; x<getWidth(); ++x)
+			{
+			Field* field=getField({x, y});
+
+			if(!field->turret)
+				{
+				continue;
+				}
+			if(field->turret->getType()!=TurretType::ENEMY_SPAWNER)
+				{
+				continue;
+				}
+
+			GraphNode* node=&nodes[y][x];
+			for(int i=0; i<getWidth()*getHeight(); ++i)
+				{
+				if(!node)
+					return false;
+
+				if(node->x==0 && node->y==0)
+					break;
+
+				node=node->prev;
+				}
 			}
 		}
 

@@ -97,6 +97,8 @@ namespace Game
 			Engine::Math::Vector findPath(const Engine::Math::Vector& from);
 			void findPath(std::list<Engine::Math::VectorI>& path, const Engine::Math::Vector& from);
 
+			bool isUnitOnField(const Engine::Math::VectorI& fposition);
+
 			const Field* getField(const Engine::Math::VectorI& fposition) const;
 			Field::Owner getFieldOwner(const Engine::Math::VectorI& fposition) const;
 			unsigned getFieldWidth() const {return fieldSprite->getW();}

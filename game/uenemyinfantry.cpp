@@ -63,11 +63,13 @@ void UEnemyInfantry::update(float dt)
 		}
 	else
 		{
-		/*if(const Level::Field* field=level->getField(level->getPositionOnField(position)) && field->turret)
+		const Level::Field* field=((const Level*)level)->getField(level->getPositionOnField(target));
+
+		if(field && field->turret && !field->turret->isWalkable())
 			{
 			target=position;
 			return;
-			}*/
+			}
 
 		position=position + VectorNormalize(target-position)*DISTANCE;
 		}

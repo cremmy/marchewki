@@ -7,6 +7,8 @@
 
 #include "window.h"
 
+#include "../../engine/render/render.h"
+
 using namespace Game::UI;
 
 void Window::update(float dt)
@@ -23,6 +25,14 @@ void Window::print(float tinterp)
 	const Vector RESIZE_FACTOR(
 		size.x/background.getCurrentFrame().getWidth(),
 		size.y/background.getCurrentFrame().getHeight());
+
+	Engine::Render::getInstance().draw(
+		Orientation(
+			{(float)position.x, (float)position.y},
+			Orientation::GUI,
+			RESIZE_FACTOR),
+		background);
+
 
 	Panel::print(tinterp);
 	}

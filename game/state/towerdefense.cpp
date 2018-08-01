@@ -23,7 +23,7 @@ const float CAMERA_ANGLE=45.0f;
 const float CAMERA_ELEVATION=30.0f;
 const float CAMERA_DISTANCE=1024.0f;
 
-TowerDefense::TowerDefense(): mode(Mode::NONE), level(), selected(nullptr), camera(), camTargetAngle(1), camCurrentAngle(1)
+TowerDefense::TowerDefense(): mode(Mode::NONE), level(), camera(), camTargetAngle(1), camCurrentAngle(1)
 	{
 	//
 	}
@@ -95,7 +95,30 @@ bool TowerDefense::update(float dt)
 				camera.perspective(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 4000.0f);
 				}
 #endif
+
+			/*****************************************************************************/
+			/**** Budowanie (klawiatura) *************************************************/
+			/*****************************************************************************/
+			if(e.data.keyboard.key==SDLK_q)
+				{
+				initModeBuilding(TurretType::PLAYER_UNIT_SINGLE_TARGET);
+				}
+			else if(e.data.keyboard.key==SDLK_w)
+				{
+				initModeBuilding(TurretType::PLAYER_UNIT_AREA_OF_EFFECT);
+				}
+			else if(e.data.keyboard.key==SDLK_e)
+				{
+				initModeBuilding(TurretType::PLAYER_UNIT_MINE);
+				}
+			else if(e.data.keyboard.key==SDLK_r)
+				{
+				initModeBuilding(TurretType::PLAYER_CARROT_FIELD);
+				}
 			}
+		/*****************************************************************************/
+		/**** Ruch kamery ************************************************************/
+		/*****************************************************************************/
 		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_MOVE && (e.data.mouse.key&SDL_BUTTON(3)))
 			{
 			int mx;
@@ -137,23 +160,9 @@ bool TowerDefense::update(float dt)
 				camera.move(Vector(0.0f, LEVEL_MAX.y-CAMERA_CENTER.y));
 				}
 			}
-		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_KEY_DOWN && e.data.mouse.key==1)
-			{
-			Engine::Math::Vector raypos;
-			Engine::Math::Vector raydir;
-
-			camera.getRay(e.data.mouse.x, e.data.mouse.y, raypos, raydir);
-
-			Engine::Math::VectorI fposition;
-			if(level.getFieldByRay(raypos, raydir, fposition))
-				{
-				LOG_DEBUG("HIT: %d, %d", fposition.x, fposition.y);
-				}
-			else
-				{
-				LOG_DEBUG("MISS");
-				}
-			}
+		/*****************************************************************************/
+		/**** Obrót kamery ***********************************************************/
+		/*****************************************************************************/
 		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_WHEEL)
 			{
 			camTargetAngle+=e.data.mouse.y*2;
@@ -166,11 +175,62 @@ bool TowerDefense::update(float dt)
 				camTargetAngle-=8;
 				}*/
 			}
+		/*****************************************************************************/
+		/**** Obsługa kliknięcia *****************************************************/
+		/*****************************************************************************/
+		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_KEY_DOWN && e.data.mouse.key==1)
+			{
+			// Czy kliknięto w któryś przycisk?
+//			if(ui.click(e.data.mouse.x, e.data.mouse.y))
+//				{
+//				// nanana
+//				}
+//			else
+				{
+				Engine::Math::Vector raypos;
+				Engine::Math::Vector raydir;
+
+				camera.getRay(e.data.mouse.x, e.data.mouse.y, raypos, raydir);
+
+				Engine::Math::VectorI fposition;
+				if(level.getFieldByRay(raypos, raydir, fposition))
+					{
+					LOG_DEBUG("HIT: %d, %d", fposition.x, fposition.y);
+
+					switch(mode)
+						{
+						case Mode::BUILDING:
+							if(level.buildTurret(fposition, modeBuildData.turret))
+								{
+								initModeNone();
+								}
+						break;
+
+						case Mode::SELECTED:
+							initModeSelected(fposition);
+						break;
+
+						default:
+						case Mode::NONE:
+							initModeSelected(fposition);
+						break;
+						}
+					}
+				else
+					{
+					initModeNone();
+					}
+				}
+			}
+		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_KEY_DOWN && e.data.mouse.key==3)
+			{
+			initModeNone();
+			}
 		}
 
-	//
-	// Obracanie kamery
-	//
+	/*****************************************************************************/
+	/**** Faktyczny obrót kamery *************************************************/
+	/*****************************************************************************/
 	if(camTargetAngle!=camCurrentAngle)
 		{
 		const float MOD=((camTargetAngle>camCurrentAngle)?1.0f:-1.0f) *
@@ -196,9 +256,11 @@ bool TowerDefense::update(float dt)
 		camera.lookAt(HIT, camCurrentAngle*CAMERA_ANGLE, CAMERA_ELEVATION, CAMERA_DISTANCE);
 		}
 
-	//
-	// Sterowanie
-	//
+	/*****************************************************************************/
+	/**** Sterowanie *************************************************************/
+	/*****************************************************************************/
+	level.update(dt);
+
 	switch(mode)
 		{
 		case Mode::BUILDING:
@@ -215,10 +277,9 @@ bool TowerDefense::update(float dt)
 		break;
 		}
 
-	level.update(dt);
-
 	return false;
 	}
+
 
 void TowerDefense::updateModeBuilding(float dt)
 	{
@@ -236,7 +297,35 @@ void TowerDefense::print(float tinterp)
 	Engine::Render::getInstance().setCamera(camera);
 
 	level.print(tinterp);
+
+	switch(mode)
+		{
+		case Mode::BUILDING:
+			printModeBuilding(tinterp);
+		break;
+
+		case Mode::SELECTED:
+			printModeSelected(tinterp);
+		break;
+
+		default:
+		case Mode::NONE:
+			//
+		break;
+		}
 	}
+
+
+void TowerDefense::printModeBuilding(float tinterp)
+	{
+	//
+	}
+
+void TowerDefense::printModeSelected(float tinterp)
+	{
+	//
+	}
+
 
 void TowerDefense::clear()
 	{
@@ -253,3 +342,31 @@ void TowerDefense::resume()
 	//
 	}
 
+
+void TowerDefense::initModeNone()
+	{
+	LOG_DEBUG("Mode: NONE");
+
+	mode=Mode::NONE;
+	}
+
+void TowerDefense::initModeBuilding(TurretType turret)
+	{
+	LOG_DEBUG("Mode: BUILDING; Turret: %d", turret);
+
+	mode=Mode::BUILDING;
+	modeBuildData.turret=turret;
+	}
+
+void TowerDefense::initModeSelected(const Engine::Math::VectorI fposition)
+	{
+	LOG_DEBUG("Mode: SELECTED; Field: %d,%d", fposition.x, fposition.y);
+
+	mode=Mode::SELECTED;
+	modeSelectedData.field=((const Level*)&level)->getField(fposition);
+
+	if(!modeSelectedData.field || !modeSelectedData.field->turret)
+		{
+		return initModeNone();
+		}
+	}

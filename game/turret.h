@@ -67,8 +67,8 @@ namespace Game
 			const Engine::Graphics::SpritePtr& getSprite() const {return sprite;}
 
 			void setHP(float s) {hp=s;}
-			void setUpgrade(int s) {if(s<0 || s>MAX_UPGRADE) return; else upgrade=s;}
-			void incUpgrade() {if(upgrade>MAX_UPGRADE) return; else upgrade+=1;}
+			void setUpgrade(int s) {if(s<0 || s>MAX_UPGRADE) return; else upgrade=s; updateFieldOwners();}
+			void incUpgrade() {if(upgrade>MAX_UPGRADE) return; else upgrade+=1; updateFieldOwners();}
 		};
 
 	} /* namespace Game */

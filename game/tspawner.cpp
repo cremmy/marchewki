@@ -31,7 +31,12 @@ bool TSpawner::updateFieldOwners() const
 	{
 	using namespace Engine::Math;
 
-	level->setFieldOwner(fposition                , Level::Field::Owner::ENEMY);
+	if(!level->setFieldOwner(fposition, Level::Field::Owner::ENEMY))
+		{
+		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
+		return false;
+		}
+
 	level->setFieldOwner(fposition+VectorI(-1,  0), Level::Field::Owner::ENEMY);
 	level->setFieldOwner(fposition+VectorI( 1,  0), Level::Field::Owner::ENEMY);
 	level->setFieldOwner(fposition+VectorI( 0, -1), Level::Field::Owner::ENEMY);

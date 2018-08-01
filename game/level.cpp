@@ -12,7 +12,9 @@
 
 #include "turret.h"
 #include "tplayerbase.h"
+#include "tsingletarget.h"
 #include "tspawner.h"
+
 #include "unit.h"
 #include "uenemyinfantry.h"
 
@@ -100,7 +102,7 @@ void Level::print(float tinterp)
 
 			Engine::Render::getInstance().draw(Orientation::FLAT_XY+position, fieldSprite);
 
-			const GraphNode& node=nodes[y][x];
+			/*const GraphNode& node=nodes[y][x];
 			if(node.prev)
 				{
 				const Vector center=getFieldPosition({x, y});
@@ -112,7 +114,7 @@ void Level::print(float tinterp)
 				Engine::Render::getInstance().drawLine(center+Vector(0, 0, 8), head+Vector(0, 0, 8), Vector(1.0f, 1.0f, 1.0f, 0.75f));
 				Engine::Render::getInstance().drawLine(head+Vector(0, 0, 8), head+headL+Vector(0, 0, 8), Vector(1.0f, 1.0f, 1.0f, 0.75f));
 				Engine::Render::getInstance().drawLine(head+Vector(0, 0, 8), head+headR+Vector(0, 0, 8), Vector(1.0f, 1.0f, 1.0f, 0.75f));
-				}
+				}*/
 			}
 		}
 	glEnable(GL_DEPTH_TEST);
@@ -237,16 +239,40 @@ bool Level::resizeIncreaseYByOne()
 	}
 
 
+bool Level::isUnitOnField(const Engine::Math::VectorI& fposition)
+	{
+	using namespace Engine::Math;
+
+	const Vector fRealPosition=getFieldPosition(fposition);
+	const float MAX_DISTANCE=sqrt(getFieldWidth()*getFieldWidth() + getFieldHeight()*getFieldHeight());
+
+	for(auto unit: units)
+		{
+		if(VectorLength(unit->getPosition()-fRealPosition)>MAX_DISTANCE)
+			continue;
+
+		const VectorI fPositionUnit=getPositionOnField(unit->getPosition());
+
+		if(fPositionUnit.x!=fposition.x || fPositionUnit.y!=fposition.y)
+			continue;
+
+		return true;
+		}
+
+	return false;
+	}
+
+
 Level::Field* Level::getField(const Engine::Math::VectorI& fposition)
 	{
-	if(fposition.x>=getWidth() || fposition.y>=getHeight())
+	if(fposition.x<0 || fposition.y<0 || fposition.x>=getWidth() || fposition.y>=getHeight())
 		return nullptr;
 	return field[fposition.y][fposition.x];
 	}
 
 const Level::Field* Level::getField(const Engine::Math::VectorI& fposition) const
 	{
-	if(fposition.x>=getWidth() || fposition.y>=getHeight())
+	if(fposition.x<0 || fposition.y<0 || fposition.x>=getWidth() || fposition.y>=getHeight())
 		return nullptr;
 	return field[fposition.y][fposition.x];
 	}
@@ -391,6 +417,41 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 		return false;
 		}
 
+	if(isUnitOnField(fposition))
+		{
+		{
+		LOG_WARNING("Jednostki stoja na polu %d,%d", fposition.x, fposition.y);
+		return false;
+		}
+		}
+
+	switch(type)
+		{
+		case TurretType::PLAYER_BASE:
+		case TurretType::PLAYER_CARROT_FIELD:
+		case TurretType::PLAYER_UNIT_SINGLE_TARGET:
+		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT:
+		case TurretType::PLAYER_UNIT_MINE:
+			if(field->owner==Field::Owner::ENEMY)
+				{
+				LOG_WARNING("Nie mozna zbudowac wiezy gracza na polu przeciwnika");
+				return false;
+				}
+		break;
+
+		case TurretType::ENEMY_SPAWNER:
+			if(field->owner==Field::Owner::PLAYER)
+				{
+				LOG_WARNING("Nie mozna zbudowac wiezy przeciwnika na polu gracza");
+				return false;
+				}
+		break;
+
+		default:
+			//
+		break;
+		}
+
 	// TODO Sprawdzić czy na polu nie ma jednostek
 
 	Turret* turret=nullptr;
@@ -408,7 +469,7 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 		break;
 
 		case TurretType::PLAYER_UNIT_SINGLE_TARGET:
-			//turret=new TPlayerBase();
+			turret=new TSingleTarget();
 			++turretsPlayer;
 		break;
 

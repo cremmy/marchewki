@@ -1,11 +1,11 @@
 /*
- * tplayerbase.cpp
+ * tsingletarget.cpp
  *
- *  Created on: 25 lip 2018
+ *  Created on: 1 sie 2018
  *      Author: crm
  */
 
-#include "tplayerbase.h"
+#include "tsingletarget.h"
 
 #include "../engine/debug/log.h"
 #include "../engine/render/render.h"
@@ -14,9 +14,9 @@
 
 using namespace Game;
 
-bool TPlayerBase::init()
+bool TSingleTarget::init()
 	{
-	if(!(sprite=Engine::Graphics::SpritePtr("sprite/base.xml")))
+	if(!(sprite=Engine::Graphics::SpritePtr("sprite/turret_single.xml")))
 		{
 		LOG_ERROR("Nie udalo sie wczytac sprite");
 		return false;
@@ -25,18 +25,38 @@ bool TPlayerBase::init()
 	return true;
 	}
 
-bool TPlayerBase::updateFieldOwners() const
+bool TSingleTarget::updateFieldOwners() const
 	{
+	using namespace Engine::Math;
+
 	if(!level->setFieldOwner(fposition, Level::Field::Owner::PLAYER))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
 		}
 
+	auto taxiDistance=[](const VectorI& a, const VectorI& b)->int
+		{
+		return std::abs(a.x-b.x)+std::abs(a.y-b.y);
+		};
+
+	for(int y=-upgrade-1; y<=upgrade+1; ++y)
+		{
+		for(int x=-upgrade-1; x<=upgrade+1; ++x)
+			{
+			if(taxiDistance(fposition, fposition+VectorI(x, y))>upgrade+1)
+				{
+				continue;
+				}
+
+			level->setFieldOwner(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			}
+		}
+
 	return true;
 	}
 
-bool TPlayerBase::attachToLevel(Level* level, const Engine::Math::VectorI& fposition)
+bool TSingleTarget::attachToLevel(Level* level, const Engine::Math::VectorI& fposition)
 	{
 	if(!Turret::init(level, fposition))
 		{
@@ -54,53 +74,18 @@ bool TPlayerBase::attachToLevel(Level* level, const Engine::Math::VectorI& fposi
 	return true;
 	}
 
-bool TPlayerBase::removeFromLevel()
+bool TSingleTarget::removeFromLevel()
 	{
 	return true;
 	}
 
 
-void TPlayerBase::update(float dt)
+void TSingleTarget::update(float dt)
 	{
-	const unsigned FIELDS_ALL=level->getWidth()*level->getHeight();
-	const unsigned FIELDS_PLAYER=level->getPlayerFieldCount();
-	const float PERCENT=(float)FIELDS_PLAYER/FIELDS_ALL;
-
-	sprite.update(dt);
-
-	if(PERCENT<0.10f)
-		{
-		if(upgrade!=0)
-			setUpgrade(0);
-		}
-	else if(PERCENT<0.25f)
-		{
-		if(upgrade!=1)
-			setUpgrade(1);
-		}
-	else if(PERCENT<0.50f)
-		{
-		if(upgrade!=2)
-			setUpgrade(2);
-		}
-	else if(PERCENT<0.75f)
-		{
-		if(upgrade!=3)
-			setUpgrade(3);
-		}
-	else if(PERCENT<0.90f)
-		{
-		if(upgrade!=4)
-			setUpgrade(4);
-		}
-	else
-		{
-		if(upgrade!=5)
-			setUpgrade(5);
-		}
+	// noop
 	}
 
-void TPlayerBase::print(float tinterp)
+void TSingleTarget::print(float tinterp)
 	{
 	using namespace Engine::Math;
 	using namespace Engine::Render;
