@@ -39,5 +39,7 @@ namespace Game
 			virtual float getConstructionCost() const override {return 5.0f;}
 			virtual float getUpgradeCost() const override {return 25.0f;}
 			virtual float getRemovalCost() const override {return -2.5f;}
+			virtual float getRange() const;
+			virtual float getCooldown() const;
 		};
 	} /* namespace Game */

@@ -98,6 +98,8 @@ namespace Game
 			void findPath(std::list<Engine::Math::VectorI>& path, const Engine::Math::Vector& from);
 
 			bool isUnitOnField(const Engine::Math::VectorI& fposition);
+			Unit* findUnitInRange(const Engine::Math::Vector& position, float range, bool (*compare)(Unit*, Unit*));
+			bool findAllUnitsInRange(const Engine::Math::Vector& position, float range, std::vector<Unit*>& matches);
 
 			const Field* getField(const Engine::Math::VectorI& fposition) const;
 			Field::Owner getFieldOwner(const Engine::Math::VectorI& fposition) const;

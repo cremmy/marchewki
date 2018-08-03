@@ -11,6 +11,7 @@
 #include "../engine/render/render.h"
 
 #include "level.h"
+#include "unit.h"
 
 using namespace Game;
 
@@ -82,7 +83,32 @@ bool TSingleTarget::removeFromLevel()
 
 void TSingleTarget::update(float dt)
 	{
-	// noop
+	using namespace Engine::Math;
+
+	const Vector position=level->getFieldPosition(fposition);
+
+
+	cooldown-=dt;
+
+	if(target && (!target->isAlive() || VectorLength(target->getPosition()-position)>getRange()))
+		{
+		setTarget(nullptr);
+		}
+
+	if(cooldown<=0.0f)
+		{
+		if(!target)
+			{
+			setTarget(level->findUnitInRange(position, getRange(), [](Unit* a, Unit* b)->bool {return a->getHP()<b->getHP();}));
+			}
+
+		if(target)
+			{
+			target->damage(DamageType::SINGLE_TARGET, 1.0f);
+			}
+
+		cooldown+=1.5f;
+		}
 	}
 
 void TSingleTarget::print(float tinterp)
@@ -95,4 +121,29 @@ void TSingleTarget::print(float tinterp)
 	const Vector pos=level->getFieldPosition(fposition);
 
 	Render::getInstance().draw(cam.getBillboard(pos), sprite);
+	}
+
+
+float TSingleTarget::getRange() const
+	{
+	const float FIELD_DIAGONAL=sqrt(level->getFieldWidth()*level->getFieldWidth() + level->getFieldHeight()*level->getFieldHeight());
+
+	switch(upgrade)
+		{
+		case 3:  return FIELD_DIAGONAL*2.0f;
+		case 2:  return FIELD_DIAGONAL*1.75f;
+		case 1:  return FIELD_DIAGONAL*1.5f;
+		default: return FIELD_DIAGONAL*1.0f;
+		}
+	}
+
+float TSingleTarget::getCooldown() const
+	{
+	switch(upgrade)
+		{
+		case 3:  return 1.0f;
+		case 2:  return 1.125f;
+		case 1:  return 1.25f;
+		default: return 1.5f;
+		}
 	}

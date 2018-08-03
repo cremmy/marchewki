@@ -41,6 +41,11 @@ void UEnemyInfantry::update(float dt)
 
 	sprite.update(dt);
 
+	if(!isAlive())
+		{
+		return;
+		}
+
 	//if(curField->turret->getType()==TurretType::PLAYER_BASE)
 	if(fieldXY.x==0 && fieldXY.y==0)
 		{

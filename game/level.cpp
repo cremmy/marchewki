@@ -55,7 +55,7 @@ void Level::update(float dt)
 		{
 		Unit* unit=*it;
 
-		if(!unit->isAlive())
+		if(!unit->isAlive() && !unit->isLocked())
 			{
 			units.erase(it--);
 			delete unit;
@@ -164,6 +164,12 @@ void Level::clear()
 		}
 	nodes.clear();
 
+	for(auto& unit: units)
+		{
+		delete unit;
+		}
+	units.clear();
+
 	fieldSprite=nullptr;
 	}
 
@@ -260,6 +266,69 @@ bool Level::isUnitOnField(const Engine::Math::VectorI& fposition)
 		}
 
 	return false;
+	}
+
+Unit* Level::findUnitInRange(const Engine::Math::Vector& position, float range, bool (*compare)(Unit*, Unit*))
+	{
+	using namespace Engine::Math;
+
+	if(units.empty())
+		{
+		return nullptr;
+		}
+
+	Unit* found=nullptr;
+
+	for(auto unit: units)
+		{
+		if(!unit->isAlive())
+			{
+			continue;
+			}
+
+		if(VectorLength(unit->getPosition()-position)>range)
+			{
+			continue;
+			}
+
+		if(found && !compare(unit, found))
+			{
+			continue;
+			}
+
+		found=unit;
+		}
+
+	return found;
+	}
+
+bool Level::findAllUnitsInRange(const Engine::Math::Vector& position, float range, std::vector<Unit*>& matches)
+	{
+	using namespace Engine::Math;
+
+	matches.clear();
+
+	if(units.empty())
+		{
+		return false;
+		}
+
+	for(auto unit: units)
+		{
+		if(!unit->isAlive())
+			{
+			continue;
+			}
+
+		if(VectorLength(unit->getPosition()-position)>range)
+			{
+			continue;
+			}
+
+		matches.push_back(unit);
+		}
+
+	return !matches.empty();
 	}
 
 

@@ -30,8 +30,10 @@ namespace Game
 
 			Engine::Graphics::SpritePtr sprite;
 
+			int locks;
+
 		public:
-			Unit(): level(nullptr), position(), hp(1.0f), speed(1.0f)
+			Unit(): level(nullptr), position(), hp(1.0f), speed(1.0f), locks(0)
 				{
 				//
 				}
@@ -49,12 +51,16 @@ namespace Game
 
 			virtual UnitType getType() const=0;
 			bool isAlive() const {return hp>0.0f;}
+			bool isLocked() const {return locks>0;}
 			Engine::Math::Vector getPosition() const {return position;}
 			float getHP() const {return hp;}
 			float getSpeed() const {return speed;}
 
 			void setHP(float s) {hp=s;}
 			void setSpeed(float s) {speed=s;}
+
+			void lock() {++locks;}
+			void unlock() {--locks;}
 		};
 
 	} /* namespace Game */

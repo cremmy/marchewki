@@ -14,6 +14,7 @@
 namespace Game
 	{
 	class Level;
+	class Unit;
 
 	class Turret
 		{
@@ -34,8 +35,10 @@ namespace Game
 
 			Engine::Graphics::SpritePtr sprite;
 
+			Unit* target;
+
 		public:
-			Turret(int maxUpgrade=0): level(nullptr), fposition(-1, -1), hp(1.0f), upgrade(0), MAX_UPGRADE(maxUpgrade), cooldown(0.0f)
+			Turret(int maxUpgrade=0): level(nullptr), fposition(-1, -1), hp(1.0f), upgrade(0), MAX_UPGRADE(maxUpgrade), cooldown(0.0f), target(nullptr)
 				{
 				//
 				}
@@ -58,6 +61,8 @@ namespace Game
 			virtual float getConstructionCost() const {return 0.0f;}
 			virtual float getUpgradeCost() const {return 0.0f;}
 			virtual float getRemovalCost() const {return 0.0f;}
+			virtual float getRange() const {return 0.0f;}
+			virtual float getCooldown() const {return 0.0f;}
 			bool isReady() const {return cooldown<=0.0f;}
 			bool isAlive() const {return hp>0.0f;}
 			int getPositionX() const {return fposition.x;}
@@ -69,6 +74,7 @@ namespace Game
 			void setHP(float s) {hp=s;}
 			void setUpgrade(int s) {if(s<0 || s>MAX_UPGRADE) return; else upgrade=s; updateFieldOwners();}
 			void incUpgrade() {if(upgrade>MAX_UPGRADE) return; else upgrade+=1; updateFieldOwners();}
+			void setTarget(Unit* target);
 		};
 
 	} /* namespace Game */

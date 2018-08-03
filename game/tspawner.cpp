@@ -70,7 +70,7 @@ void TSpawner::update(float dt)
 
 	if(cooldown<=0.0f)
 		{
-		cooldown=2.0f;
+		cooldown=0.25f;
 
 		level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 1.0f, 32.0f);
 		}
