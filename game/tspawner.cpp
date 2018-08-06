@@ -8,7 +8,6 @@
 #include "tspawner.h"
 
 #include "../engine/debug/log.h"
-#include "../engine/render/render.h"
 
 #include "level.h"
 
@@ -70,21 +69,19 @@ void TSpawner::update(float dt)
 
 	if(cooldown<=0.0f)
 		{
-		cooldown=0.25f;
+		if(wave>0)
+			{
+			--wave;
+			cooldown=1.0f;
 
-		level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 1.0f, 32.0f);
+			level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 1.0f, 32.0f);
+			}
+		else
+			{
+			cooldown=5.0f;
+
+			wave=10;
+			}
 		}
-	}
-
-void TSpawner::print(float tinterp)
-	{
-	using namespace Engine::Math;
-	using namespace Engine::Render;
-
-	const Camera& cam=*Render::getInstance().getCurrentCamera();
-
-	const Vector pos=level->getFieldPosition(fposition);
-
-	Render::getInstance().draw(cam.getBillboard(pos), sprite);
 	}
 

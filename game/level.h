@@ -18,6 +18,7 @@
 
 namespace Game
 	{
+	class Projectile;
 	class Turret;
 	class Unit;
 
@@ -63,6 +64,7 @@ namespace Game
 			std::vector<std::vector<Field*>> field;
 			std::vector<std::vector<GraphNode>> nodes;
 			std::list<Unit*> units;
+			std::list<Projectile*> projectiles;
 
 			Engine::Graphics::ImagePtr fieldSprite;
 
@@ -123,6 +125,8 @@ namespace Game
 			bool destroyTurret(const Engine::Math::VectorI& fposition);
 
 			bool spawnUnit(UnitType type, const Engine::Math::VectorI& position, const Engine::Math::VectorI& target, float hp, float speed);
+
+			bool addProjectile(Projectile* projectile);
 		};
 
 	} /* namespace Game */

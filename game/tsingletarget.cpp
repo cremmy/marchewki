@@ -8,9 +8,9 @@
 #include "tsingletarget.h"
 
 #include "../engine/debug/log.h"
-#include "../engine/render/render.h"
 
 #include "level.h"
+#include "plinear.h"
 #include "unit.h"
 
 using namespace Game;
@@ -20,6 +20,12 @@ bool TSingleTarget::init()
 	if(!(sprite=Engine::Graphics::SpritePtr("sprite/turret_single.xml")))
 		{
 		LOG_ERROR("Nie udalo sie wczytac sprite");
+		return false;
+		}
+
+	if(!(spriteProjectile=Engine::Graphics::SpritePtr("sprite/projectile.xml")))
+		{
+		LOG_ERROR("Nie udalo sie wczytac sprite pocisku");
 		return false;
 		}
 
@@ -104,23 +110,26 @@ void TSingleTarget::update(float dt)
 
 		if(target)
 			{
-			target->damage(DamageType::SINGLE_TARGET, 1.0f);
+			//target->damage(DamageType::SINGLE_TARGET, 1.0f);
+			Projectile* projectile=new PLinear(target, DamageType::SINGLE_TARGET, 1.0f, getRange());
+			if(!projectile->init())
+				{
+				cooldown+=10.0f;
+
+				delete projectile;
+				LOG_ERROR("Nie udalo sie zainicjowac pocisku");
+				return;
+				}
+
+			const Vector offset=sprite.getCurrentFrame().getPoint("from");
+
+			projectile->setPosition(position+Vector(0.0f, 0.0f, offset.y));
+
+			level->addProjectile(projectile);
 			}
 
 		cooldown+=1.5f;
 		}
-	}
-
-void TSingleTarget::print(float tinterp)
-	{
-	using namespace Engine::Math;
-	using namespace Engine::Render;
-
-	const Camera& cam=*Render::getInstance().getCurrentCamera();
-
-	const Vector pos=level->getFieldPosition(fposition);
-
-	Render::getInstance().draw(cam.getBillboard(pos), sprite);
 	}
 
 

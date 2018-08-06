@@ -16,8 +16,10 @@ namespace Game
 		protected:
 			virtual bool updateFieldOwners() const override;
 
+			int wave;
+
 		public:
-			TSpawner()
+			TSpawner(): Turret(), wave(0)
 				{
 				//
 				}
@@ -30,7 +32,7 @@ namespace Game
 			virtual bool attachToLevel(Level* level, const Engine::Math::VectorI& fposition) override;
 			virtual bool removeFromLevel() override;
 			virtual void update(float dt) override;
-			virtual void print(float tinterp) override;
+			//virtual void print(float tinterp) override;
 
 			virtual TurretType getType() const override {return TurretType::ENEMY_SPAWNER;}
 			virtual bool isWalkable() const override {return true;}

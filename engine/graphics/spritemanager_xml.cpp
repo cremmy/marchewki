@@ -257,6 +257,8 @@ bool SpriteManager::getFromXML(Sprite& spr, const std::string& path)
 		if(dn==Sprite::DirectionName::NONE)
 			{
 			LOG_ERROR("SpriteManager.getFromXML.parseDirection: Nieprawidlowa nazwa kierunku: \"%s\"", name.c_str());
+			/*for(unsigned i=0u; i<name.length()+1; ++i)
+				LOG_ERROR("[%4d][chr %3d '%c']", i, name[i], name[i]);*/
 			LOG_ERROR("SpriteManager.getFromXML.parseDirection: Poprawne nazwy kierunkow:");
 
 			for(unsigned i=0u; i<(unsigned)Sprite::DirectionName::COUNT; ++i)

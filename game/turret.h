@@ -52,7 +52,7 @@ namespace Game
 			virtual bool updateFieldOwners() const=0;
 			virtual bool removeFromLevel()=0;
 			virtual void update(float dt)=0;
-			virtual void print(float tinterp)=0;
+			virtual void print(float tinterp);
 
 			virtual TurretType getType() const=0;
 			virtual bool isWalkable() const {return false;}

@@ -8,7 +8,6 @@
 #include "uenemyinfantry.h"
 
 #include "../engine/debug/log.h"
-#include "../engine/render/render.h"
 
 #include "level.h"
 #include "turret.h"
@@ -78,16 +77,6 @@ void UEnemyInfantry::update(float dt)
 
 		position=position + VectorNormalize(target-position)*DISTANCE;
 		}
-	}
-
-void UEnemyInfantry::print(float tinterp)
-	{
-	using namespace Engine::Math;
-	using namespace Engine::Render;
-
-	const Camera& cam=*Render::getInstance().getCurrentCamera();
-
-	Render::getInstance().draw(cam.getBillboard(position), sprite);
 	}
 
 void UEnemyInfantry::clear()

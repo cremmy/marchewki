@@ -10,6 +10,8 @@
 #include "../engine/debug/log.h"
 #include "../engine/render/render.h"
 
+#include "projectile.h"
+
 #include "turret.h"
 #include "tplayerbase.h"
 #include "tsingletarget.h"
@@ -63,6 +65,20 @@ void Level::update(float dt)
 			}
 
 		unit->update(dt);
+		}
+
+	for(auto it=projectiles.begin(); it!=projectiles.end(); ++it)
+		{
+		Projectile* projectile=*it;
+
+		if(!projectile->isAlive())
+			{
+			projectiles.erase(it--);
+			delete projectile;
+			continue;
+			}
+
+		projectile->update(dt);
 		}
 	}
 
@@ -137,6 +153,11 @@ void Level::print(float tinterp)
 		{
 		unit->print(tinterp);
 		}
+
+	for(auto projectile: projectiles)
+		{
+		projectile->print(tinterp);
+		}
 	}
 
 void Level::clear()
@@ -169,6 +190,12 @@ void Level::clear()
 		delete unit;
 		}
 	units.clear();
+
+	for(auto& projectile: projectiles)
+		{
+		delete projectile;
+		}
+	projectiles.clear();
 
 	fieldSprite=nullptr;
 	}
@@ -723,5 +750,11 @@ bool Level::spawnUnit(UnitType type, const Engine::Math::VectorI& fposition, con
 
 	units.push_back(unit);
 
+	return true;
+	}
+
+bool Level::addProjectile(Projectile* projectile)
+	{
+	projectiles.push_back(projectile);
 	return true;
 	}

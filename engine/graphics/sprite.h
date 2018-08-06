@@ -41,9 +41,9 @@ namespace Engine
 					RIGHT_DOWN=7,
 
 					COUNT=8,
+					NONE,
 
 					DEFAULT=DOWN,
-					NONE,
 					};
 
 				static std::string getDirectionName(DirectionName dir);
@@ -81,7 +81,7 @@ namespace Engine
 							}
 						inline Engine::Math::Vector getOffset() const {return Engine::Math::Vector(ox, oy);}
 
-						void addPoint(const std::string& name, const Engine::Math::Vector& pos) {miscPoints[name]=pos;}
+						void addPoint(const std::string& name, const Engine::Math::Vector& pos) {miscPoints[name]=getOffset()-pos;}
 
 						inline void setImage(const ImagePtr& s) {if(s) image=s;}
 						inline void setOffset(int sx, int sy) {ox=-sx; oy=sy;}

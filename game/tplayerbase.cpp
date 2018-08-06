@@ -8,7 +8,6 @@
 #include "tplayerbase.h"
 
 #include "../engine/debug/log.h"
-#include "../engine/render/render.h"
 
 #include "level.h"
 
@@ -27,10 +26,22 @@ bool TPlayerBase::init()
 
 bool TPlayerBase::updateFieldOwners() const
 	{
+	using namespace Engine::Math;
+
 	if(!level->setFieldOwner(fposition, Level::Field::Owner::PLAYER))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
+		}
+
+	const int FIELD_RANGE=(upgrade>=3)?2:1;
+
+	for(int y=-FIELD_RANGE; y<=FIELD_RANGE; ++y)
+		{
+		for(int x=-FIELD_RANGE; x<=FIELD_RANGE; ++x)
+			{
+			level->setFieldOwner(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			}
 		}
 
 	return true;
@@ -68,7 +79,7 @@ void TPlayerBase::update(float dt)
 
 	sprite.update(dt);
 
-	if(PERCENT<0.10f)
+	if(PERCENT<0.15f)
 		{
 		if(upgrade!=0)
 			setUpgrade(0);
@@ -100,14 +111,3 @@ void TPlayerBase::update(float dt)
 		}
 	}
 
-void TPlayerBase::print(float tinterp)
-	{
-	using namespace Engine::Math;
-	using namespace Engine::Render;
-
-	const Camera& cam=*Render::getInstance().getCurrentCamera();
-
-	const Vector pos=level->getFieldPosition(fposition);
-
-	Render::getInstance().draw(cam.getBillboard(pos), sprite);
-	}

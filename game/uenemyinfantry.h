@@ -25,7 +25,7 @@ namespace Game
 
 			virtual bool init(Level* level, const Engine::Math::VectorI& position, const Engine::Math::VectorI& target);
 			virtual void update(float dt);
-			virtual void print(float tinterp);
+			//virtual void print(float tinterp);
 			virtual void clear();
 
 			virtual void damage(DamageType dmgType, float dmg);
