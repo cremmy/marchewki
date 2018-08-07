@@ -10,6 +10,8 @@
 #include "../engine/debug/log.h"
 #include "../engine/render/render.h"
 
+#include "collectible.h"
+
 #include "projectile.h"
 
 #include "turret.h"
@@ -19,6 +21,7 @@
 
 #include "unit.h"
 #include "uenemyinfantry.h"
+#include "uplayeracolyte.h"
 
 using namespace Game;
 
@@ -79,6 +82,20 @@ void Level::update(float dt)
 			}
 
 		projectile->update(dt);
+		}
+
+	for(auto it=collectibles.begin(); it!=collectibles.end(); ++it)
+		{
+		Collectible* collectible=*it;
+
+		if(!collectible->isAlive())
+			{
+			collectibles.erase(it--);
+			delete collectible;
+			continue;
+			}
+
+		collectible->update(dt);
 		}
 	}
 
@@ -158,6 +175,11 @@ void Level::print(float tinterp)
 		{
 		projectile->print(tinterp);
 		}
+
+	for(auto collectible: collectibles)
+		{
+		collectible->print(tinterp);
+		}
 	}
 
 void Level::clear()
@@ -196,6 +218,12 @@ void Level::clear()
 		delete projectile;
 		}
 	projectiles.clear();
+
+	for(auto& collectible: collectibles)
+		{
+		delete collectible;
+		}
+	collectibles.clear();
 
 	fieldSprite=nullptr;
 	}
@@ -308,17 +336,10 @@ Unit* Level::findUnitInRange(const Engine::Math::Vector& position, float range, 
 
 	for(auto unit: units)
 		{
-		if(!unit->isAlive())
-			{
-			continue;
-			}
-
-		if(VectorLength(unit->getPosition()-position)>range)
-			{
-			continue;
-			}
-
-		if(found && !compare(unit, found))
+		if(!unit->isAlive() ||
+		   unit->getType()==UnitType::PLAYER_ACOLYTE ||
+		   VectorLength(unit->getPosition()-position)>range ||
+		   (found && !compare(unit, found)))
 			{
 			continue;
 			}
@@ -342,12 +363,9 @@ bool Level::findAllUnitsInRange(const Engine::Math::Vector& position, float rang
 
 	for(auto unit: units)
 		{
-		if(!unit->isAlive())
-			{
-			continue;
-			}
-
-		if(VectorLength(unit->getPosition()-position)>range)
+		if(!unit->isAlive() ||
+		   unit->getType()==UnitType::PLAYER_ACOLYTE ||
+		   VectorLength(unit->getPosition()-position)>range)
 			{
 			continue;
 			}
@@ -356,6 +374,26 @@ bool Level::findAllUnitsInRange(const Engine::Math::Vector& position, float rang
 		}
 
 	return !matches.empty();
+	}
+
+Collectible* Level::findUnlockedCollectible()
+	{
+	if(unlockedCollectibles==0u)
+		{
+		return nullptr;
+		}
+
+	for(auto collectible: collectibles)
+		{
+		if(collectible->isLocked())
+			continue;
+
+		--unlockedCollectibles;
+		collectible->lock();
+		return collectible;
+		}
+
+	return nullptr;
 	}
 
 
@@ -562,6 +600,7 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 		case TurretType::PLAYER_CARROT_FIELD:
 			//turret=new TPlayerBase();
 			++turretsPlayer;
+			++farmsPlayer;
 		break;
 
 		case TurretType::PLAYER_UNIT_SINGLE_TARGET:
@@ -637,8 +676,14 @@ bool Level::destroyTurret(const Engine::Math::VectorI& fposition)
 
 	switch(field->turret->getType())
 		{
-		case TurretType::PLAYER_BASE:
 		case TurretType::PLAYER_CARROT_FIELD:
+			if(farmsPlayer>0u)
+				{
+				--farmsPlayer;
+				}
+		// break
+
+		case TurretType::PLAYER_BASE:
 		case TurretType::PLAYER_UNIT_SINGLE_TARGET:
 		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT:
 		case TurretType::PLAYER_UNIT_MINE:
@@ -716,7 +761,7 @@ bool Level::spawnUnit(UnitType type, const Engine::Math::VectorI& fposition, con
 	switch(type)
 		{
 		case UnitType::PLAYER_ACOLYTE:
-			//unit=new UEnemyInfantry();
+			unit=new UPlayerAcolyte();
 		break;
 
 		case UnitType::ENEMY_INFANTRY:
@@ -749,6 +794,31 @@ bool Level::spawnUnit(UnitType type, const Engine::Math::VectorI& fposition, con
 	unit->setSpeed(speed);
 
 	units.push_back(unit);
+
+	return true;
+	}
+
+bool Level::spawnCollectible(const Engine::Math::Vector& position, float value)
+	{
+	using namespace Engine::Math;
+
+	Collectible* collectible=new Collectible();
+
+	if(!collectible)
+		{
+		LOG_ERROR("Nie udalo sie utworzyc zbierajki");
+		return false;
+		}
+
+	if(!collectible->init(position, value))
+		{
+		LOG_WARNING("Nie udalo sie zainicjowac zbierajki");
+		delete collectible;
+		return false;
+		}
+
+	++unlockedCollectibles;
+	collectibles.push_back(collectible);
 
 	return true;
 	}

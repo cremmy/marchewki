@@ -21,8 +21,9 @@
  */
 /* TODO:
  *  - Paski zdrowia pod osłabionymi jednostkami wroga
- *  - Pociski wylatujące z wież?
+ *  ~ Pociski wylatujące z wież?
  *  - Wieże:
+ *    ~ Pojedyncza
  *    - Obszarowa
  *    - Mina
  *    - Marchewkowe pole

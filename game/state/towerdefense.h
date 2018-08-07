@@ -16,6 +16,8 @@
 
 namespace Game
 	{
+	class TPlayerBase;
+
 	namespace State
 		{
 		class TowerDefense: public Engine::Base::ApplicationState, public Engine::Core::AppEventListener
@@ -39,6 +41,7 @@ namespace Game
 				void printModeSelected(float tinterp);
 
 				Level level;
+				TPlayerBase* playerBase;
 
 				Engine::Render::Camera camera;
 

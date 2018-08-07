@@ -21,6 +21,12 @@ bool TSpawner::init()
 		return false;
 		}
 
+	/*if(!(spriteEnemy=Engine::Graphics::SpritePtr("sprite/unit_enemy_infantry.xml")))
+		{
+		LOG_ERROR("Nie udalo sie wczytac sprite");
+		return false;
+		}*/
+
 	cooldown=10.0f;
 
 	return true;
@@ -74,7 +80,7 @@ void TSpawner::update(float dt)
 			--wave;
 			cooldown=1.0f;
 
-			level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 1.0f, 32.0f);
+			level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 1.0f, level->getFieldDiagonalSize()*0.5f);
 			}
 		else
 			{

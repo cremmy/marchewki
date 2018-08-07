@@ -18,6 +18,8 @@ namespace Game
 
 			int wave;
 
+			/*Engine::Graphics::SpritePtr spriteEnemy;*/
+
 		public:
 			TSpawner(): Turret(), wave(0)
 				{

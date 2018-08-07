@@ -74,7 +74,7 @@ bool TPlayerBase::removeFromLevel()
 void TPlayerBase::update(float dt)
 	{
 	const unsigned FIELDS_ALL=level->getWidth()*level->getHeight();
-	const unsigned FIELDS_PLAYER=level->getPlayerFieldCount();
+	const unsigned FIELDS_PLAYER=level->getPlayerFieldCount()-level->getPlayerFarmCount();
 	const float PERCENT=(float)FIELDS_PLAYER/FIELDS_ALL;
 
 	sprite.update(dt);
@@ -108,6 +108,21 @@ void TPlayerBase::update(float dt)
 		{
 		if(upgrade!=5)
 			setUpgrade(5);
+		}
+
+	// Zasoby
+	level->addResources(-upgrade*dt);
+
+	// Jednostki
+	if(cooldown>0.0f)
+		{
+		cooldown-=dt;
+		}
+	else if(level->getUnlockedCollectiblesCount()>0u)
+		{
+		cooldown=getCooldown();
+
+		level->spawnUnit(UnitType::PLAYER_ACOLYTE, fposition, {0, 0}, 1.0f, level->getFieldDiagonalSize()*0.6f);
 		}
 	}
 

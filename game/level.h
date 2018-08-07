@@ -18,6 +18,7 @@
 
 namespace Game
 	{
+	class Collectible;
 	class Projectile;
 	class Turret;
 	class Unit;
@@ -65,6 +66,7 @@ namespace Game
 			std::vector<std::vector<GraphNode>> nodes;
 			std::list<Unit*> units;
 			std::list<Projectile*> projectiles;
+			std::list<Collectible*> collectibles;
 
 			Engine::Graphics::ImagePtr fieldSprite;
 
@@ -72,11 +74,15 @@ namespace Game
 			unsigned ownedByEnemy;
 			unsigned turretsPlayer;
 			unsigned turretsEnemy;
+			unsigned farmsPlayer;
+
+			unsigned unlockedCollectibles;
+			float resources;
 
 			unsigned pathVersion; // Zwiększane o 1 za każdym razem gdy ścieżki są przeliczane
 
 		public:
-			Level(): ownedByPlayer(0u), ownedByEnemy(0u), turretsPlayer(0u), turretsEnemy(0u), pathVersion(0u)
+			Level(): ownedByPlayer(0u), ownedByEnemy(0u), turretsPlayer(0u), turretsEnemy(0u), farmsPlayer(0u), resources(0.0f), pathVersion(0u)
 				{
 				//
 				}
@@ -102,29 +108,38 @@ namespace Game
 			bool isUnitOnField(const Engine::Math::VectorI& fposition);
 			Unit* findUnitInRange(const Engine::Math::Vector& position, float range, bool (*compare)(Unit*, Unit*));
 			bool findAllUnitsInRange(const Engine::Math::Vector& position, float range, std::vector<Unit*>& matches);
+			Collectible* findUnlockedCollectible();
 
+			bool isDepleted() const {return resources<=0.0f;}
+			float getResources() const {return resources;}
 			const Field* getField(const Engine::Math::VectorI& fposition) const;
 			Field::Owner getFieldOwner(const Engine::Math::VectorI& fposition) const;
 			unsigned getFieldWidth() const {return fieldSprite->getW();}
 			unsigned getFieldHeight() const {return fieldSprite->getH();}
+			float getFieldDiagonalSize() const {return sqrt(getFieldWidth()*getFieldWidth() + getFieldHeight()*getFieldHeight());}
 			int getWidth() const {return field.empty()?0:field[0u].size();}
 			int getHeight() const {return field.size();}
 			unsigned getPlayerFieldCount() const {return ownedByPlayer;}
 			unsigned getEnemyFieldCount() const {return ownedByEnemy;}
 			unsigned getPlayerTurretCount() const {return turretsPlayer;}
 			unsigned getEnemyTurretCount() const {return turretsEnemy;}
+			unsigned getPlayerFarmCount() const {return farmsPlayer;}
 			unsigned getPathVersion() const {return pathVersion;}
+			unsigned getUnlockedCollectiblesCount() {return unlockedCollectibles;}
 
 			Engine::Math::Vector getFieldPosition(const Engine::Math::VectorI& fposition) const;
 			Engine::Math::VectorI getPositionOnField(const Engine::Math::Vector& position) const;
 			Field* getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction);
 			Field* getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction, Engine::Math::VectorI& fposition);
 
+			void setResources(float s) {resources=s;}
+			void addResources(float s) {resources+=s; if(resources<0.0f) resources=0.0f;}
 			bool setFieldOwner(const Engine::Math::VectorI& fposition, Field::Owner owner);
 			bool buildTurret(const Engine::Math::VectorI& fposition, TurretType type);
 			bool destroyTurret(const Engine::Math::VectorI& fposition);
 
 			bool spawnUnit(UnitType type, const Engine::Math::VectorI& position, const Engine::Math::VectorI& target, float hp, float speed);
+			bool spawnCollectible(const Engine::Math::Vector& position, float value);
 
 			bool addProjectile(Projectile* projectile);
 		};

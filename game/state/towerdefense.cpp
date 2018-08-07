@@ -23,7 +23,7 @@ const float CAMERA_ANGLE=45.0f;
 const float CAMERA_ELEVATION=30.0f;
 const float CAMERA_DISTANCE=1024.0f;
 
-TowerDefense::TowerDefense(): mode(Mode::NONE), level(), camera(), camTargetAngle(1), camCurrentAngle(1)
+TowerDefense::TowerDefense(): mode(Mode::NONE), level(), playerBase(nullptr), camera(), camTargetAngle(1), camCurrentAngle(1)
 	{
 	//
 	}
@@ -67,6 +67,11 @@ bool TowerDefense::init(Engine::Core::Application *application)
 		LOG_ERROR("Nie udalo sie wstawic spawnera");
 		return false;
 		}
+
+	// Moja paranoja nie pozwala mi zaakceptować tego kodu
+	// ...ale moja wiara w 'jakoś to będzie' pozwala mi zostawić modyfikacje na później
+	//                                                                              ...czyli nigdy, o ile będzie działało
+	playerBase=(TPlayerBase*)(((const Level&)level).getField({0, 0})->turret);
 
 	return true;
 	}

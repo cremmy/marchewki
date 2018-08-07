@@ -215,4 +215,10 @@ void Level::findPath(std::list<Engine::Math::VectorI>& path, const Engine::Math:
 
 		node=node->prev;
 		}
+
+	if(path.back().x!=0 || path.back().y!=0)
+		{
+		LOG_WARNING("Nie znaleziono sciezki");
+		//path.clear();
+		}
 	}

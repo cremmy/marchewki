@@ -135,7 +135,7 @@ void TSingleTarget::update(float dt)
 
 float TSingleTarget::getRange() const
 	{
-	const float FIELD_DIAGONAL=sqrt(level->getFieldWidth()*level->getFieldWidth() + level->getFieldHeight()*level->getFieldHeight());
+	const float FIELD_DIAGONAL=level->getFieldDiagonalSize();//sqrt(level->getFieldWidth()*level->getFieldWidth() + level->getFieldHeight()*level->getFieldHeight());
 
 	switch(upgrade)
 		{
