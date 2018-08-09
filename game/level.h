@@ -82,7 +82,7 @@ namespace Game
 			unsigned pathVersion; // Zwiększane o 1 za każdym razem gdy ścieżki są przeliczane
 
 		public:
-			Level(): ownedByPlayer(0u), ownedByEnemy(0u), turretsPlayer(0u), turretsEnemy(0u), farmsPlayer(0u), resources(0.0f), pathVersion(0u)
+			Level(): ownedByPlayer(0u), ownedByEnemy(0u), turretsPlayer(0u), turretsEnemy(0u), farmsPlayer(0u), unlockedCollectibles(0u), resources(0.0f), pathVersion(0u)
 				{
 				//
 				}

@@ -18,16 +18,12 @@ namespace Game
 	class UPlayerAcolyte: public Unit
 		{
 		protected:
-			unsigned pathVersion;
-			std::list<Engine::Math::VectorI> path;
-
 			Collectible* targetCollectible;
 
 			float collectCooldown;
-			float pathSearchCooldown;
 
 		public:
-			UPlayerAcolyte(): pathVersion(0u), targetCollectible(nullptr), collectCooldown(0.0f), pathSearchCooldown(0.0f)
+			UPlayerAcolyte(): targetCollectible(nullptr), collectCooldown(0.0f)
 				{
 				//
 				}

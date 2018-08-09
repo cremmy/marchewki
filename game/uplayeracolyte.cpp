@@ -29,12 +29,6 @@ bool UPlayerAcolyte::init(Level* level, const Engine::Math::VectorI& fposition, 
 		return false;
 		}
 
-	level->findPath(path, targetCollectible->getPosition());
-	if(path.empty())
-		{
-		LOG_WARNING("Nie udalo sie znalezc sciezki do zbierajki");
-		}
-
 	return true;
 	}
 

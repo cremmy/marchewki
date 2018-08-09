@@ -1,23 +1,24 @@
 /*
- * tsingletarget.cpp
+ * tareaofeffect.cpp
  *
- *  Created on: 1 sie 2018
+ *  Created on: 8 sie 2018
  *      Author: crm
  */
 
-#include "tsingletarget.h"
+#include "tareaofeffect.h"
+
 
 #include "../engine/debug/log.h"
 
 #include "level.h"
-#include "psingletarget.h"
+#include "pareaofeffect.h"
 #include "unit.h"
 
 using namespace Game;
 
-bool TSingleTarget::init()
+bool TAreaOfEffect::init()
 	{
-	if(!(sprite=Engine::Graphics::SpritePtr("sprite/turret_single.xml")))
+	if(!(sprite=Engine::Graphics::SpritePtr("sprite/turret_aoe.xml")))
 		{
 		LOG_ERROR("Nie udalo sie wczytac sprite");
 		return false;
@@ -32,7 +33,7 @@ bool TSingleTarget::init()
 	return true;
 	}
 
-bool TSingleTarget::updateFieldOwners() const
+bool TAreaOfEffect::updateFieldOwners() const
 	{
 	using namespace Engine::Math;
 
@@ -63,7 +64,7 @@ bool TSingleTarget::updateFieldOwners() const
 	return true;
 	}
 
-bool TSingleTarget::attachToLevel(Level* level, const Engine::Math::VectorI& fposition)
+bool TAreaOfEffect::attachToLevel(Level* level, const Engine::Math::VectorI& fposition)
 	{
 	if(!Turret::init(level, fposition))
 		{
@@ -71,23 +72,16 @@ bool TSingleTarget::attachToLevel(Level* level, const Engine::Math::VectorI& fpo
 		return false;
 		}
 
-	// Level się tym zajmuje
-	/*if(!updateFieldOwners())
-		{
-		LOG_ERROR("Nie udalo sie ustawic wlascicieli pol");
-		return false;
-		}*/
-
 	return true;
 	}
 
-bool TSingleTarget::removeFromLevel()
+bool TAreaOfEffect::removeFromLevel()
 	{
 	return true;
 	}
 
 
-void TSingleTarget::update(float dt)
+void TAreaOfEffect::update(float dt)
 	{
 	using namespace Engine::Math;
 
@@ -111,7 +105,7 @@ void TSingleTarget::update(float dt)
 		if(target)
 			{
 			//target->damage(DamageType::SINGLE_TARGET, 1.0f);
-			Projectile* projectile=new PSingleTarget(target, 1.0f, getRange());
+			Projectile* projectile=new PAreaOfEffect(target->getPosition(), getRange()*0.5f, 0.75f, getRange());
 			if(!projectile->init())
 				{
 				cooldown+=10.0f;
@@ -123,6 +117,7 @@ void TSingleTarget::update(float dt)
 
 			const Vector offset=sprite.getCurrentFrame().getPoint("from");
 
+			projectile->setLevel(level);
 			projectile->setPosition(position+Vector(0.0f, 0.0f, offset.y));
 
 			level->addProjectile(projectile);
@@ -133,26 +128,26 @@ void TSingleTarget::update(float dt)
 	}
 
 
-float TSingleTarget::getRange() const
+float TAreaOfEffect::getRange() const
 	{
 	const float FIELD_DIAGONAL=level->getFieldDiagonalSize();//sqrt(level->getFieldWidth()*level->getFieldWidth() + level->getFieldHeight()*level->getFieldHeight());
 
 	switch(upgrade)
 		{
-		case 3:  return FIELD_DIAGONAL*2.0f;
-		case 2:  return FIELD_DIAGONAL*1.75f;
-		case 1:  return FIELD_DIAGONAL*1.5f;
-		default: return FIELD_DIAGONAL*1.0f;
+		case 3:  return FIELD_DIAGONAL*3.0f;
+		case 2:  return FIELD_DIAGONAL*2.25f;
+		case 1:  return FIELD_DIAGONAL*1.75f;
+		default: return FIELD_DIAGONAL*1.5f;
 		}
 	}
 
-float TSingleTarget::getCooldown() const
+float TAreaOfEffect::getCooldown() const
 	{
 	switch(upgrade)
 		{
-		case 3:  return 1.0f;
-		case 2:  return 1.125f;
-		case 1:  return 1.25f;
-		default: return 1.5f;
+		case 3:  return 1.6f;
+		case 2:  return 1.75f;
+		case 1:  return 2.0f;
+		default: return 2.5f;
 		}
 	}

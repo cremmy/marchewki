@@ -17,7 +17,6 @@
  */
 /* Pomysły:
  *  - Muzyka z 'pozytywki' - pojedyncze sample odtwarzane według pewnego wzoru, im wyższy poziom bazy tym większa część sampli przełączana jest na przesterowane/fałszywe
- *
  */
 /* TODO:
  *  - Paski zdrowia pod osłabionymi jednostkami wroga
@@ -27,13 +26,13 @@
  *    - Obszarowa
  *    - Mina
  *    - Marchewkowe pole
- * - Zbierajki wypadające z pokonanych wrogów
- * - Jednostka gracza zbierająca zbierajki
- * - Niszczenie wież wroga
+ * + Zbierajki wypadające z pokonanych wrogów
+ * + Jednostka gracza zbierająca zbierajki
+ * - Niszczenie wież wroga/zajmowanie pól wroga
  * - Tworzenie nowych wież wroga
  * - Ograniczenie dostępnego terenu pod budowę wież przez gracza
- * - Interfejs graficzny
  * - Obsługa zasobów
+ * - Interfejs graficzny
  */
 // SDL_main
 #include <SDL2/SDL.h>

@@ -5,19 +5,19 @@
  *      Author: crm
  */
 
-#include "plinear.h"
+#include "psingletarget.h"
 
 #include "unit.h"
 
 using namespace Game;
 
-PLinear::PLinear(Unit* target, DamageType damageType, float damage, float maxSpeed): Projectile(damageType, damage, maxSpeed)
+PSingleTarget::PSingleTarget(Unit* target, float damage, float maxSpeed): Projectile(DamageType::SINGLE_TARGET, damage, maxSpeed)
 	{
 	this->target=target;
 	this->target->lock();
 	}
 
-PLinear::~PLinear()
+PSingleTarget::~PSingleTarget()
 	{
 	if(target)
 		{
@@ -26,7 +26,7 @@ PLinear::~PLinear()
 	}
 
 
-bool PLinear::init()
+bool PSingleTarget::init()
 	{
 	sprite=Engine::Graphics::SpritePtr("sprite/projectile.xml");
 
@@ -38,7 +38,7 @@ bool PLinear::init()
 	return true;
 	}
 
-void PLinear::update(float dt)
+void PSingleTarget::update(float dt)
 	{
 	using namespace Engine::Math;
 

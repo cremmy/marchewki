@@ -15,17 +15,17 @@ namespace Game
 	{
 	class Unit;
 
-	class PLinear: public Projectile
+	class PSingleTarget: public Projectile
 		{
 		protected:
 			Unit* target;
 
 		public:
-			PLinear(Unit* target, DamageType damageType, float damage, float maxSpeed);
-			virtual ~PLinear();
+			PSingleTarget(Unit* target, float damage, float maxSpeed);
+			virtual ~PSingleTarget();
 
-			virtual bool init();
-			virtual void update(float dt);
+			virtual bool init() override;
+			virtual void update(float dt) override;
 		};
 
 	} /* namespace Game */

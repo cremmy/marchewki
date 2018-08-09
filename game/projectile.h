@@ -14,6 +14,7 @@
 
 namespace Game
 	{
+	class Level;
 	class Unit;
 
 	class Projectile
@@ -30,8 +31,10 @@ namespace Game
 
 			Engine::Graphics::SpritePtr sprite;
 
+			Level* level;
+
 		public:
-			Projectile(DamageType damageType, float damage, float maxSpeed): alive(true), maxSpeed(maxSpeed), damageType(damageType), damage(damage)
+			Projectile(DamageType damageType, float damage, float maxSpeed): alive(true), maxSpeed(maxSpeed), damageType(damageType), damage(damage), level(nullptr)
 				{
 				//
 				}
@@ -47,6 +50,7 @@ namespace Game
 			bool isAlive() const {return alive;}
 
 			void setPosition(const Engine::Math::Vector& position) {this->position=position;}
+			void setLevel(Level* s) {level=s;}
 		};
 
 	} /* namespace Game */

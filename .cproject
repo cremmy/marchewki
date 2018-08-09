@@ -29,6 +29,7 @@
 									<listOptionValue builtIn="false" value="BUILD_DEBUG"/>
 									<listOptionValue builtIn="false" value="GLEW_STATIC"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.debugging.gprof.2135676078" superClass="gnu.cpp.compiler.option.debugging.gprof" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.147124259" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.debug.542688218" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.debug">
