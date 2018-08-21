@@ -16,6 +16,7 @@
 
 #include "turret.h"
 #include "tareaofeffect.h"
+#include "tmine.h"
 #include "tplayerbase.h"
 #include "tsingletarget.h"
 #include "tspawner.h"
@@ -632,7 +633,7 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 		break;
 
 		case TurretType::PLAYER_UNIT_MINE:
-			//turret=new TPlayerBase();
+			turret=new TMine();
 			++turretsPlayer;
 		break;
 

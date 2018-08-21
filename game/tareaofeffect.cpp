@@ -124,7 +124,7 @@ void TAreaOfEffect::update(float dt)
 			level->addProjectile(projectile);
 			}
 
-		cooldown+=1.5f;
+		cooldown+=getCooldown();
 		}
 	}
 

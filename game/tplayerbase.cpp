@@ -120,7 +120,7 @@ void TPlayerBase::update(float dt)
 		}
 	else if(level->getUnlockedCollectiblesCount()>0u)
 		{
-		cooldown=getCooldown();
+		cooldown+=getCooldown();
 
 		level->spawnUnit(UnitType::PLAYER_ACOLYTE, fposition, {0, 0}, 1.0f, level->getFieldDiagonalSize()*0.6f);
 		}

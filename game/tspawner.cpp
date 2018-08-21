@@ -73,20 +73,22 @@ void TSpawner::update(float dt)
 
 	cooldown-=dt;
 
+	// TODO Skalowanie cooldownu
+
 	if(cooldown<=0.0f)
 		{
 		if(wave>0)
 			{
 			--wave;
-			cooldown=1.0f;
+			cooldown=0.5f;
 
 			level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 1.0f, level->getFieldDiagonalSize()*0.5f);
 			}
 		else
 			{
-			cooldown=5.0f;
+			cooldown=1.0f;
 
-			wave=10;
+			wave=50;
 			}
 		}
 	}
