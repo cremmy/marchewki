@@ -12,8 +12,6 @@
 #include "level.h"
 #include "unit.h"
 
-#include <sdl2/SDL.h>
-
 using namespace Game;
 
 PAreaOfEffect::PAreaOfEffect(const Engine::Math::Vector& target, float damageRange, float damage, float maxSpeed):
@@ -30,7 +28,6 @@ PAreaOfEffect::~PAreaOfEffect()
 
 bool PAreaOfEffect::init()
 	{
-	auto t0=SDL_GetTicks();
 	sprite=Engine::Graphics::SpritePtr("sprite/projectile.xml");
 
 	if(!sprite)
@@ -40,8 +37,6 @@ bool PAreaOfEffect::init()
 
 	direction=Engine::Math::Vector(0, 0, 1);
 
-	LOG_DEBUG("Init: %d", SDL_GetTicks()-t0);
-
 	return true;
 	}
 
@@ -49,7 +44,6 @@ void PAreaOfEffect::update(float dt)
 	{
 	using namespace Engine::Math;
 
-	auto t0=SDL_GetTicks();
 	sprite.update(dt);
 
 	auto hermite=[](float t, const Vector& p0, const Vector& m0, const Vector& p1, const Vector& m1)->Vector
@@ -84,7 +78,7 @@ void PAreaOfEffect::update(float dt)
 			p0=p1;
 			}
 
-		const float PATH_TIME=1.0f;//pathLen/maxSpeed;
+		const float PATH_TIME=pathLen/maxSpeed;
 		pathStep=1.0f/PATH_TIME;
 
 		LOG_DEBUG("Path: %f, time: %f", pathLen, PATH_TIME);

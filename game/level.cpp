@@ -151,8 +151,8 @@ void Level::print(float tinterp)
 				}*/
 			}
 		}
-	glEnable(GL_DEPTH_TEST);
 
+	// Płaskie działka
 	Engine::Render::getInstance().setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
 	for(int y=0; y<H; ++y)
 		{
@@ -160,7 +160,24 @@ void Level::print(float tinterp)
 			{
 			Field* field=getField({x, y});
 
-			if(field->turret)
+			if(field->turret && field->turret->isFlat())
+				{
+				field->turret->print(tinterp);
+				}
+			}
+		}
+
+	glEnable(GL_DEPTH_TEST);
+
+	// Wypukłe działka
+	//Engine::Render::getInstance().setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
+	for(int y=0; y<H; ++y)
+		{
+		for(int x=0; x<W; ++x)
+			{
+			Field* field=getField({x, y});
+
+			if(field->turret && !field->turret->isFlat())
 				{
 				field->turret->print(tinterp);
 				}

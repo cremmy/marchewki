@@ -56,6 +56,7 @@ namespace Game
 
 			virtual TurretType getType() const=0;
 			virtual bool isWalkable() const {return false;}
+			virtual bool isFlat() const {return false;}
 			virtual bool isUpgradable() const {return false;}
 			virtual bool isRemovable() const {return false;}
 			virtual float getConstructionCost() const {return 0.0f;}

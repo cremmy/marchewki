@@ -34,6 +34,7 @@ namespace Game
 
 			virtual TurretType getType() const override {return TurretType::PLAYER_BASE;}
 			virtual bool isWalkable() const override {return true;}
+//			virtual bool isFlat() const {return false;}
 //			virtual bool isUpgradable() const override {return false;}
 //			virtual bool isRemovable() const override {return false;}
 //			virtual float getConstructionCost() const override {return 0.0f;}

@@ -282,7 +282,7 @@ Sprite::Direction& Sprite::Animation::getDirection(DirectionName dir)
 
 const Sprite::Direction& Sprite::Animation::getDirection(DirectionName dir) const
 	{
-	while((int)dir<0)
+	if((int)dir<0)
 		{
 		(int&)dir+=(int)DirectionName::COUNT;
 		}

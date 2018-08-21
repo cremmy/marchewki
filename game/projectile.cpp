@@ -25,4 +25,5 @@ void Projectile::print(float tinterp)
 	sprite.setDirection(Engine::Graphics::Sprite::DirectionName::UP+angle);
 
 	Render::getInstance().draw(cam.getBillboard(position), sprite);
+
 	}

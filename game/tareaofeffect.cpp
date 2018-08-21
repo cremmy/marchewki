@@ -34,18 +34,6 @@ bool TAreaOfEffect::init()
 	return true;
 	}
 
-void TAreaOfEffect::print(float tinterp)
-	{
-	using namespace Engine::Math;
-	using namespace Engine::Render;
-
-	//const Camera& cam=*Render::getInstance().getCurrentCamera();
-
-	const Vector pos=level->getFieldPosition(fposition);
-
-	Render::getInstance().draw(Orientation::FLAT_XY+pos, sprite);
-	}
-
 bool TAreaOfEffect::updateFieldOwners() const
 	{
 	using namespace Engine::Math;
