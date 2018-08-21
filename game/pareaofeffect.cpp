@@ -7,13 +7,17 @@
 
 #include "pareaofeffect.h"
 
+#include "../engine/debug/log.h"
+
 #include "level.h"
 #include "unit.h"
+
+#include <sdl2/SDL.h>
 
 using namespace Game;
 
 PAreaOfEffect::PAreaOfEffect(const Engine::Math::Vector& target, float damageRange, float damage, float maxSpeed):
-	Projectile(DamageType::AOE, damage, maxSpeed), target(target), damageRange(damageRange)
+	Projectile(DamageType::AOE, damage, maxSpeed), target(target), damageRange(damageRange), pathCur(0.0f), pathStep(0.0f), startPosition()
 	{
 	//
 	}
@@ -26,12 +30,17 @@ PAreaOfEffect::~PAreaOfEffect()
 
 bool PAreaOfEffect::init()
 	{
+	auto t0=SDL_GetTicks();
 	sprite=Engine::Graphics::SpritePtr("sprite/projectile.xml");
 
 	if(!sprite)
 		{
 		return false;
 		}
+
+	direction=Engine::Math::Vector(0, 0, 1);
+
+	LOG_DEBUG("Init: %d", SDL_GetTicks()-t0);
 
 	return true;
 	}
@@ -40,13 +49,53 @@ void PAreaOfEffect::update(float dt)
 	{
 	using namespace Engine::Math;
 
+	auto t0=SDL_GetTicks();
 	sprite.update(dt);
 
-	const Vector path=target-position;
-	const float pathLength=VectorLength(path);
-	direction=path/pathLength;
+	auto hermite=[](float t, const Vector& p0, const Vector& m0, const Vector& p1, const Vector& m1)->Vector
+		{
+		const float T1=t;
+		const float T2=t*t;
+		const float T3=t*t*t;
 
-	if(pathLength<maxSpeed*dt)
+		return (   2.0f*T3 - 3.0f*T2 + 1.0f    )*p0 +
+		       (        T3 - 2.0f*T2 +       T1)*m0 +
+			   ( - 2.0f*T3 + 3.0f*T2           )*p1 +
+			   (        T3 -      T2           )*m1;
+		};
+
+	if(pathStep==0.0f)
+		{
+		/* Przelicz długość krzywej i ustal krok */
+		LOG_DEBUG("Calculating projectile path");
+		startPosition=position;
+		// targetPositin=target;
+		// startTangent=Vector(0, 0, 1);
+		// targetTangent=Vector(0, 0, 1);
+
+		float pathLen=0.0f;
+
+		Vector p0=startPosition;
+
+		for(float t=0.0f; t<1.0f; t+=0.05f) // Dokładność całkowania
+			{
+			Vector p1=hermite(t, startPosition, Vector(0, 0, maxSpeed), target, Vector(0, 0, 1));
+			pathLen+=VectorLength(p1-p0);
+			p0=p1;
+			}
+
+		const float PATH_TIME=1.0f;//pathLen/maxSpeed;
+		pathStep=1.0f/PATH_TIME;
+
+		LOG_DEBUG("Path: %f, time: %f", pathLen, PATH_TIME);
+		}
+
+	const Vector newPosition=hermite(pathCur, startPosition, Vector(0, 0, maxSpeed), target, Vector(0, 0, 1));
+	direction=VectorNormalize(newPosition-position);
+	position=newPosition;
+	pathCur+=dt*pathStep;
+
+	if(pathCur>=1.0f)
 		{
 		std::vector<Unit*> units;
 
@@ -62,6 +111,4 @@ void PAreaOfEffect::update(float dt)
 		alive=false;
 		return;
 		}
-
-	position=position+direction*maxSpeed*dt;
 	}

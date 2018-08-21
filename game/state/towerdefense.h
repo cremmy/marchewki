@@ -57,6 +57,8 @@ namespace Game
 					const Level::Field* field;
 					} modeSelectedData;
 
+				std::list<Engine::Graphics::SpritePtr> spriteCache;
+
 			public:
 				TowerDefense();
 				virtual ~TowerDefense();

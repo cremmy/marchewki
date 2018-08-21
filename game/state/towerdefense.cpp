@@ -73,6 +73,12 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	//                                                                              ...czyli nigdy, o ile będzie działało
 	playerBase=(TPlayerBase*)(((const Level&)level).getField({0, 0})->turret);
 
+	// Preload spritów
+	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/collectible.xml"));
+	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/projectile.xml"));
+	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/unit_enemy_infantry.xml"));
+	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/unit_player_acolyte.xml"));
+
 	return true;
 	}
 

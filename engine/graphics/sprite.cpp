@@ -49,9 +49,9 @@ Sprite::DirectionName Sprite::getDirectionRotated(Sprite::DirectionName base, fl
 	int dbase=(int)base;
 	dbase=dbase+((angle-22.5f)/90.0f+0.5f)*2.0f;
 
-	while(dbase>=(int)DirectionName::COUNT)
+	if(dbase>=(int)DirectionName::COUNT)
 		dbase-=(int)DirectionName::COUNT;
-	while(dbase<0)
+	if(dbase<0)
 		dbase+=(int)DirectionName::COUNT;
 
 	return (DirectionName)dbase;

@@ -32,7 +32,7 @@ namespace Game
 			virtual bool attachToLevel(Level* level, const Engine::Math::VectorI& fposition) override;
 			virtual bool removeFromLevel() override;
 			virtual void update(float dt) override;
-			//virtual void print(float tinterp) override;
+			virtual void print(float tinterp) override;
 
 			virtual TurretType getType() const override {return TurretType::PLAYER_UNIT_AREA_OF_EFFECT;}
 			virtual bool isWalkable() const override {return false;}

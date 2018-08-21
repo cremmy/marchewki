@@ -16,14 +16,13 @@ namespace Game
 	class PAreaOfEffect: public Projectile
 		{
 		protected:
-			enum
-				{
-				STATE_GOING_UP,
-				STATE_FALLING,
-				};
-
 			Engine::Math::Vector target;
 			float damageRange;
+
+			// Hermite Curve
+			float pathCur;
+			float pathStep;
+			Engine::Math::Vector startPosition;
 
 		public:
 			PAreaOfEffect(const Engine::Math::Vector& target, float damageRange, float damage, float maxSpeed);
