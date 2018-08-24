@@ -139,6 +139,9 @@ bool Render::init(int w, int h, const std::string& title, const std::string& ico
 	SDL_GetWindowDisplayMode(window, &dm);
 	LOG_INFO("Render.init: Okno: %dx%dpx@%dHz", dm.w, dm.h, dm.refresh_rate);
 
+	w=dm.w;
+	h=dm.h;
+
 	if(!iconpath.empty())
 		{
 		icon=Graphics::BitmapPtr(iconpath);
@@ -613,7 +616,7 @@ bool Render::toggleFullscreen()
 		}
 	else if(windowmode==FullScreenMode::WINDOWED)
 		{
-		return setFullscreen(FullScreenMode::FULLSCREEN);
+		return setFullscreen(FullScreenMode::WINDOWED_FULLSCREEN);
 		}
 	else //if(windowmode==FullScreenMode::WINDOWED_FULLSCREEN)
 		{

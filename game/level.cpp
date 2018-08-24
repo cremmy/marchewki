@@ -31,7 +31,15 @@ bool Level::init(unsigned w, unsigned h)
 	{
 	clear();
 
-	if(!(fieldSprite=Engine::Graphics::ImagePtr("image/tile.png")))
+	if(!(spriteFieldNeutral=Engine::Graphics::ImagePtr("image/tile_neutral.png")))
+		{
+		return false;
+		}
+	if(!(spriteFieldPlayer=Engine::Graphics::ImagePtr("image/tile_player_turret.png")))
+		{
+		return false;
+		}
+	if(!(spriteFieldEnemy=Engine::Graphics::ImagePtr("image/tile_enemy.png")))
 		{
 		return false;
 		}
@@ -116,10 +124,10 @@ void Level::print(float tinterp)
 			Field* field=getField({x, y});
 
 			const Vector position=Engine::Math::Vector(
-					(x  )*fieldSprite->getW(),
-					(y+1)*fieldSprite->getH());
+					(x  )*getFieldWidth(),
+					(y+1)*getFieldHeight());
 
-			switch(field->owner)
+			/*switch(field->owner)
 				{
 				case Field::Owner::PLAYER:
 					Engine::Render::getInstance().setColor(Vector(0.7f, 1.0f, 0.7f, 1.0f));
@@ -133,9 +141,14 @@ void Level::print(float tinterp)
 				case Field::Owner::NONE:
 					Engine::Render::getInstance().setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
 				break;
-				}
+				}*/
 
-			Engine::Render::getInstance().draw(Orientation::FLAT_XY+position, fieldSprite);
+			if(field->owner==Field::Owner::ENEMY)
+				Engine::Render::getInstance().draw(Orientation::FLAT_XY+position, spriteFieldEnemy);
+			else if(field->owner==Field::Owner::PLAYER && !(field->turret && field->turret->getType()==TurretType::PLAYER_CARROT_FIELD))
+				Engine::Render::getInstance().draw(Orientation::FLAT_XY+position, spriteFieldPlayer);
+			else
+				Engine::Render::getInstance().draw(Orientation::FLAT_XY+position, spriteFieldNeutral);
 
 			/*const GraphNode& node=nodes[y][x];
 			if(node.prev)
@@ -244,7 +257,9 @@ void Level::clear()
 		}
 	collectibles.clear();
 
-	fieldSprite=nullptr;
+	spriteFieldNeutral=nullptr;
+	spriteFieldPlayer=nullptr;
+	spriteFieldEnemy=nullptr;
 	}
 
 
@@ -443,8 +458,8 @@ Level::Field::Owner Level::getFieldOwner(const Engine::Math::VectorI& fposition)
 Engine::Math::Vector Level::getFieldPosition(const Engine::Math::VectorI& fposition) const
 	{
 	return Engine::Math::Vector(
-		fposition.x*fieldSprite->getW()+fieldSprite->getW()*0.5,
-		fposition.y*fieldSprite->getH()+fieldSprite->getH()*0.5);
+		fposition.x*getFieldWidth()+getFieldWidth()*0.5,
+		fposition.y*getFieldHeight()+getFieldHeight()*0.5);
 	}
 
 Engine::Math::VectorI Level::getPositionOnField(const Engine::Math::Vector& position) const
@@ -454,8 +469,8 @@ Engine::Math::VectorI Level::getPositionOnField(const Engine::Math::Vector& posi
 	// Proponowane rozwiązanie: Cóż.
 
 	return Engine::Math::VectorI(
-		floor(position.x/fieldSprite->getW()),
-		floor(position.y/fieldSprite->getH()));
+		floor(position.x/getFieldWidth()),
+		floor(position.y/getFieldHeight()));
 	}
 
 Level::Field* Level::getFieldByRay(const Engine::Math::Vector& position, const Engine::Math::Vector& direction)
@@ -480,8 +495,8 @@ Level::Field* Level::getFieldByRay(const Engine::Math::Vector& position, const E
 		return nullptr;
 		}
 
-	const int HIT_X=HIT.x/fieldSprite->getW();
-	const int HIT_Y=HIT.y/fieldSprite->getH();
+	const int HIT_X=HIT.x/getFieldWidth();
+	const int HIT_Y=HIT.y/getFieldHeight();
 
 	//LOG_DEBUG("Dist: %f; Hit: %f, %f, %f; %d %d", Z_DISTANCE, HIT.x, HIT.y, HIT.z, HIT_X, HIT_Y);
 

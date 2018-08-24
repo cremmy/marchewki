@@ -69,13 +69,23 @@ void TMine::update(float dt)
 
 	const Vector position=level->getFieldPosition(fposition);
 
+	sprite.update(dt);
+
 	// Odlicz do 0 i czekaj na określoną liczbę ofiar w zasięgu
 	if(cooldown>0.0f)
 		{
 		cooldown-=dt;
+
+		if(sprite.isAnimationFinished() && !ready)
+			{
+			sprite.setAnimation("cooldown");
+			}
 		}
 	else
 		{
+		ready=true;
+		sprite.setAnimation(0u);
+
 		// Boom
 		std::vector<Unit*> units;
 
@@ -87,12 +97,15 @@ void TMine::update(float dt)
 				}
 			else
 				{
+				ready=false;
 				for(auto unit: units)
 					{
 					unit->damage(DamageType::AOE, 2.0f-1.5f*upgrade/MAX_UPGRADE);
 					}
 
 				cooldown+=getCooldown();
+
+				sprite.setAnimation("shooting");
 				}
 			}
 		}

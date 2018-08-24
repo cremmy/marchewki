@@ -17,8 +17,10 @@ namespace Game
 		protected:
 			virtual bool updateFieldOwners() const override;
 
+			bool ready;
+
 		public:
-			TMine(): Turret(4)
+			TMine(): Turret(4), ready(true)
 				{
 				//
 				}

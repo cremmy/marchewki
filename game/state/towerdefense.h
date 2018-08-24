@@ -29,6 +29,13 @@ namespace Game
 					BUILDING,
 					SELECTED,
 					} mode;
+				enum class Zoom
+					{
+					ZOOM_25,
+					ZOOM_50,
+					ZOOM_100,
+					ZOOM_200,
+					};
 
 				void initModeNone();
 				void initModeBuilding(TurretType turret);
@@ -47,6 +54,9 @@ namespace Game
 
 				int camTargetAngle;
 				float camCurrentAngle;
+				Zoom camTargetZoomName;
+				float camTargetZoom;
+				float camCurrentZoom;
 
 				struct
 					{

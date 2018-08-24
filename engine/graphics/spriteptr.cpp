@@ -12,22 +12,22 @@
 
 using namespace Engine::Graphics;
 
-SpritePtr::SpritePtr(): shader(), sprite(nullptr), animation(nullptr), direction(nullptr), frame(nullptr), iddirection(Sprite::DirectionName::DEFAULT), fps(0.0), timer(0.0f)
+SpritePtr::SpritePtr(): shader(), sprite(nullptr), animation(nullptr), direction(nullptr), frame(nullptr), iddirection(Sprite::DirectionName::DEFAULT), fps(0.0), timer(0.0f), ended(false)
 	{
 	//
 	}
 
-SpritePtr::SpritePtr(const SpritePtr& sptr): shader(), sprite(nullptr), animation(nullptr), direction(nullptr), frame(nullptr), iddirection(Sprite::DirectionName::DEFAULT), fps(0.0), timer(0.0f)
+SpritePtr::SpritePtr(const SpritePtr& sptr): shader(), sprite(nullptr), animation(nullptr), direction(nullptr), frame(nullptr), iddirection(Sprite::DirectionName::DEFAULT), fps(0.0), timer(0.0f), ended(false)
 	{
 	assign(sptr);
 	}
 
-SpritePtr::SpritePtr(const Sprite* spr): shader(), sprite(nullptr), animation(nullptr), direction(nullptr), frame(nullptr), iddirection(Sprite::DirectionName::DEFAULT), fps(0.0), timer(0.0f)
+SpritePtr::SpritePtr(const Sprite* spr): shader(), sprite(nullptr), animation(nullptr), direction(nullptr), frame(nullptr), iddirection(Sprite::DirectionName::DEFAULT), fps(0.0), timer(0.0f), ended(false)
 	{
 	assign(spr);
 	}
 
-SpritePtr::SpritePtr(const std::string& path): shader(), sprite(nullptr), animation(nullptr), direction(nullptr), frame(nullptr), iddirection(Sprite::DirectionName::DEFAULT), fps(0.0), timer(0.0f)
+SpritePtr::SpritePtr(const std::string& path): shader(), sprite(nullptr), animation(nullptr), direction(nullptr), frame(nullptr), iddirection(Sprite::DirectionName::DEFAULT), fps(0.0), timer(0.0f), ended(false)
 	{
 	assign(SpriteManager::getInstance().get(path));
 	}
@@ -56,7 +56,9 @@ void SpritePtr::assign(const Sprite* nsprite)
 	frame=nullptr;
 	iddirection=Sprite::DirectionName::DEFAULT;
 
+	fps=0.0f;
 	timer=0.0f;
+	ended=false;
 
 	if(sprite)
 		{
@@ -84,6 +86,7 @@ void SpritePtr::update(float dt)
 	if(timer>=ANIM_TIME)
 		{
 		timer=timer-ANIM_TIME+direction->getLoopFrameIndex()/fps;
+		ended=true;
 		}
 
 	frame=&direction->getFrame(getFrameNumber());
@@ -100,7 +103,9 @@ void SpritePtr::setAnimation(const std::string& name)
 	iddirection=animation->getDirectionClosestExisting(iddirection);
 	direction=&animation->getDirection(iddirection);
 	frame=&direction->getFrame(0u);
+	fps=direction->getFramesPerSecond();
 	timer=0.0f;
+	ended=false;
 	}
 
 void SpritePtr::setAnimation(unsigned idx)
@@ -114,7 +119,9 @@ void SpritePtr::setAnimation(unsigned idx)
 	iddirection=animation->getDirectionClosestExisting(iddirection);
 	direction=&animation->getDirection(iddirection);
 	frame=&direction->getFrame(0u);
+	fps=direction->getFramesPerSecond();
 	timer=0.0f;
+	ended=false;
 	}
 
 void SpritePtr::setDirection(Sprite::DirectionName niddirection)
@@ -124,7 +131,9 @@ void SpritePtr::setDirection(Sprite::DirectionName niddirection)
 
 	iddirection=niddirection;
 	direction=&animation->getDirection(niddirection);
+	fps=direction->getFramesPerSecond();
 	timer=0.0f;
+	ended=false;
 	}
 
 void SpritePtr::setFrame(unsigned idx)
@@ -133,5 +142,6 @@ void SpritePtr::setFrame(unsigned idx)
 		idx=direction->getFrameCount()-1u;
 
 	timer=direction->getAnimationTime()*idx/direction->getFrameCount();
+	ended=false;
 	}
 

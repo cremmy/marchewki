@@ -86,9 +86,9 @@ void TSpawner::update(float dt)
 			}
 		else
 			{
-			cooldown=1.0f;
+			cooldown=5.0f;
 
-			wave=50;
+			wave=5;
 			}
 		}
 	}

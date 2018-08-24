@@ -23,7 +23,9 @@ const float CAMERA_ANGLE=45.0f;
 const float CAMERA_ELEVATION=30.0f;
 const float CAMERA_DISTANCE=1024.0f;
 
-TowerDefense::TowerDefense(): mode(Mode::NONE), level(), playerBase(nullptr), camera(), camTargetAngle(1), camCurrentAngle(1)
+TowerDefense::TowerDefense(): mode(Mode::NONE), level(), playerBase(nullptr), camera(),
+	camTargetAngle(1), camCurrentAngle(1),
+	camTargetZoomName(Zoom::ZOOM_100), camTargetZoom(1.0f), camCurrentZoom(1.0f)
 	{
 	//
 	}
@@ -52,7 +54,7 @@ bool TowerDefense::init(Engine::Core::Application *application)
 		return false;
 		}
 
-	camera.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 2000.0f);
+	camera.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 4000.0f);
 	//cam.perspective(Render::getInstance().getWindowWidth(), Render::getInstance().getWindowHeight(), 0.1);
 	//cam.lookAt(Engine::Math::Vector(0, 0, 0), Engine::Math::Vector(0, 0, 500), Engine::Math::Vector(0, 1, 0));
 	camera.lookAt(level.getFieldPosition({0, 0}), CAMERA_ANGLE, CAMERA_ELEVATION, CAMERA_DISTANCE);
@@ -99,7 +101,7 @@ bool TowerDefense::update(float dt)
 				}
 			if(e.data.keyboard.key==SDLK_1)
 				{
-				camera.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 2000.0f);
+				camera.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 4000.0f);
 				}
 			else if(e.data.keyboard.key==SDLK_2)
 				{
@@ -176,15 +178,77 @@ bool TowerDefense::update(float dt)
 		/*****************************************************************************/
 		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_WHEEL)
 			{
-			camTargetAngle+=e.data.mouse.y*2;
-			/*if(camTargetAngle<0)
+			if(SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL))
 				{
-				camTargetAngle+=8;
+				// Zoom
+				if(std::abs(camTargetZoom-camCurrentZoom)>0.1f)
+					{
+					// NoOp
+					}
+				else if(e.data.mouse.y<0.0f)
+					{
+					switch(camTargetZoomName)
+						{
+						case Zoom::ZOOM_25:
+							// NoOp
+						break;
+
+						case Zoom::ZOOM_50:
+							camTargetZoomName=Zoom::ZOOM_25;
+							camTargetZoom=0.25f;
+						break;
+
+						case Zoom::ZOOM_100:
+							camTargetZoomName=Zoom::ZOOM_50;
+							camTargetZoom=0.5f;
+						break;
+
+						case Zoom::ZOOM_200:
+							camTargetZoomName=Zoom::ZOOM_100;
+							camTargetZoom=1.0f;
+						break;
+
+						default:
+							camTargetZoomName=Zoom::ZOOM_100;
+							camTargetZoom=1.0f;
+						break;
+						}
+					}
+				else
+					{
+					switch(camTargetZoomName)
+						{
+						case Zoom::ZOOM_25:
+							camTargetZoomName=Zoom::ZOOM_50;
+							camTargetZoom=0.5f;
+						break;
+
+						case Zoom::ZOOM_50:
+							camTargetZoomName=Zoom::ZOOM_100;
+							camTargetZoom=1.0f;
+						break;
+
+						case Zoom::ZOOM_100:
+							camTargetZoomName=Zoom::ZOOM_200;
+							camTargetZoom=2.0f;
+						break;
+
+						case Zoom::ZOOM_200:
+							// NoOp
+						break;
+
+						default:
+							camTargetZoomName=Zoom::ZOOM_100;
+							camTargetZoom=1.0f;
+						break;
+						}
+					}
 				}
-			else if(camTargetAngle>=8)
+			else
 				{
-				camTargetAngle-=8;
-				}*/
+				// Obrót
+				camTargetAngle+=e.data.mouse.y*2;
+				}
 			}
 		/*****************************************************************************/
 		/**** Obsługa kliknięcia *****************************************************/
@@ -265,6 +329,29 @@ bool TowerDefense::update(float dt)
 		const Vector HIT=MathUtils::getPositionAtZ0ByRay(camera.getPosition(), camera.getForward());
 
 		camera.lookAt(HIT, camCurrentAngle*CAMERA_ANGLE, CAMERA_ELEVATION, CAMERA_DISTANCE);
+		}
+
+	/*****************************************************************************/
+	/**** Faktyczne skalowanie kamery ********************************************/
+	/*****************************************************************************/
+	if(camTargetZoom!=camCurrentZoom)
+		{
+		const float MOD=((camTargetZoom>camCurrentZoom)?1.0f:-1.0f) *
+			(1.0f*dt +
+			(8.0f*dt*(std::abs(camTargetZoom-camCurrentZoom))));
+
+		if(std::abs(camTargetZoom-camCurrentZoom)>MOD)
+			{
+			camCurrentZoom+=MOD;
+			}
+		else
+			{
+			camCurrentZoom=camTargetZoom;
+			}
+
+		camera.setScale(camCurrentZoom);
+
+		LOG_DEBUG("[%f:%f][mod %f]", camCurrentZoom, camTargetZoom, MOD);
 		}
 
 	/*****************************************************************************/

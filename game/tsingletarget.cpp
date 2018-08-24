@@ -93,12 +93,18 @@ void TSingleTarget::update(float dt)
 
 	const Vector position=level->getFieldPosition(fposition);
 
+	sprite.update(dt);
 
 	cooldown-=dt;
 
 	if(target && (!target->isAlive() || VectorLength(target->getPosition()-position)>getRange()))
 		{
 		setTarget(nullptr);
+		}
+
+	if(sprite.isAnimationFinished())
+		{
+		sprite.setAnimation(0u);
 		}
 
 	if(cooldown<=0.0f)
@@ -126,6 +132,8 @@ void TSingleTarget::update(float dt)
 			projectile->setPosition(position+Vector(0.0f, 0.0f, offset.y));
 
 			level->addProjectile(projectile);
+
+			sprite.setAnimation("shooting");
 			}
 
 		cooldown+=getCooldown();

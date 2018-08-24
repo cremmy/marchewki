@@ -68,7 +68,9 @@ namespace Game
 			std::list<Projectile*> projectiles;
 			std::list<Collectible*> collectibles;
 
-			Engine::Graphics::ImagePtr fieldSprite;
+			Engine::Graphics::ImagePtr spriteFieldNeutral;
+			Engine::Graphics::ImagePtr spriteFieldPlayer;
+			Engine::Graphics::ImagePtr spriteFieldEnemy;
 
 			unsigned ownedByPlayer;
 			unsigned ownedByEnemy;
@@ -114,8 +116,8 @@ namespace Game
 			float getResources() const {return resources;}
 			const Field* getField(const Engine::Math::VectorI& fposition) const;
 			Field::Owner getFieldOwner(const Engine::Math::VectorI& fposition) const;
-			unsigned getFieldWidth() const {return fieldSprite->getW();}
-			unsigned getFieldHeight() const {return fieldSprite->getH();}
+			unsigned getFieldWidth() const {return spriteFieldNeutral->getW();}
+			unsigned getFieldHeight() const {return spriteFieldNeutral->getH();}
 			float getFieldDiagonalSize() const {return sqrt(getFieldWidth()*getFieldWidth() + getFieldHeight()*getFieldHeight());}
 			int getWidth() const {return field.empty()?0:field[0u].size();}
 			int getHeight() const {return field.size();}

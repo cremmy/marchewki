@@ -152,9 +152,9 @@ void Camera::updateViewMatrix() const
 	else
 		{
 		this->view=Matrix(
-				orientation.getRight(),
-				orientation.getUp(),
-				-orientation.getForward(),
+				orientation.getRight()*scale,
+				orientation.getUp()*scale,
+				-orientation.getForward()*scale,
 				Vector(0, 0, 0, 1))*
 			Matrix(
 				Vector(1, 0, 0, -orientation.getPosition().x),
@@ -239,7 +239,7 @@ void Camera::getRay(int mx, int my, Engine::Math::Vector& raypos, Engine::Math::
 		x=fw*x;
 		y=fh*y;
 
-		raypos=getPosition() + getForward()*cutnear + getRight()*x + getUp()*y;
+		raypos=getPosition() + getForward()*cutnear + getRight()*x/scale + getUp()*y/scale;
 		raydir=VectorNormalize(raypos-getPosition());
 		}
 	else
@@ -247,7 +247,7 @@ void Camera::getRay(int mx, int my, Engine::Math::Vector& raypos, Engine::Math::
 		x=( mx/(float)width-0.5f)*width;
 		y=(-my/(float)height+0.5f)*height;
 
-		raypos=getPosition() - getForward()*cutnear + getRight()*x + getUp()*y;
+		raypos=getPosition() - getForward()*cutnear + getRight()*x/scale + getUp()*y/scale;
 		raydir=getForward();
 		}
 	}

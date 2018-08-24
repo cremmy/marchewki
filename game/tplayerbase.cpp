@@ -79,35 +79,53 @@ void TPlayerBase::update(float dt)
 
 	sprite.update(dt);
 
-	if(PERCENT<0.15f)
+	if(PERCENT<0.30f)
 		{
 		if(upgrade!=0)
+			{
 			setUpgrade(0);
+			sprite.setAnimation("0");
+			}
 		}
-	else if(PERCENT<0.25f)
+	else if(PERCENT<0.55f)
 		{
 		if(upgrade!=1)
+			{
 			setUpgrade(1);
-		}
-	else if(PERCENT<0.50f)
-		{
-		if(upgrade!=2)
-			setUpgrade(2);
+			sprite.setAnimation("1");
+			}
 		}
 	else if(PERCENT<0.75f)
 		{
-		if(upgrade!=3)
-			setUpgrade(3);
+		if(upgrade!=2)
+			{
+			setUpgrade(2);
+			sprite.setAnimation("2");
+			}
 		}
 	else if(PERCENT<0.90f)
 		{
+		if(upgrade!=3)
+			{
+			setUpgrade(3);
+			sprite.setAnimation("3");
+			}
+		}
+	else if(PERCENT<0.95f)
+		{
 		if(upgrade!=4)
+			{
 			setUpgrade(4);
+			sprite.setAnimation("4");
+			}
 		}
 	else
 		{
 		if(upgrade!=5)
+			{
 			setUpgrade(5);
+			sprite.setAnimation("5");
+			}
 		}
 
 	// Zasoby

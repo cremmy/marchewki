@@ -32,6 +32,7 @@ namespace Engine
 
 				float fps;
 				float timer;
+				bool ended;
 
 			public:
 				SpritePtr();
@@ -81,6 +82,7 @@ namespace Engine
 				Sprite::DirectionName getDirection() const {return iddirection;}
 				unsigned getFrameNumber() const {return timer*fps;}
 				const Sprite::Frame& getCurrentFrame() const {return *frame;}
+				bool isAnimationFinished() const {return ended;}
 			};
 
 		} /* namespace Graphics */

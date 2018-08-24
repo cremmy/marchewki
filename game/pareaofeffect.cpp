@@ -61,7 +61,6 @@ void PAreaOfEffect::update(float dt)
 	if(pathStep==0.0f)
 		{
 		/* Przelicz długość krzywej i ustal krok */
-		LOG_DEBUG("Calculating projectile path");
 		startPosition=position;
 		// targetPositin=target;
 		// startTangent=Vector(0, 0, 1);
@@ -73,18 +72,16 @@ void PAreaOfEffect::update(float dt)
 
 		for(float t=0.0f; t<1.0f; t+=0.05f) // Dokładność całkowania
 			{
-			Vector p1=hermite(t, startPosition, Vector(0, 0, maxSpeed), target, Vector(0, 0, 1));
+			Vector p1=hermite(t, startPosition, Vector(0, 0, maxSpeed*4.0f), target, Vector(0, 0, 1));
 			pathLen+=VectorLength(p1-p0);
 			p0=p1;
 			}
 
 		const float PATH_TIME=pathLen/maxSpeed;
 		pathStep=1.0f/PATH_TIME;
-
-		LOG_DEBUG("Path: %f, time: %f", pathLen, PATH_TIME);
 		}
 
-	const Vector newPosition=hermite(pathCur, startPosition, Vector(0, 0, maxSpeed), target, Vector(0, 0, 1));
+	const Vector newPosition=hermite(pathCur, startPosition, Vector(0, 0, maxSpeed*4.0f), target, Vector(0, 0, 1));
 	direction=VectorNormalize(newPosition-position);
 	position=newPosition;
 	pathCur+=dt*pathStep;

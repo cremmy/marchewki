@@ -70,7 +70,7 @@ namespace Engine
 				Math::Vector getPointOnScreen(const Math::Vector& pos) const;
 				void getRay(int mx, int my, Math::Vector& raypos, Math::Vector& raydir) const;
 
-				void setScale(float s) {scale=s; updateProjectionMatrix();}
+				void setScale(float s) {scale=s; needupdate=true;}
 				void setFOV(float s) {fov=s; updateProjectionMatrix();}
 
 				void setPosition(const Math::Vector& pos) {orientation.setPosition(pos); needupdate=true;}
