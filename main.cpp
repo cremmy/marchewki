@@ -17,14 +17,16 @@
  */
 /* Pomysły:
  *  - Muzyka z 'pozytywki' - pojedyncze sample odtwarzane według pewnego wzoru, im wyższy poziom bazy tym większa część sampli przełączana jest na przesterowane/fałszywe
+ *  - Jeśli wieża obok jednostki wroga jest polem marchewkowym, to idź do niej. Po wejściu na to pole, HP gracza spada o 1.
  */
 /* TODO:
  *  - Paski zdrowia pod osłabionymi jednostkami wroga
- *  ~ Pociski wylatujące z wież?
+ *  - Świeczki informujące o poziomie wieży
+ *  + Pociski wylatujące z wież?
  *  - Wieże:
- *    ~ Pojedyncza
- *    - Obszarowa
- *    - Mina
+ *    + Pojedyncza
+ *    + Obszarowa
+ *    + Mina
  *    - Marchewkowe pole
  * + Zbierajki wypadające z pokonanych wrogów
  * + Jednostka gracza zbierająca zbierajki
@@ -32,6 +34,7 @@
  * - Tworzenie nowych wież wroga
  * - Ograniczenie dostępnego terenu pod budowę wież przez gracza
  * - Obsługa zasobów
+ * - Obsługa HP gracza (utrata zasobów po wejściu wroga do bazy?)
  * - Interfejs graficzny
  */
 // SDL_main
