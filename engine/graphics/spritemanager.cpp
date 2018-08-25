@@ -167,7 +167,7 @@ void SpriteManager::free(const Sprite* spr, bool erase)
 			if(it->second!=spr)
 				continue;
 
-			LOG_DEBUG("SpriteManager.free: Kasowanie nazwanego rysunku \"%s\"", it->first.c_str());
+			LOG_DEBUG("SpriteManager.free: Kasowanie nazwanego sprite \"%s\"", it->first.c_str());
 
 			named.erase(it);
 

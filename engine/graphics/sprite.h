@@ -81,7 +81,7 @@ namespace Engine
 							}
 						inline Engine::Math::Vector getOffset() const {return Engine::Math::Vector(ox, oy);}
 
-						void addPoint(const std::string& name, const Engine::Math::Vector& pos) {miscPoints[name]=getOffset()-pos;}
+						void addPoint(const std::string& name, const Engine::Math::Vector& pos) {miscPoints[name]=Engine::Math::Vector(-ox, oy)-pos;} // OX jest odwracane przy ustawianiu
 
 						inline void setImage(const ImagePtr& s) {if(s) image=s;}
 						inline void setOffset(int sx, int sy) {ox=-sx; oy=sy;}

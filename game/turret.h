@@ -64,6 +64,7 @@ namespace Game
 			virtual float getRemovalCost() const {return 0.0f;}
 			virtual float getRange() const {return 0.0f;}
 			virtual float getCooldown() const {return 0.0f;}
+			// TODO virtual float getResourceDrain() const {return 0.0f;};
 			bool isReady() const {return cooldown<=0.0f;}
 			bool isAlive() const {return hp>0.0f;}
 			int getPositionX() const {return fposition.x;}

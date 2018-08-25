@@ -16,6 +16,7 @@
 
 #include "turret.h"
 #include "tareaofeffect.h"
+#include "tcarrotfield.h"
 #include "tmine.h"
 #include "tplayerbase.h"
 #include "tsingletarget.h"
@@ -632,7 +633,7 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 		break;
 
 		case TurretType::PLAYER_CARROT_FIELD:
-			//turret=new TPlayerBase();
+			turret=new TCarrotField();
 			++turretsPlayer;
 			++farmsPlayer;
 		break;
@@ -715,7 +716,8 @@ bool Level::destroyTurret(const Engine::Math::VectorI& fposition)
 				{
 				--farmsPlayer;
 				}
-		// break
+				/* no break */
+		// break;
 
 		case TurretType::PLAYER_BASE:
 		case TurretType::PLAYER_UNIT_SINGLE_TARGET:

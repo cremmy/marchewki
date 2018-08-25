@@ -73,8 +73,12 @@ void TSpawner::update(float dt)
 
 	cooldown-=dt;
 
-	// TODO Skalowanie cooldownu
+	// TODO Roznoszenie się
+	// Sprawdź czy jest wolne pole
+	// Jeśli tak - odlicz X sekund
+	// Jeśli to pole dalej jest wolne pole - utwórz kolejny spawner
 
+	// TODO Skalowanie cooldownu
 	if(cooldown<=0.0f)
 		{
 		if(wave>0)

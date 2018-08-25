@@ -129,7 +129,7 @@ void TSingleTarget::update(float dt)
 
 			const Vector offset=sprite.getCurrentFrame().getPoint("from");
 
-			projectile->setPosition(position+Vector(0.0f, 0.0f, offset.y));
+			projectile->setPosition(position - Vector(0.0f, 0.0f, offset.y));
 
 			level->addProjectile(projectile);
 

@@ -13,8 +13,11 @@ namespace Game
 	{
 	class UEnemyInfantry: public Unit
 		{
+		protected:
+			float cooldownEating;
+
 		public:
-			UEnemyInfantry(): Unit()
+			UEnemyInfantry(): Unit(), cooldownEating(0.0f)
 				{
 				//
 				}

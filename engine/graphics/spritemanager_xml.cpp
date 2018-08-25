@@ -162,6 +162,8 @@ bool SpriteManager::getFromXML(Sprite& spr, const std::string& path)
 
 		f.addPoint(epoint->Attribute(ATTR_NAME), Math::Vector(x, y));
 
+		LOG_DEBUG("SpriteManager.getFromXML.parsePoint: [%s][ingame %.2f %.2f]", epoint->Attribute(ATTR_NAME), f.getPoint(epoint->Attribute(ATTR_NAME)).x, f.getPoint(epoint->Attribute(ATTR_NAME)).y);
+
 		return true;
 		};
 
