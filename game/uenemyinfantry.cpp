@@ -122,6 +122,7 @@ void UEnemyInfantry::update(float dt)
 		if(isFieldACarrotField(fieldXY))
 			{
 			cooldownEating=0.5f;
+			sprite.setAnimation(0);
 
 			target=level->getFieldPosition(fieldXY) + Vector(OX, OY);
 			}
@@ -138,6 +139,7 @@ void UEnemyInfantry::update(float dt)
 	// Wędrówka...
 	else
 		{
+		sprite.setAnimation(1);
 		const Level::Field* field=((const Level*)level)->getField(level->getPositionOnField(target));
 
 		if(field && field->turret && !field->turret->isWalkable())
@@ -149,6 +151,16 @@ void UEnemyInfantry::update(float dt)
 		position=position + VectorNormalize(target-position)*DISTANCE;
 		}
 	}
+
+/*void UEnemyInfantry::print(float tinterp)
+	{
+	const Vector directionRelative=VectorNormalize(cam.getView()*direction);
+	const float angle=(directionRelative.x>0.0f)?(360.0f-acos(directionRelative.y)*180.0f/M_PI) : (acos(directionRelative.y)*180.0f/M_PI);
+
+	sprite.setDirection(Engine::Graphics::Sprite::DirectionName::UP+angle);
+
+	Unit::print(tinterp);
+	}*/
 
 void UEnemyInfantry::clear()
 	{
