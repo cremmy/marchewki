@@ -358,6 +358,85 @@ bool Level::isUnitOnField(const Engine::Math::VectorI& fposition)
 	return false;
 	}
 
+int Level::getUnitsOnFieldCount(const Engine::Math::VectorI& fposition)
+	{
+	using namespace Engine::Math;
+
+	int ret=0;
+
+	const Vector fRealPosition=getFieldPosition(fposition);
+	const float MAX_DISTANCE=sqrt(getFieldWidth()*getFieldWidth() + getFieldHeight()*getFieldHeight());
+
+	for(auto unit: units)
+		{
+		if(VectorLength(unit->getPosition()-fRealPosition)>MAX_DISTANCE)
+			continue;
+
+		const VectorI fPositionUnit=getPositionOnField(unit->getPosition());
+
+		if(fPositionUnit.x!=fposition.x || fPositionUnit.y!=fposition.y)
+			continue;
+
+		++ret;
+		}
+
+	return ret;
+	}
+
+int Level::getUnitsOnFieldCount(const Engine::Math::VectorI& fposition, int& countEnemy, int& countPlayer)
+	{
+	using namespace Engine::Math;
+
+	countEnemy=0;
+	countPlayer=0;
+
+	const Vector fRealPosition=getFieldPosition(fposition);
+	const float MAX_DISTANCE=sqrt(getFieldWidth()*getFieldWidth() + getFieldHeight()*getFieldHeight());
+
+	for(auto unit: units)
+		{
+		if(VectorLength(unit->getPosition()-fRealPosition)>MAX_DISTANCE)
+			continue;
+
+		const VectorI fPositionUnit=getPositionOnField(unit->getPosition());
+
+		if(fPositionUnit.x!=fposition.x || fPositionUnit.y!=fposition.y)
+			continue;
+
+		if(unit->getType()==UnitType::PLAYER_ACOLYTE)
+			++countPlayer;
+		else
+			++countEnemy;
+		}
+
+	return countEnemy+countPlayer;
+	}
+
+bool Level::findUnitsOnField(const Engine::Math::VectorI& fposition, std::vector<Unit*>& matches)
+	{
+	using namespace Engine::Math;
+
+	matches.clear();
+
+	const Vector fRealPosition=getFieldPosition(fposition);
+	const float MAX_DISTANCE=sqrt(getFieldWidth()*getFieldWidth() + getFieldHeight()*getFieldHeight());
+
+	for(auto unit: units)
+		{
+		if(VectorLength(unit->getPosition()-fRealPosition)>MAX_DISTANCE)
+			continue;
+
+		const VectorI fPositionUnit=getPositionOnField(unit->getPosition());
+
+		if(fPositionUnit.x!=fposition.x || fPositionUnit.y!=fposition.y)
+			continue;
+
+		matches.push_back(unit);
+		}
+
+	return matches.empty();
+	}
+
 Unit* Level::findUnitInRange(const Engine::Math::Vector& position, float range, bool (*compare)(Unit*, Unit*))
 	{
 	using namespace Engine::Math;

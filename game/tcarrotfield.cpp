@@ -67,11 +67,11 @@ void TCarrotField::update(float dt)
 
 	sprite.update(dt);
 
-	cooldown-=dt;
-
 	// Normalne działanie, brak wrogów polu
 	if(!panic)
 		{
+		cooldown-=dt;
+
 		if(cooldown<=0)
 			{
 			cooldown=getCooldown();
@@ -89,17 +89,28 @@ void TCarrotField::update(float dt)
 	// Wrogie jednostki na polu
 	else
 		{
-		if(!level->isUnitOnField(fposition))
+		int countPlayer; // getUnitsOnFieldCount zeruje... a przynajmniej powinno
+		int countEnemy;  // jw.
+
+		level->getUnitsOnFieldCount(fposition, countEnemy, countPlayer);
+
+		cooldown-=dt*countEnemy + dt*countPlayer*0.25f;
+
+		if(countEnemy+countPlayer<=0)
 			{
 			panic=false;
 			cooldown=getCooldown();
+			return;
 			}
-		else if(cooldown<=0)
+		else
 			{
-			cooldown=getCooldown();
+			if(cooldown<=0)
+				{
+				cooldown=getCooldown();
 
-			setUpgrade(upgrade-1);
-			sprite.setAnimation(upgrade);
+				setUpgrade(upgrade-1);
+				sprite.setAnimation(upgrade);
+				}
 			}
 		}
 	}

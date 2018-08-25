@@ -63,7 +63,11 @@ void UEnemyInfantry::update(float dt)
 	const float DISTANCE=speed*dt;
 
 	// Dojście do aktualnego checkpointa
-	if(VectorLength(position-target)<DISTANCE)
+	if(cooldownEating>0.0f)
+		{
+		cooldownEating-=dt;
+		}
+	else if(VectorLength(position-target)<DISTANCE)
 		{
 		const unsigned FW=level->getFieldWidth();
 		const unsigned FH=level->getFieldHeight();
@@ -71,7 +75,7 @@ void UEnemyInfantry::update(float dt)
 		const float OX=(rand()/(RAND_MAX+1.0f)*FW-FW/2.0f)*0.45f;
 		const float OY=(rand()/(RAND_MAX+1.0f)*FH-FH/2.0f)*0.45f;
 
-		auto isNeighbourACarrotField=[this](const VectorI& fposition)->bool
+		auto isFieldACarrotField=[this](const VectorI& fposition)->bool
 			{
 			const Level::Field* field=((const Level*)level)->getField(fposition);
 
@@ -90,7 +94,7 @@ void UEnemyInfantry::update(float dt)
 			return true;
 			};
 
-		auto isAnyNeighbourACarrotField=[this, OX, OY, isNeighbourACarrotField](const VectorI& fposition, Vector& target)->bool
+		auto isAnyNeighbourACarrotField=[this, OX, OY, isFieldACarrotField](const VectorI& fposition, Vector& target)->bool
 			{
 			std::vector<VectorI> neighbours(
 				{
@@ -104,7 +108,7 @@ void UEnemyInfantry::update(float dt)
 
 			for(auto& fieldXY: neighbours)
 				{
-				if(!isNeighbourACarrotField(fieldXY))
+				if(!isFieldACarrotField(fieldXY))
 					continue;
 
 				target=level->getFieldPosition(fieldXY)+Vector(OX, OY);
@@ -115,7 +119,13 @@ void UEnemyInfantry::update(float dt)
 			return false;
 			};
 
-		if(isAnyNeighbourACarrotField(fieldXY, target))
+		if(isFieldACarrotField(fieldXY))
+			{
+			cooldownEating=0.5f;
+
+			target=level->getFieldPosition(fieldXY) + Vector(OX, OY);
+			}
+		else if(isAnyNeighbourACarrotField(fieldXY, target))
 			{
 			//
 			}
