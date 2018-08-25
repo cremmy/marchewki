@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<sprite name="turret_farm">
+	<image name="default">turret_farm.png</image>
+
+	<animation name="idle">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="0" y="0" w="96" h="96" offsetx="48" offsety="72"></frame>
+		</direction>
+	</animation>
+	<animation name="idle_1">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="96" y="0" w="96" h="96" offsetx="48" offsety="72"></frame>
+		</direction>
+	</animation>
+	<animation name="idle_2">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="192" y="0" w="96" h="96" offsetx="48" offsety="72"></frame>
+		</direction>
+	</animation>
+	<animation name="idle_3">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="288" y="0" w="96" h="96" offsetx="48" offsety="72"></frame>
+		</direction>
+	</animation>
+	<animation name="idle_4">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="0" y="96" w="96" h="96" offsetx="48" offsety="72"></frame>
+		</direction>
+	</animation>
+	<animation name="idle_5">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="96" y="96" w="96" h="96" offsetx="48" offsety="72"></frame>
+		</direction>
+	</animation>
+	<animation name="idle_6">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="192" y="96" w="96" h="96" offsetx="48" offsety="72"></frame>
+		</direction>
+	</animation>
+</sprite>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<sprite name="projectile">
+	<image name="default">projectile.png</image>
+
+	<animation name="moving">
+		<direction name="up" fps="0" loopto="0">
+			<frame x="0" y="0" w="24" h="24" offsetx="13" offsety="8"></frame>
+		</direction>
+		<direction name="right-up" fps="0" loopto="0">
+			<frame x="24" y="0" w="24" h="24" offsetx="17" offsety="8"></frame>
+		</direction>
+		<direction name="right" fps="0" loopto="0">
+			<frame x="48" y="0" w="24" h="24" offsetx="16" offsety="13"></frame>
+		</direction>
+		<direction name="right-down" fps="0" loopto="0">
+			<frame x="72" y="0" w="24" h="24" offsetx="16" offsety="16"></frame>
+		</direction>
+		<direction name="down" fps="0" loopto="0">
+			<frame x="96" y="0" w="24" h="24" offsetx="11" offsety="16"></frame>
+		</direction>
+		<direction name="left-down" fps="0" loopto="0">
+			<frame x="120" y="0" w="24" h="24" offsetx="7" offsety="16"></frame>
+		</direction>
+		<direction name="left" fps="0" loopto="0">
+			<frame x="144" y="0" w="24" h="24" offsetx="8" offsety="11"></frame>
+		</direction>
+		<direction name="left-up" fps="0" loopto="0">
+			<frame x="168" y="0" w="24" h="24" offsetx="7" offsety="7"></frame>
+		</direction>
+	</animation>
+</sprite>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<sprite name="base">
+	<image name="default">turret_single.png</image>
+
+	<animation name="idle">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="0" y="0" w="96" h="96" offsetx="48" offsety="68">
+				<point name="from" x="46" y="92" />
+			</frame>
+		</direction>
+	</animation>
+	<animation name="shooting">
+		<direction name="right" fps="4" loopto="0">
+			<frame x="96" y="0" w="96" h="96" offsetx="48" offsety="68">
+				<point name="from" x="46" y="92" />
+			</frame>
+			<frame x="192" y="0" w="96" h="96" offsetx="48" offsety="68">
+				<point name="from" x="46" y="92" />
+			</frame>
+			<frame x="96" y="0" w="96" h="96" offsetx="48" offsety="68">
+				<point name="from" x="46" y="92" />
+			</frame>
+			<frame x="192" y="0" w="96" h="96" offsetx="48" offsety="68">
+				<point name="from" x="46" y="92" />
+			</frame>
+		</direction>
+	</animation>
+</sprite>

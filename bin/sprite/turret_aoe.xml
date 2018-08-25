@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<sprite name="base">
+	<image name="default">turret_aoe.png</image>
+
+	<animation name="idle">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="0" y="0" w="96" h="96" offsetx="48" offsety="71">
+				<point name="from" x="48" y="71" />
+			</frame>
+		</direction>
+	</animation>
+	<animation name="shooting">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="0" y="0" w="96" h="96" offsetx="48" offsety="71">
+				<point name="from" x="48" y="71" />
+			</frame>
+		</direction>
+	</animation>
+</sprite>
