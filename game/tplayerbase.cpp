@@ -21,6 +21,8 @@ bool TPlayerBase::init()
 		return false;
 		}
 
+	cooldown=getCooldown();
+
 	return true;
 	}
 

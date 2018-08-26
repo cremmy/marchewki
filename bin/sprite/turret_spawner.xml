@@ -4,15 +4,22 @@
 
 	<animation name="idle">
 		<direction name="right" fps="0" loopto="0">
-			<frame x="0" y="0" w="96" h="96" offsetx="42" offsety="70">
-				<point name="from" x="42" y="70" />
+			<frame x="96" y="0" w="96" h="96" offsetx="49" offsety="71">
+				<point name="from" x="48" y="77" />
 			</frame>
 		</direction>
 	</animation>
-	<animation name="shooting">
+	<animation name="ready">
 		<direction name="right" fps="0" loopto="0">
-			<frame x="0" y="0" w="96" h="96" offsetx="42" offsety="70">
-				<point name="from" x="42" y="70" />
+			<frame x="0" y="0" w="96" h="96" offsetx="49" offsety="71">
+				<point name="from" x="48" y="77" />
+			</frame>
+		</direction>
+	</animation>
+	<animation name="deusvult">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="0" y="96" w="96" h="96" offsetx="49" offsety="71">
+				<point name="from" x="48" y="77" />
 			</frame>
 		</direction>
 	</animation>

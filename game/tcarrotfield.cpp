@@ -24,6 +24,8 @@ bool TCarrotField::init()
 		return false;
 		}
 
+	cooldown=getCooldown();
+
 	return true;
 	}
 

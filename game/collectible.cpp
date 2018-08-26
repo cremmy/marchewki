@@ -28,6 +28,8 @@ bool Collectible::init(const Engine::Math::Vector& position, float value)
 
 void Collectible::update(float dt)
 	{
+	sprite.update(dt);
+
 	if(collected)
 		{
 		position.z+=128.0f*dt;

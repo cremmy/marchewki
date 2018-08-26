@@ -46,6 +46,10 @@ void UPlayerAcolyte::update(float dt)
 	if(collectCooldown>0.0f)
 		{
 		collectCooldown-=dt;
+
+		if(collectCooldown<=0.0f)
+			sprite.setAnimation(0);
+
 		return;
 		}
 
@@ -53,77 +57,13 @@ void UPlayerAcolyte::update(float dt)
 
 	if(targetCollectible)
 		{
-		/*if(pathSearchCooldown>0.0f)
-			{
-			pathSearchCooldown-=dt;
-			}
-		else if(path.empty() && pathVersion!=level->getPathVersion())
-			{
-			// Przeliczenie sciezki
-			LOG_DEBUG("Unit 0x%p, przeliczanie sciezki...");
-
-			level->findPath(path, targetCollectible->getPosition());
-
-			if(path.empty())
-				{
-				pathSearchCooldown=1.0f;
-
-				const unsigned FW=level->getFieldWidth();
-				const unsigned FH=level->getFieldHeight();
-
-				const float OX=(rand()/(RAND_MAX+1.0f)*FW-FW/2.0f)*0.75f;
-				const float OY=(rand()/(RAND_MAX+1.0f)*FH-FH/2.0f)*0.75f;
-
-				target=level->getFieldPosition({0, 0}) + Vector(OX, OY);
-
-				return;
-				}
-
-			path.reverse();
-
-			target=level->getFieldPosition(path.front());
-			path.pop_front();
-			}
-
-		const float DISTANCE=speed*dt;
-
-		if(VectorLength(position-targetCollectible->getPosition())<DISTANCE)
-			{
-			level->addResources(targetCollectible->collect());
-			targetCollectible=nullptr;
-			}
-		else if(VectorLength(position-target)<DISTANCE)
-			{
-			const unsigned FW=level->getFieldWidth();
-			const unsigned FH=level->getFieldHeight();
-
-			const float OX=(rand()/(RAND_MAX+1.0f)*FW-FW/2.0f)*0.25f;
-			const float OY=(rand()/(RAND_MAX+1.0f)*FH-FH/2.0f)*0.25f;
-
-			target=level->getFieldPosition(path.front()) + Vector(OX, OY);
-			path.pop_front();
-			}
-		else
-			{
-			const Level::Field* field=((const Level*)level)->getField(level->getPositionOnField(target));
-
-			if(field && field->turret && !field->turret->isWalkable())
-				{
-				target=position;
-				return;
-				}
-
-			position=position + VectorNormalize(target-position)*DISTANCE;
-			}*/
-
 		if(VectorLength(position-targetCollectible->getPosition())<DISTANCE)
 			{
 			level->addResources(targetCollectible->collect());
 			targetCollectible=nullptr;
 
 			collectCooldown=1.0f;
-
-			target=level->getFieldPosition({0, 0});
+			sprite.setAnimation(1);
 			}
 		else
 			{
@@ -136,6 +76,10 @@ void UPlayerAcolyte::update(float dt)
 			{
 			targetCollectible=level->findUnlockedCollectible();
 			target=targetCollectible->getPosition();
+			}
+		else
+			{
+			target=level->getFieldPosition({0, 0});
 			}
 
 		position=position + VectorNormalize(target-position)*DISTANCE;

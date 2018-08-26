@@ -27,7 +27,7 @@
  *    + Pojedyncza
  *    + Obszarowa
  *    + Mina
- *    - Marchewkowe pole
+ *    + Marchewkowe pole
  * + Zbierajki wypadające z pokonanych wrogów
  * + Jednostka gracza zbierająca zbierajki
  * - Niszczenie wież wroga/zajmowanie pól wroga

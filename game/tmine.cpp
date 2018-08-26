@@ -23,6 +23,9 @@ bool TMine::init()
 		return false;
 		}
 
+	cooldown=getCooldown();
+	sprite.setAnimation("cooldown");
+
 	return true;
 	}
 

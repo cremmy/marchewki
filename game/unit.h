@@ -26,6 +26,7 @@ namespace Game
 			Engine::Math::Vector position;
 			Engine::Math::Vector target;
 			float hp;
+			float maxhp;
 			float speed;
 
 			Engine::Graphics::SpritePtr sprite;
@@ -33,7 +34,7 @@ namespace Game
 			int locks;
 
 		public:
-			Unit(): level(nullptr), position(), hp(1.0f), speed(1.0f), locks(0)
+			Unit(): level(nullptr), position(), hp(1.0f), maxhp(1.0f), speed(1.0f), locks(0)
 				{
 				//
 				}
@@ -56,7 +57,7 @@ namespace Game
 			float getHP() const {return hp;}
 			float getSpeed() const {return speed;}
 
-			void setHP(float s) {hp=s;}
+			void setHP(float s) {hp=s; maxhp=s;}
 			void setSpeed(float s) {speed=s;}
 
 			void lock() {++locks;}

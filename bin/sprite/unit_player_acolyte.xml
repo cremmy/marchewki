@@ -4,22 +4,20 @@
 
 	<animation name="moving">
 		<direction name="left" fps="2" loopto="0">
-			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="44"></frame>
-			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="45"></frame>
+			<frame x="0" y="0" w="48" h="48" offsetx="25" offsety="46"></frame>
+			<frame x="48" y="0" w="48" h="48" offsetx="25" offsety="47"></frame>
 		</direction>
 		<direction name="right" fps="2" loopto="0">
-			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="44"></frame>
-			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="45"></frame>
+			<frame x="96" y="0" w="48" h="48" offsetx="25" offsety="46"></frame>
+			<frame x="144" y="0" w="48" h="48" offsetx="25" offsety="47"></frame>
 		</direction>
 	</animation>
 	<animation name="collecting">
-		<direction name="left" fps="2" loopto="0">
-			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="44"></frame>
-			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="45"></frame>
+		<direction name="left" fps="1" loopto="0">
+			<frame x="0" y="48" w="48" h="48" offsetx="25" offsety="46"></frame>
 		</direction>
-		<direction name="right" fps="2" loopto="0">
-			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="44"></frame>
-			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="45"></frame>
+		<direction name="right" fps="1" loopto="0">
+			<frame x="96" y="48" w="48" h="48" offsetx="25" offsety="46"></frame>
 		</direction>
 	</animation>
 </sprite>

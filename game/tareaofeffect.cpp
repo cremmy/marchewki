@@ -31,6 +31,8 @@ bool TAreaOfEffect::init()
 		return false;
 		}
 
+	cooldown=getCooldown();
+
 	return true;
 	}
 

@@ -3,9 +3,15 @@
 	<image name="default">collectible.png</image>
 
 	<animation name="default">
-		<direction name="right" fps="2" loopto="0">
+		<direction name="right" fps="4" loopto="0">
 			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="44"></frame>
 			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="45"></frame>
+			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="46"></frame>
+			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="47"></frame>
+			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="47"></frame>
+			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="46"></frame>
+			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="45"></frame>
+			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="44"></frame>
 		</direction>
 	</animation>
 </sprite>
