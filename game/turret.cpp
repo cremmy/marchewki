@@ -39,7 +39,9 @@ void Turret::print(float tinterp)
 
 	Render::getInstance().draw(billboard, sprite);
 
-	if(getType()!=TurretType::PLAYER_CARROT_FIELD && getType()!=TurretType::ENEMY_SPAWNER)
+	if(getType()==TurretType::PLAYER_UNIT_SINGLE_TARGET ||
+	   getType()==TurretType::PLAYER_UNIT_AREA_OF_EFFECT ||
+	   getType()==TurretType::PLAYER_UNIT_MINE)
 		{
 		for(int i=0; i<getUpgrade(); ++i)
 			{
