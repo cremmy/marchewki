@@ -36,7 +36,16 @@ void Unit::print(float tinterp)
 	else
 		sprite.setDirection(Engine::Graphics::Sprite::DirectionName::RIGHT);
 
-	Render::getInstance().draw(cam.getBillboard(position), sprite);
+	if(damageTimer>0.0f)
+		{
+		Render::getInstance().setColor(Vector(1.0f, 0.25f, 0.25f, 1.0f));
+		Render::getInstance().draw(cam.getBillboard(position), sprite);
+		Render::getInstance().setColor(Vector(1, 1, 1, 1));
+		}
+	else
+		{
+		Render::getInstance().draw(cam.getBillboard(position), sprite);
+		}
 
 	if(hp>0.0f && hp<maxhp)
 		{

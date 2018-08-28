@@ -26,7 +26,7 @@ bool Level::refreshPath()
 		return false;
 
 	// Powiększanie grafu
-	if(nodes.size()!=field.size() || (nodes.size()>0u && nodes[0u].size()>field[0u].size()))
+	if(nodes.size()!=field.size() || (nodes.size()>0u && nodes[0u].size()!=field[0u].size()))
 		{
 		nodes.resize(field.size());
 		for(unsigned y=0u; y<nodes.size(); ++y)
@@ -37,6 +37,7 @@ bool Level::refreshPath()
 				{
 				nodes[y][x].x=x;
 				nodes[y][x].y=y;
+				nodes[y][x].prev=nullptr;
 				}
 			}
 		}

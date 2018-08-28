@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sprite name="upgrade">
+	<image name="default">upgrade.png</image>
+
+	<animation name="moving">
+		<direction name="left" fps="2" loopto="0">
+			<frame x="0" y="0" w="4" h="12" offsetx="2" offsety="10"></frame>
+			<frame x="4" y="0" w="4" h="12" offsetx="2" offsety="10"></frame>
+		</direction>
+	</animation>
+</sprite>

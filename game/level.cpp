@@ -14,6 +14,8 @@
 
 #include "projectile.h"
 
+#include "particleemitter.h"
+
 #include "turret.h"
 #include "tareaofeffect.h"
 #include "tcarrotfield.h"
@@ -107,6 +109,20 @@ void Level::update(float dt)
 			}
 
 		collectible->update(dt);
+		}
+
+	for(auto it=emitters.begin(); it!=emitters.end(); ++it)
+		{
+		ParticleEmitter* emitter=*it;
+
+		if(!emitter->isAlive())
+			{
+			emitters.erase(it--);
+			delete emitter;
+			continue;
+			}
+
+		emitter->update(dt);
 		}
 	}
 
@@ -213,6 +229,12 @@ void Level::print(float tinterp)
 		{
 		collectible->print(tinterp);
 		}
+
+	for(auto emitter: emitters)
+		{
+		emitter->print(tinterp);
+		}
+
 	}
 
 void Level::clear()
@@ -314,6 +336,8 @@ bool Level::resize(unsigned w, unsigned h)
 		{
 		for(unsigned y=0; y<h; ++y)
 			{
+			field[y].resize(w);
+
 			for(unsigned x=OLD_W; x<field[y].size(); ++x)
 				{
 				field[y][x]=new Field();
@@ -321,17 +345,20 @@ bool Level::resize(unsigned w, unsigned h)
 			}
 		}
 
+	updateFieldOwners();
+	refreshPath();
+
 	return true;
 	}
 
 bool Level::resizeIncreaseXByOne()
 	{
-	return resize(field.empty()?1u:field[0u].size()+1u, field.size());
+	return resize(getWidth()+1, getHeight());
 	}
 
 bool Level::resizeIncreaseYByOne()
 	{
-	return resize(field.empty()?1u:field[0u].size(), field.size()+1u);
+	return resize(getWidth(), getHeight()+1);
 	}
 
 
@@ -941,5 +968,11 @@ bool Level::spawnCollectible(const Engine::Math::Vector& position, float value)
 bool Level::addProjectile(Projectile* projectile)
 	{
 	projectiles.push_back(projectile);
+	return true;
+	}
+
+bool Level::addEmitter(ParticleEmitter* emitter)
+	{
+	emitters.push_back(emitter);
 	return true;
 	}

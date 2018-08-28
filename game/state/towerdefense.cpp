@@ -80,6 +80,8 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/projectile.xml"));
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/unit_enemy_infantry.xml"));
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/unit_player_acolyte.xml"));
+	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/particle_red.xml"));
+	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/particle_green.xml"));
 
 	return true;
 	}
@@ -127,6 +129,13 @@ bool TowerDefense::update(float dt)
 			else if(e.data.keyboard.key==SDLK_r)
 				{
 				initModeBuilding(TurretType::PLAYER_CARROT_FIELD);
+				}
+			else if(e.data.keyboard.key==SDLK_z)
+				{
+				if(level.getWidth()<=level.getHeight() && level.getWidth()<20)
+					level.resizeIncreaseXByOne();
+				else if(level.getHeight()<20)
+					level.resizeIncreaseYByOne();
 				}
 			}
 		/*****************************************************************************/
@@ -328,7 +337,7 @@ bool TowerDefense::update(float dt)
 
 		const Vector HIT=MathUtils::getPositionAtZ0ByRay(camera.getPosition(), camera.getForward());
 
-		camera.lookAt(HIT, camCurrentAngle*CAMERA_ANGLE, CAMERA_ELEVATION, CAMERA_DISTANCE);
+		camera.lookAt(HIT, camCurrentAngle*CAMERA_ANGLE, CAMERA_ELEVATION, CAMERA_DISTANCE/camCurrentZoom);
 		}
 
 	/*****************************************************************************/
@@ -350,6 +359,7 @@ bool TowerDefense::update(float dt)
 			}
 
 		camera.setScale(camCurrentZoom);
+		camCurrentAngle-=0.01f;
 
 		LOG_DEBUG("[%f:%f][mod %f]", camCurrentZoom, camTargetZoom, MOD);
 		}

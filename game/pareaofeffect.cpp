@@ -10,6 +10,7 @@
 #include "../engine/debug/log.h"
 
 #include "level.h"
+#include "particleemitter.h"
 #include "unit.h"
 
 using namespace Game;
@@ -72,7 +73,7 @@ void PAreaOfEffect::update(float dt)
 
 		for(float t=0.0f; t<1.0f; t+=0.05f) // Dokładność całkowania
 			{
-			Vector p1=hermite(t, startPosition, Vector(0, 0, maxSpeed*4.0f), target, Vector(0, 0, 1));
+			Vector p1=hermite(t, startPosition, Vector(0, 0, maxSpeed*4.0f), target, Vector(0, 0, -maxSpeed));
 			pathLen+=VectorLength(p1-p0);
 			p0=p1;
 			}
@@ -81,7 +82,7 @@ void PAreaOfEffect::update(float dt)
 		pathStep=1.0f/PATH_TIME;
 		}
 
-	const Vector newPosition=hermite(pathCur, startPosition, Vector(0, 0, maxSpeed*4.0f), target, Vector(0, 0, 1));
+	const Vector newPosition=hermite(pathCur, startPosition, Vector(0, 0, maxSpeed*4.0f), target, Vector(0, 0, -maxSpeed));
 	direction=VectorNormalize(newPosition-position);
 	position=newPosition;
 	pathCur+=dt*pathStep;
@@ -99,6 +100,9 @@ void PAreaOfEffect::update(float dt)
 			}
 
 		//target->damage(damageType, damage);
+
+		level->addEmitter(new ParticleEmitter(ParticleEmitterType::EXPLOSION, target, 0.25f, Engine::Graphics::SpritePtr("sprite/particle_red.xml"), 400, damageRange*0.5f, 32, 96, 0.5f));
+
 		alive=false;
 		return;
 		}

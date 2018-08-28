@@ -19,6 +19,7 @@
 namespace Game
 	{
 	class Collectible;
+	class ParticleEmitter;
 	class Projectile;
 	class Turret;
 	class Unit;
@@ -67,6 +68,7 @@ namespace Game
 			std::list<Unit*> units;
 			std::list<Projectile*> projectiles;
 			std::list<Collectible*> collectibles;
+			std::list<ParticleEmitter*> emitters;
 
 			Engine::Graphics::ImagePtr spriteFieldNeutral;
 			Engine::Graphics::ImagePtr spriteFieldPlayer;
@@ -147,6 +149,7 @@ namespace Game
 			bool spawnCollectible(const Engine::Math::Vector& position, float value);
 
 			bool addProjectile(Projectile* projectile);
+			bool addEmitter(ParticleEmitter* emitter);
 		};
 
 	} /* namespace Game */

@@ -11,6 +11,7 @@
 
 #include "collectible.h"
 #include "level.h"
+#include "particleemitter.h"
 #include "turret.h"
 
 using namespace Game;
@@ -64,6 +65,7 @@ void UPlayerAcolyte::update(float dt)
 
 			collectCooldown=1.0f;
 			sprite.setAnimation(1);
+			level->addEmitter(new ParticleEmitter(ParticleEmitterType::LINEAR_UP, position, 0.5f, Engine::Graphics::SpritePtr("sprite/particle_green.xml"), 100, 8, 200, 250, 1.0f));
 			}
 		else
 			{

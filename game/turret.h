@@ -34,6 +34,7 @@ namespace Game
 			float cooldown;
 
 			Engine::Graphics::SpritePtr sprite;
+			Engine::Graphics::SpritePtr spriteUpgrade;
 
 			Unit* target;
 

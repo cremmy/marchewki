@@ -52,6 +52,11 @@ void UEnemyInfantry::update(float dt)
 		return;
 		}
 
+	if(damageTimer>0.0f)
+		{
+		damageTimer-=dt;
+		}
+
 	// Dojście do celu
 	//if(curField->turret->getType()==TurretType::PLAYER_BASE) // W sumie to czemu nie było to tak sprawdzane?
 	if(fieldXY.x==0 && fieldXY.y==0)
@@ -185,5 +190,7 @@ void UEnemyInfantry::damage(DamageType dmgType, float dmg)
 		{
 		level->spawnCollectible(position, 1.0f);
 		}
+
+	damageTimer=0.5f;
 	}
 

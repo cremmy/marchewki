@@ -17,13 +17,13 @@
  */
 /* Pomysły:
  *  - Muzyka z 'pozytywki' - pojedyncze sample odtwarzane według pewnego wzoru, im wyższy poziom bazy tym większa część sampli przełączana jest na przesterowane/fałszywe
- *  - Jeśli wieża obok jednostki wroga jest polem marchewkowym, to idź do niej. Po wejściu na to pole, HP gracza spada o 1.
+ *  ~ Jeśli wieża obok jednostki wroga jest polem marchewkowym, to idź do niej. Po wejściu na to pole, HP gracza spada o 1.
  */
 /* TODO:
- *  - Paski zdrowia pod osłabionymi jednostkami wroga
+ *  + Paski zdrowia pod osłabionymi jednostkami wroga
  *  - Świeczki informujące o poziomie wieży
  *  + Pociski wylatujące z wież?
- *  - Wieże:
+ *  + Wieże:
  *    + Pojedyncza
  *    + Obszarowa
  *    + Mina
@@ -36,8 +36,12 @@
  * - Obsługa zasobów
  * - Obsługa HP gracza (utrata zasobów po wejściu wroga do bazy?)
  * - Interfejs graficzny
+ * - Obsługa reguł gry
+ * - Zliczanie wież w pobliżu ścieżki
  */
 // SDL_main
+#include <cstdio>
+#include <ctime>
 #include <SDL2/SDL.h>
 
 #include "engine/debug/log.h"
@@ -60,34 +64,7 @@ int main(int, char**)
 	LOG_INFO("Start");
 	LOG_INFO("Build %s %s", __DATE__, __TIME__);
 
-	/*{
-	using namespace Engine::Math;
-	using namespace Game::UI;
-
-	Panel* panel=new Panel({0, 0});
-	panel->addChild(new Panel({0, 0}), {0, 1}, true);
-	panel->addChild(new Panel({0, 0}), {0, 2}, true);
-	panel->addChild(new Panel({0, 0}), {0, 3}, true);
-	Panel* window=new Panel({0, 0});
-	window->addChild(panel, {1, 1});
-	window->addChild(new Panel({0, 0}), {1, 1}, true);
-	window->addChild(new Panel({0, 0}), {1, 2}, false);
-	window->addChild(new Panel({0, 0}), {1, 3}, true);
-	window->addChild(new Panel({0, 0}), {1, 4}, false);
-	window->addChild(new Panel({0, 0}), {1, 5}, true);
-	window->addChild(new Panel({0, 0}), {1, 6}, false);
-
-
-	window->dump();
-	for(int i=0; i<10; ++i)
-		{
-		LOG_DEBUG("------------------------------");
-		window->selectPrevious();
-		window->dump();
-		}
-
-	return 0;
-	}*/
+	srand(time(nullptr));
 
 	Engine::Core::Application app;
 

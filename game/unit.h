@@ -32,9 +32,10 @@ namespace Game
 			Engine::Graphics::SpritePtr sprite;
 
 			int locks;
+			float damageTimer;
 
 		public:
-			Unit(): level(nullptr), position(), hp(1.0f), maxhp(1.0f), speed(1.0f), locks(0)
+			Unit(): level(nullptr), position(), hp(1.0f), maxhp(1.0f), speed(1.0f), locks(0), damageTimer(0.0f)
 				{
 				//
 				}

@@ -10,6 +10,7 @@
 #include "../engine/debug/log.h"
 
 #include "level.h"
+#include "particleemitter.h"
 #include "psingletarget.h"
 #include "unit.h"
 
@@ -109,6 +110,7 @@ void TMine::update(float dt)
 				cooldown+=getCooldown();
 
 				sprite.setAnimation("shooting");
+				level->addEmitter(new ParticleEmitter(ParticleEmitterType::LINEAR_UP, position, 0.5f, Engine::Graphics::SpritePtr("sprite/particle_red.xml"), 200, getRange()*0.5f, 192, 256, 0.5f));
 				}
 			}
 		}
