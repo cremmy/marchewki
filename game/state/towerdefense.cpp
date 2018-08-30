@@ -130,6 +130,7 @@ bool TowerDefense::update(float dt)
 				{
 				initModeBuilding(TurretType::PLAYER_CARROT_FIELD);
 				}
+#ifdef BUILD_DEBUG
 			else if(e.data.keyboard.key==SDLK_z)
 				{
 				if(level.getWidth()<=level.getHeight() && level.getWidth()<20)
@@ -137,11 +138,12 @@ bool TowerDefense::update(float dt)
 				else if(level.getHeight()<20)
 					level.resizeIncreaseYByOne();
 				}
+#endif
 			}
 		/*****************************************************************************/
-		/**** Ruch kamery ************************************************************/
+		/**** Ruch myszy *************************************************************/
 		/*****************************************************************************/
-		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_MOVE && (e.data.mouse.key&SDL_BUTTON(3)))
+		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_MOVE)
 			{
 			int mx;
 			int my;
@@ -151,35 +153,41 @@ bool TowerDefense::update(float dt)
 			Vector raypos;
 			Vector raydir;
 
-			camera.getRay(mx-e.data.mouse.x, my-e.data.mouse.y, raypos, raydir);
-			const Vector POS_PREV=MathUtils::getPositionAtZ0ByRay(raypos, raydir);
-
 			camera.getRay(mx, my, raypos, raydir);
 			const Vector POS_CUR=MathUtils::getPositionAtZ0ByRay(raypos, raydir);
 
-			camera.move((POS_PREV-POS_CUR));
+			/*****************************************************************************/
+			/**** Ruch kamery ************************************************************/
+			/*****************************************************************************/
+			if(e.data.mouse.key&SDL_BUTTON(3))
+				{
+				camera.getRay(mx-e.data.mouse.x, my-e.data.mouse.y, raypos, raydir);
+				const Vector POS_PREV=MathUtils::getPositionAtZ0ByRay(raypos, raydir);
 
-			// Zapobieganie zbytniemu oddaleniu kamery
-			const Vector LEVEL_MIN=level.getFieldPosition({0, 0});
-			const Vector LEVEL_MAX=level.getFieldPosition({level.getWidth(), level.getHeight()});
-			const Vector CAMERA_CENTER=MathUtils::getPositionAtZ0ByRay(camera.getPosition(), camera.getForward());
+				camera.move((POS_PREV-POS_CUR));
 
-			if(CAMERA_CENTER.x<LEVEL_MIN.x)
-				{
-				camera.move(Vector(LEVEL_MIN.x-CAMERA_CENTER.x, 0.0f));
-				}
-			else if(CAMERA_CENTER.x>LEVEL_MAX.x)
-				{
-				camera.move(Vector(LEVEL_MAX.x-CAMERA_CENTER.x, 0.0f));
-				}
+				// Zapobieganie zbytniemu oddaleniu kamery
+				const Vector LEVEL_MIN=level.getFieldPosition({0, 0});
+				const Vector LEVEL_MAX=level.getFieldPosition({level.getWidth()-1, level.getHeight()-1});
+				const Vector CAMERA_CENTER=MathUtils::getPositionAtZ0ByRay(camera.getPosition(), camera.getForward());
 
-			if(CAMERA_CENTER.y<LEVEL_MIN.y)
-				{
-				camera.move(Vector(0.0f, LEVEL_MIN.y-CAMERA_CENTER.y));
-				}
-			else if(CAMERA_CENTER.y>LEVEL_MAX.y)
-				{
-				camera.move(Vector(0.0f, LEVEL_MAX.y-CAMERA_CENTER.y));
+				if(CAMERA_CENTER.x<LEVEL_MIN.x)
+					{
+					camera.move(Vector(LEVEL_MIN.x-CAMERA_CENTER.x, 0.0f));
+					}
+				else if(CAMERA_CENTER.x>LEVEL_MAX.x)
+					{
+					camera.move(Vector(LEVEL_MAX.x-CAMERA_CENTER.x, 0.0f));
+					}
+
+				if(CAMERA_CENTER.y<LEVEL_MIN.y)
+					{
+					camera.move(Vector(0.0f, LEVEL_MIN.y-CAMERA_CENTER.y));
+					}
+				else if(CAMERA_CENTER.y>LEVEL_MAX.y)
+					{
+					camera.move(Vector(0.0f, LEVEL_MAX.y-CAMERA_CENTER.y));
+					}
 				}
 			}
 		/*****************************************************************************/
@@ -279,7 +287,7 @@ bool TowerDefense::update(float dt)
 				Engine::Math::VectorI fposition;
 				if(level.getFieldByRay(raypos, raydir, fposition))
 					{
-					LOG_DEBUG("HIT: %d, %d", fposition.x, fposition.y);
+					LOG_DEBUG("HIT: %d, %d [click %d %d]", fposition.x, fposition.y, e.data.mouse.x, e.data.mouse.y);
 
 					switch(mode)
 						{
@@ -396,13 +404,17 @@ void TowerDefense::updateModeBuilding(float dt)
 
 void TowerDefense::updateModeSelected(float dt)
 	{
-	//
+	level.setFieldHighlight(modeSelectedData.fposition);
 	}
 
 
 void TowerDefense::print(float tinterp)
 	{
-	Engine::Render::getInstance().setCamera(camera);
+	using namespace Engine::Math;
+	using namespace Engine::Render;
+
+	Render::getInstance().setRenderMode(Engine::Render::RenderMode::NORMAL);
+	Render::getInstance().setCamera(camera);
 
 	level.print(tinterp);
 
@@ -421,6 +433,8 @@ void TowerDefense::print(float tinterp)
 			//
 		break;
 		}
+
+	//Render::getInstance().setRenderMode(Engine::Render::RenderMode::GUI);
 	}
 
 
@@ -471,9 +485,10 @@ void TowerDefense::initModeSelected(const Engine::Math::VectorI fposition)
 	LOG_DEBUG("Mode: SELECTED; Field: %d,%d", fposition.x, fposition.y);
 
 	mode=Mode::SELECTED;
+	modeSelectedData.fposition=fposition;
 	modeSelectedData.field=((const Level*)&level)->getField(fposition);
 
-	if(!modeSelectedData.field || !modeSelectedData.field->turret)
+	if(!modeSelectedData.field /*|| !modeSelectedData.field->turret*/)
 		{
 		return initModeNone();
 		}

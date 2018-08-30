@@ -73,7 +73,7 @@ int main(int, char**)
 		return __LINE__;
 		}
 
-	if(!Engine::Render::getInstance().init(1024, 768, "Marchewki", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED))
+	if(!Engine::Render::getInstance().init(1024, 768, "Marchewki", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED_FULLSCREEN))
 		{
 		return __LINE__;
 		}

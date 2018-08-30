@@ -74,6 +74,7 @@ void TMine::update(float dt)
 	const Vector position=level->getFieldPosition(fposition);
 
 	sprite.update(dt);
+	spriteUpgrade.update(dt);
 
 	// Odlicz do 0 i czekaj na określoną liczbę ofiar w zasięgu
 	if(cooldown>0.0f)

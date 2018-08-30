@@ -86,7 +86,7 @@ void TSpawner::update(float dt)
 			--wave;
 			cooldown=0.5f;
 
-			level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 10.0f, level->getFieldDiagonalSize()*0.5f);
+			level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 1.0f, level->getFieldDiagonalSize()*0.5f);
 			}
 		else
 			{

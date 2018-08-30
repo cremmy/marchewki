@@ -80,6 +80,7 @@ void TPlayerBase::update(float dt)
 	const float PERCENT=(float)FIELDS_PLAYER/FIELDS_ALL;
 
 	sprite.update(dt);
+	spriteUpgrade.update(dt);
 
 	if(PERCENT<0.30f)
 		{

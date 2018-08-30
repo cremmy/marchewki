@@ -46,6 +46,7 @@ namespace Game
 
 				void printModeBuilding(float tinterp);
 				void printModeSelected(float tinterp);
+				void printGUI();
 
 				Level level;
 				TPlayerBase* playerBase;
@@ -64,6 +65,7 @@ namespace Game
 					} modeBuildData;
 				struct
 					{
+					Engine::Math::VectorI fposition;
 					const Level::Field* field;
 					} modeSelectedData;
 

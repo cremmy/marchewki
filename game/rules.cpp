@@ -7,11 +7,11 @@
 
 #include "rules.h"
 
-Rules ruleset;
+int ruleset;
 
 Rules getRuleset()
 	{
-	return ruleset;
+	return (Rules)ruleset;
 	}
 
 bool isRuleEnabled(Rules rule)

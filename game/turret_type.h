@@ -20,6 +20,11 @@ namespace Game
 
 		ENEMY_SPAWNER,
 		};
+
+	float getTurretConstructionCost(TurretType type);
+	float getTurretUpgradeCost(TurretType type, int upgrade);
+	float getTurretRemovalCost(TurretType type, int upgrade);
+	float getTurretResourceDrain(TurretType type, int upgrade);
 	}
 
 

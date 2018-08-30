@@ -40,9 +40,6 @@ namespace Game
 			virtual bool isWalkable() const override {return true;}
 //			virtual bool isUpgradable() const override {return false;}
 //			virtual bool isRemovable() const override {return false;}
-//			virtual float getConstructionCost() const override {return 0.0f;}
-//			virtual float getUpgradeCost() const override {return 0.0f;}
-//			virtual float getRemovalCost() const override {return 0.0f;}
 //			virtual float getRange() const override {return 0.0f;}
 //			virtual float getCooldown() const override {return 0.0f;}
 		};

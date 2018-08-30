@@ -55,17 +55,17 @@ namespace Game
 			virtual void update(float dt)=0;
 			virtual void print(float tinterp);
 
+			float getConstructionCost() const {return getTurretConstructionCost(getType());}
+			float getUpgradeCost() const {return getTurretUpgradeCost(getType(), upgrade);}
+			float getRemovalCost() const {return getTurretRemovalCost(getType(), upgrade);}
+			float getResourceDrain() const {return getTurretResourceDrain(getType(), upgrade);}
 			virtual TurretType getType() const=0;
 			virtual bool isWalkable() const {return false;}
 			virtual bool isFlat() const {return false;}
 			virtual bool isUpgradable() const {return false;}
 			virtual bool isRemovable() const {return false;}
-			virtual float getConstructionCost() const {return 0.0f;}
-			virtual float getUpgradeCost() const {return 0.0f;}
-			virtual float getRemovalCost() const {return 0.0f;}
 			virtual float getRange() const {return 0.0f;}
 			virtual float getCooldown() const {return 0.0f;}
-			// TODO virtual float getResourceDrain() const {return 0.0f;};
 			bool isReady() const {return cooldown<=0.0f;}
 			bool isAlive() const {return hp>0.0f;}
 			int getPositionX() const {return fposition.x;}

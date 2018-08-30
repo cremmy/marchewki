@@ -90,6 +90,8 @@ void TAreaOfEffect::update(float dt)
 
 	const Vector position=level->getFieldPosition(fposition);
 
+	sprite.update(dt);
+	spriteUpgrade.update(dt);
 
 	cooldown-=dt;
 

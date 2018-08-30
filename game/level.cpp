@@ -68,6 +68,12 @@ void Level::update(float dt)
 			}
 		}
 
+	resources-=getResourceDrain()*dt;
+	if(resources<0.0f)
+		resources=0.0f;
+
+	//LOG_DEBUG("Resources: %f", resources);
+
 	//for(auto unit: units)
 	for(auto it=units.begin(); it!=units.end(); ++it)
 		{
@@ -160,12 +166,21 @@ void Level::print(float tinterp)
 				break;
 				}*/
 
+			if(field->highlight)
+				Engine::Render::getInstance().setColor(Vector(1.0f, 0.7f, 0.1f, 1.0f));
+
 			if(field->owner==Field::Owner::ENEMY)
 				Engine::Render::getInstance().draw(Orientation::FLAT_XY+position, spriteFieldEnemy);
 			else if(field->owner==Field::Owner::PLAYER && !(field->turret && field->turret->getType()==TurretType::PLAYER_CARROT_FIELD))
 				Engine::Render::getInstance().draw(Orientation::FLAT_XY+position, spriteFieldPlayer);
 			else
 				Engine::Render::getInstance().draw(Orientation::FLAT_XY+position, spriteFieldNeutral);
+
+			if(field->highlight)
+				{
+				Engine::Render::getInstance().setColor(Vector(1, 1, 1, 1));
+				field->highlight=false;
+				}
 
 			/*const GraphNode& node=nodes[y][x];
 			if(node.prev)
@@ -552,6 +567,31 @@ const Level::Field* Level::getField(const Engine::Math::VectorI& fposition) cons
 	return field[fposition.y][fposition.x];
 	}
 
+float Level::getResourceDrain() const
+	{
+	const int W=getWidth();
+	const int H=getHeight();
+
+	float ret=0.0f;
+
+	for(int y=0; y<H; ++y)
+		{
+		for(int x=0; x<W; ++x)
+			{
+			Field* field=getField({x, y});
+
+			if(!field->turret)
+				continue;
+
+			ret+=field->turret->getResourceDrain();
+			}
+		}
+
+	ret+=(ownedByPlayer-turretsPlayer)*0.01f;
+
+	return ret;
+	}
+
 Level::Field::Owner Level::getFieldOwner(const Engine::Math::VectorI& fposition) const
 	{
 	if(const Field* field=getField(fposition))
@@ -679,6 +719,18 @@ bool Level::setFieldOwner(const Engine::Math::VectorI& fposition, Field::Owner o
 	return true;
 	}
 
+bool Level::setFieldHighlight(const Engine::Math::VectorI& fposition)
+	{
+	Field* field=getField(fposition);
+
+	if(!field)
+		return false;
+
+	field->highlight=true;
+
+	return true;
+	}
+
 bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 	{
 	Field* field=getField(fposition);
@@ -694,10 +746,8 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 
 	if(isUnitOnField(fposition))
 		{
-		{
 		LOG_WARNING("Jednostki stoja na polu %d,%d", fposition.x, fposition.y);
 		return false;
-		}
 		}
 
 	switch(type)
@@ -726,8 +776,6 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 			//
 		break;
 		}
-
-	// TODO Sprawdzić czy na polu nie ma jednostek
 
 	Turret* turret=nullptr;
 
@@ -777,22 +825,33 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 
 	field->turret=turret;
 
+	if(turret->getConstructionCost()>resources)
+		{
+		LOG_WARNING("Brak wystarczajacych zasobow");
+
+		if(!destroyTurret(fposition, true))
+			{
+			LOG_ERROR("...i nie udalo sie tez jej skasowac, AAAAaaaaa");
+			}
+
+		return false;
+		}
 	if(!turret->init())
 		{
 		LOG_WARNING("Nie udalo sie zainicjowac wiezy");
-		return destroyTurret(fposition);
+
+		if(!destroyTurret(fposition, true))
+			{
+			LOG_ERROR("...i nie udalo sie tez jej skasowac, AAAAaaaaa");
+			}
+
+		return false;
 		}
 	if(!turret->attachToLevel(this, fposition))
 		{
 		LOG_WARNING("Nie udalo sie umiescic wiezy w poziomie");
-		return destroyTurret(fposition);
-		}
 
-	if(!refreshPath())
-		{
-		LOG_WARNING("Nie mozna umiescic wiezy w %d,%d", fposition.x, fposition.y);
-
-		if(!destroyTurret(fposition))
+		if(!destroyTurret(fposition, true))
 			{
 			LOG_ERROR("...i nie udalo sie tez jej skasowac, AAAAaaaaa");
 			}
@@ -802,10 +861,24 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 
 	updateFieldOwners();
 
+	if(!refreshPath())
+		{
+		LOG_WARNING("Nie mozna umiescic wiezy w %d,%d", fposition.x, fposition.y);
+
+		if(!destroyTurret(fposition, true))
+			{
+			LOG_ERROR("...i nie udalo sie tez jej skasowac, AAAAaaaaa");
+			}
+
+		return false;
+		}
+
+	resources-=turret->getConstructionCost();
+
 	return true;
 	}
 
-bool Level::destroyTurret(const Engine::Math::VectorI& fposition)
+bool Level::destroyTurret(const Engine::Math::VectorI& fposition, bool noCost)
 	{
 	Field* field=getField(fposition);
 
@@ -814,6 +887,13 @@ bool Level::destroyTurret(const Engine::Math::VectorI& fposition)
 
 	if(!field->turret)
 		return false;
+
+	if(!noCost && field->turret->getRemovalCost()>resources)
+		{
+		LOG_WARNING("Brak wystarczajacych zasobow");
+
+		return false;
+		}
 
 	switch(field->turret->getType())
 		{
@@ -851,6 +931,11 @@ bool Level::destroyTurret(const Engine::Math::VectorI& fposition)
 		default:
 			//
 		break;
+		}
+
+	if(!noCost)
+		{
+		resources-=field->turret->getRemovalCost();
 		}
 
 	field->turret->removeFromLevel();

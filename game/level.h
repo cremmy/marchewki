@@ -36,9 +36,10 @@ namespace Game
 					ENEMY,
 					};
 
-				Field(): owner(Owner::NONE), turret(nullptr) {}
+				Field(): owner(Owner::NONE), highlight(false), turret(nullptr) {}
 
 				Owner owner;
+				bool highlight;
 
 				Turret* turret;
 				};
@@ -119,6 +120,7 @@ namespace Game
 
 			bool isDepleted() const {return resources<=0.0f;}
 			float getResources() const {return resources;}
+			float getResourceDrain() const;
 			const Field* getField(const Engine::Math::VectorI& fposition) const;
 			Field::Owner getFieldOwner(const Engine::Math::VectorI& fposition) const;
 			unsigned getFieldWidth() const {return spriteFieldNeutral->getW();}
@@ -142,8 +144,9 @@ namespace Game
 			void setResources(float s) {resources=s;}
 			void addResources(float s) {resources+=s; if(resources<0.0f) resources=0.0f;}
 			bool setFieldOwner(const Engine::Math::VectorI& fposition, Field::Owner owner);
+			bool setFieldHighlight(const Engine::Math::VectorI& fposition);
 			bool buildTurret(const Engine::Math::VectorI& fposition, TurretType type);
-			bool destroyTurret(const Engine::Math::VectorI& fposition);
+			bool destroyTurret(const Engine::Math::VectorI& fposition, bool noCost=false);
 
 			bool spawnUnit(UnitType type, const Engine::Math::VectorI& position, const Engine::Math::VectorI& target, float hp, float speed);
 			bool spawnCollectible(const Engine::Math::Vector& position, float value);
