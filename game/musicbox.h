@@ -9,25 +9,25 @@
 
 #include <string>
 
-const char VIVALDI[]="C E E E D C G"
-					 "G F E E E D C G"
-					 "G F E F G F E D"
-					 "C E E E D C G"
-					 "G F E E E D C G"
-					 "G F E F G F E D"
-					 "C G F E F G A G"
-					 "C G F E F G A G"
-					 "C A G F E D C D C C"
-					 "C G F E F G A G"
-					 "C G F E F G A G"
-					 "C A G F E D C D C C";
+const char VIVALDI[]="C E E E D C G   "
+					 "G F E E E D C G   "
+					 "G F E F G F E D   "
+					 "C E E E D C G   "
+					 "G F E E E D C G   "
+					 "G F E F G F E D   "
+					 "C G F E F G A G   "
+					 "C G F E F G A G   "
+					 "C A G   F E D C D C C   "
+					 "C G F E F G A G   "
+					 "C G F E F G A G   "
+					 "C A G   F E D C D C C     ";
 
 namespace Game
 	{
 	class MusicBox
 		{
-		protected:
-			enum {
+		public:
+			enum Note {
 				NOTE_C,
 				NOTE_D,
 				NOTE_E,
@@ -35,8 +35,18 @@ namespace Game
 				NOTE_G,
 				NOTE_A,
 				NOTE_H,
+				NOTE_C_CREEPY,
+				NOTE_D_CREEPY,
+				NOTE_E_CREEPY,
+				NOTE_F_CREEPY,
+				NOTE_G_CREEPY,
+				NOTE_A_CREEPY,
+				NOTE_H_CREEPY,
+
+				NOTE_INVALID,
 			};
 
+		protected:
 			float speed;       // Nuty na sekundę
 			float timer;       // Licznik czasu
 			unsigned step;     // Licznik aktualnej nuty
@@ -45,7 +55,7 @@ namespace Game
 			float creepiness;
 
 		public:
-			MusicBox(): speed(1.0f), timer(0.0f), step(0u), notes(), creepiness(1.0f)
+			MusicBox(): speed(1.0f), timer(0.0f), step(0u), notes(), creepiness(0.0f)
 				{
 				//
 				}

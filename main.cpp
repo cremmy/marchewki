@@ -73,7 +73,11 @@ int main(int, char**)
 		return __LINE__;
 		}
 
+#ifdef BUILD_RELEASE
 	if(!Engine::Render::getInstance().init(1024, 768, "Marchewki", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED_FULLSCREEN))
+#else
+	if(!Engine::Render::getInstance().init(1024, 768, "Marchewki", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED))
+#endif
 		{
 		return __LINE__;
 		}

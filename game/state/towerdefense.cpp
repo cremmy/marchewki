@@ -16,12 +16,16 @@
 #include "../level.h"
 #include "../math_utils.h"
 
+#include "../musicbox.h"
+
 using namespace Game;
 using namespace Game::State;
 
 const float CAMERA_ANGLE=45.0f;
 const float CAMERA_ELEVATION=30.0f;
 const float CAMERA_DISTANCE=1024.0f;
+
+MusicBox mb;
 
 TowerDefense::TowerDefense(): mode(Mode::NONE), level(), playerBase(nullptr), camera(),
 	camTargetAngle(1), camCurrentAngle(1),
@@ -82,6 +86,8 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/unit_player_acolyte.xml"));
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/particle_red.xml"));
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/particle_green.xml"));
+
+	mb.setNotes(VIVALDI);
 
 	return true;
 	}
@@ -392,6 +398,10 @@ bool TowerDefense::update(float dt)
 			//
 		break;
 		}
+
+	//mb.setCreepiness(playerBase->getUpgrade()/(float)(playerBase->getMaxUpgrade()-1));
+	mb.setCreepiness(1.0f);
+	mb.update(dt);
 
 	return false;
 	}

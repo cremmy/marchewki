@@ -72,6 +72,7 @@ namespace Game
 			int getPositionY() const {return fposition.y;}
 			float getHP() const {return hp;}
 			int getUpgrade() const {return upgrade;}
+			int getMaxUpgrade() const {return MAX_UPGRADE;}
 			const Engine::Graphics::SpritePtr& getSprite() const {return sprite;}
 
 			void setHP(float s) {hp=s;}

@@ -151,7 +151,7 @@ void SoundPlayer::music(const std::string& path, unsigned fadeinms, unsigned fad
 		return;
 		}
 
-	LOG_DEBUG("SoundPlayer.music: Muzyka wczytana, startowanie (fadein: %ums)", fadeinms);
+	//LOG_DEBUG("SoundPlayer.music: Muzyka wczytana, startowanie (fadein: %ums)", fadeinms);
 
 	if(fadeinms)
 		Mix_FadeInMusic(currentMusic, -1, fadeinms);
@@ -174,7 +174,7 @@ Mix_Chunk* SoundPlayer::loadSample(const std::string& path)
 	if(it!=chunksNamed.end())
 		return it->second;
 
-	LOG_INFO("SoundPlayer.loadSample: Wczytywanie dzwieku \"%s\"", path.c_str());
+	//LOG_INFO("SoundPlayer.loadSample: Wczytywanie dzwieku \"%s\"", path.c_str());
 
 	Mix_Chunk* chunk=Mix_LoadWAV(path.c_str());
 	//Mix_LoadMUS_RW();
