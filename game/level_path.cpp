@@ -70,6 +70,51 @@ bool Level::refreshPath()
 		return abs(sx)+abs(sy);
 		};
 
+	auto getFieldThreat=[this, getNeighbour](GraphNode* node)->float
+		{
+		float threat=0;
+
+		for(int i=0; i<4; ++i)
+			{
+			GraphNode* neighbour=getNeighbour(node, i);
+
+			if(!neighbour)
+				continue;
+
+			const Field* field=getField({neighbour->x, neighbour->y});
+
+			if(!field->turret)
+				{
+				continue;
+				}
+
+			switch(field->turret->getType())
+				{
+				case TurretType::PLAYER_UNIT_SINGLE_TARGET:
+					threat+=1.0f;
+				break;
+
+				case TurretType::PLAYER_UNIT_AREA_OF_EFFECT:
+					threat+=1.5f;
+				break;
+
+				case TurretType::PLAYER_UNIT_MINE:
+					threat+=2.0f;
+				break;
+
+				case TurretType::PLAYER_CARROT_FIELD:
+					threat-=1.0f;
+				break;
+
+				default:
+					//
+				break;
+				}
+			}
+
+		return threat;
+		};
+
 	std::vector<GraphNode*> open;
 	open.reserve(WIDTH*HEIGHT);
 
@@ -109,7 +154,7 @@ bool Level::refreshPath()
 				continue;
 				}
 
-			const int alt=node->distance+getDistance(neighbour->x, neighbour->y);
+			const int alt=node->distance+getDistance(neighbour->x, neighbour->y) + getFieldThreat(neighbour);
 
 			if(alt<neighbour->distance)
 				{

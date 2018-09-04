@@ -578,7 +578,7 @@ float Level::getResourceDrain() const
 		{
 		for(int x=0; x<W; ++x)
 			{
-			Field* field=getField({x, y});
+			const Field* field=getField({x, y});
 
 			if(!field->turret)
 				continue;

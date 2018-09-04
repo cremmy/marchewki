@@ -22,11 +22,14 @@ namespace Game
 
 				bool enabled;
 
+				// bool canHasChildren; // Lolspeak
 				std::vector<Panel*> children;
 
 				bool selectable;
 				bool selected;
 				bool hasSelectedChild();
+
+				bool hitCheck(const Engine::Math::VectorI& position) const;
 
 			public:
 				Panel(const Engine::Math::VectorI& size):

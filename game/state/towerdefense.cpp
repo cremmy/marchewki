@@ -400,8 +400,8 @@ bool TowerDefense::update(float dt)
 		}
 
 	//mb.setCreepiness(playerBase->getUpgrade()/(float)(playerBase->getMaxUpgrade()-1));
-	mb.setCreepiness(1.0f);
-	mb.update(dt);
+	//mb.setCreepiness(1.0f);
+	//mb.update(dt);
 
 	return false;
 	}

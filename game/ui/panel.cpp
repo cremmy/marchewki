@@ -39,8 +39,13 @@ void Panel::clear()
 
 bool Panel::click(const Engine::Math::VectorI& position)
 	{
+	if(!hitCheck(position))
+		return false;
+
 	for(auto panel: children)
 		{
+		//if(!panel->hitCheck(position))
+		//	continue;
 		if(panel->click(position-panel->position))
 			return true;
 		}
@@ -256,4 +261,14 @@ void Panel::dump(int level)
 		{
 		panel->dump(level+1);
 		}
+	}
+
+
+
+bool Panel::hitCheck(const Engine::Math::VectorI& position) const
+	{
+	return position.x < this->position.x ||
+	       position.y < this->position.y ||
+		   position.x > this->position.x+this->size.x ||
+		   position.y > this->position.y+this->size.y;
 	}

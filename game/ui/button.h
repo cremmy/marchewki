@@ -7,16 +7,29 @@
 
 #pragma once
 
+#include "../../engine/graphics/spriteptr.h"
 #include "panel.h"
 
 namespace Game
 	{
 	namespace UI
 		{
-		class Button
+		class Button: public Panel
 			{
+			protected:
+				Engine::Graphics::SpritePtr sprite;
+
+				int* receiver;
+				int receiverCode;
+
+				bool wasClicked;
+				bool wasHovered;
+
 			public:
-				Button()
+				Button(const Engine::Graphics::SpritePtr& sprite, int* receiver, int code):
+					Panel({sprite.getCurrentFrame().getWidth(), sprite.getCurrentFrame().getHeight()}), sprite(sprite),
+					receiver(nullptr), receiverCode(code),
+					wasClicked(false), wasHovered(false)
 					{
 					//
 					}
@@ -24,6 +37,13 @@ namespace Game
 					{
 					//
 					}
+
+				virtual void update(float dt);
+				virtual void print(float tinterp);
+				//virtual void clear();
+
+				virtual bool click(const Engine::Math::VectorI& position);
+				virtual bool hover(const Engine::Math::VectorI& position);
 			};
 
 		} /* namespace UI */
