@@ -569,6 +569,8 @@ const Level::Field* Level::getField(const Engine::Math::VectorI& fposition) cons
 
 float Level::getResourceDrain() const
 	{
+	const float FIELD_DRAIN=0.05f;
+
 	const int W=getWidth();
 	const int H=getHeight();
 
@@ -587,7 +589,7 @@ float Level::getResourceDrain() const
 			}
 		}
 
-	ret+=(ownedByPlayer-turretsPlayer)*0.01f;
+	ret+=(ownedByPlayer-turretsPlayer)*FIELD_DRAIN;
 
 	return ret;
 	}
@@ -744,6 +746,12 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 		return false;
 		}
 
+	if(resources<getTurretConstructionCost(type))
+		{
+		LOG_WARNING("Brak wystarczajacych zasobow (%.2f -> %.2f)", resources, getTurretConstructionCost(type));
+		return false;
+		}
+
 	if(isUnitOnField(fposition))
 		{
 		LOG_WARNING("Jednostki stoja na polu %d,%d", fposition.x, fposition.y);
@@ -825,17 +833,6 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 
 	field->turret=turret;
 
-	if(turret->getConstructionCost()>resources)
-		{
-		LOG_WARNING("Brak wystarczajacych zasobow");
-
-		if(!destroyTurret(fposition, true))
-			{
-			LOG_ERROR("...i nie udalo sie tez jej skasowac, AAAAaaaaa");
-			}
-
-		return false;
-		}
 	if(!turret->init())
 		{
 		LOG_WARNING("Nie udalo sie zainicjowac wiezy");
@@ -935,7 +932,7 @@ bool Level::destroyTurret(const Engine::Math::VectorI& fposition, bool noCost)
 
 	if(!noCost)
 		{
-		resources-=field->turret->getRemovalCost();
+		resources+=field->turret->getRemovalCost();
 		}
 
 	field->turret->removeFromLevel();

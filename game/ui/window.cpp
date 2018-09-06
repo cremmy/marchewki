@@ -22,6 +22,8 @@ void Window::print(float tinterp)
 	{
 	using namespace Engine::Math;
 
+	// TODO sprawdzanie czy resizeBackground jest prawdą
+
 	const Vector RESIZE_FACTOR(
 		size.x/background.getCurrentFrame().getWidth(),
 		size.y/background.getCurrentFrame().getHeight());

@@ -28,7 +28,7 @@ namespace Game
 			public:
 				Button(const Engine::Graphics::SpritePtr& sprite, int* receiver, int code):
 					Panel({sprite.getCurrentFrame().getWidth(), sprite.getCurrentFrame().getHeight()}), sprite(sprite),
-					receiver(nullptr), receiverCode(code),
+					receiver(receiver), receiverCode(code),
 					wasClicked(false), wasHovered(false)
 					{
 					//

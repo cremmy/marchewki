@@ -34,7 +34,7 @@ namespace Game
 			virtual void update(float dt) override;
 			//virtual void print(float tinterp) override;
 
-			virtual TurretType getType() const override {return TurretType::PLAYER_UNIT_SINGLE_TARGET;}
+			virtual TurretType getType() const override {return TurretType::PLAYER_UNIT_MINE;}
 			virtual bool isWalkable() const override {return true;}
 			virtual bool isFlat() const {return true;}
 			virtual bool isUpgradable() const override {return true;}

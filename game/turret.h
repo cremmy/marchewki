@@ -51,7 +51,7 @@ namespace Game
 			virtual bool init()=0;
 			virtual bool attachToLevel(Level* level, const Engine::Math::VectorI& fposition)=0;
 			virtual bool updateFieldOwners() const=0;
-			virtual bool removeFromLevel()=0;
+			virtual bool removeFromLevel()=0; // TODO Przenieść tutaj używanie zaosbów
 			virtual void update(float dt)=0;
 			virtual void print(float tinterp);
 
@@ -77,7 +77,7 @@ namespace Game
 
 			void setHP(float s) {hp=s;}
 			void setUpgrade(int s) {if(s<0 || s>MAX_UPGRADE) return; else upgrade=s; updateFieldOwners();}
-			void incUpgrade() {if(upgrade>MAX_UPGRADE) return; else upgrade+=1; updateFieldOwners();}
+			bool incUpgrade() {if(upgrade>MAX_UPGRADE) return false; else upgrade+=1; updateFieldOwners(); return true;} // TODO Przenieść tutaj używanie zaosbów
 			void setTarget(Unit* target);
 		};
 

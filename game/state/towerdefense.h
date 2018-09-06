@@ -18,6 +18,12 @@ namespace Game
 	{
 	class TPlayerBase;
 
+	namespace UI
+		{
+		class Window;
+		class Button;
+		}
+
 	namespace State
 		{
 		class TowerDefense: public Engine::Base::ApplicationState, public Engine::Core::AppEventListener
@@ -36,6 +42,15 @@ namespace Game
 					ZOOM_100,
 					ZOOM_200,
 					};
+				enum InterfaceAction
+					{
+					IFACE_BUILD_SINGLE=      0x1<<0,
+					IFACE_BUILD_AOE=         0x1<<1,
+					IFACE_BUILD_MINE=        0x1<<2,
+					IFACE_BUILD_CARROT_FIELD=0x1<<3,
+					IFACE_TURRET_UPGRADE=    0x1<<4,
+					IFACE_TURRET_SELL=        0x1<<5,
+					};
 
 				void initModeNone();
 				void initModeBuilding(TurretType turret);
@@ -51,6 +66,8 @@ namespace Game
 				Level level;
 				TPlayerBase* playerBase;
 
+				Engine::Math::VectorI fposMouse;
+
 				Engine::Render::Camera camera;
 
 				int camTargetAngle;
@@ -59,9 +76,19 @@ namespace Game
 				float camTargetZoom;
 				float camCurrentZoom;
 
+				int ifaceReceiver;
+				UI::Window* interface;
+				UI::Button* ifaceBtnTSingle;
+				UI::Button* ifaceBtnTAOE;
+				UI::Button* ifaceBtnTMine;
+				UI::Button* ifaceBtnTCarrot;
+				UI::Button* ifaceBtnUpgrade;
+				UI::Button* ifaceBtnSell;
+
 				struct
 					{
 					TurretType turret;
+					Engine::Graphics::SpritePtr sprite;
 					} modeBuildData;
 				struct
 					{

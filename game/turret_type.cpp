@@ -64,7 +64,7 @@ float Game::getTurretResourceDrain(TurretType type, int upgrade)
 	{
 	switch(type)
 		{
-		case TurretType::PLAYER_BASE:                return  (upgrade==0)?-1:upgrade;
+		case TurretType::PLAYER_BASE:                return  -(upgrade+1)*0.25f;
 		case TurretType::PLAYER_CARROT_FIELD:        return   0.0f;
 
 		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return   0.01f;

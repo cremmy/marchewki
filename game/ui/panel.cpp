@@ -39,6 +39,8 @@ void Panel::clear()
 
 bool Panel::click(const Engine::Math::VectorI& position)
 	{
+	LOG_DEBUG("pnl %p click %d,%d children: %d", this, position.x, position.y, children.size());
+
 	if(!hitCheck(position))
 		return false;
 
@@ -46,7 +48,7 @@ bool Panel::click(const Engine::Math::VectorI& position)
 		{
 		//if(!panel->hitCheck(position))
 		//	continue;
-		if(panel->click(position-panel->position))
+		if(panel->click(position))
 			return true;
 		}
 
@@ -57,7 +59,7 @@ bool Panel::hover(const Engine::Math::VectorI& position)
 	{
 	for(auto panel: children)
 		{
-		if(panel->hover(position-panel->position))
+		if(panel->hover(position))
 			return true;
 		}
 
@@ -267,8 +269,8 @@ void Panel::dump(int level)
 
 bool Panel::hitCheck(const Engine::Math::VectorI& position) const
 	{
-	return position.x < this->position.x ||
-	       position.y < this->position.y ||
-		   position.x > this->position.x+this->size.x ||
-		   position.y > this->position.y+this->size.y;
+	return !(position.x < this->position.x ||
+	         position.y < this->position.y ||
+		     position.x > this->position.x+this->size.x ||
+		     position.y > this->position.y+this->size.y);
 	}

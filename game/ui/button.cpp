@@ -22,13 +22,17 @@ void Button::print(float tinterp)
 	using namespace Engine::Math;
 	using namespace Engine::Render;
 
-	if(wasClicked)
+	if(!enabled)
+		{
+		Render::getInstance().setColor(Vector(0.5f, 0.5f, 0.5f, 1.0f));
+		}
+	else if(wasClicked)
 		{
 		Render::getInstance().setColor(Vector(0.5f, 1.0f, 0.5f, 1.0f));
 		}
 	else if(wasHovered)
 		{
-		Render::getInstance().setColor(Vector(0.8f, 1.0f, 0.8f, 1.0f));
+		Render::getInstance().setColor(Vector(0.95f, 1.0f, 0.95f, 1.0f));
 		}
 
 	wasClicked=false;
@@ -43,12 +47,14 @@ bool Button::click(const Engine::Math::VectorI& position)
 	{
 	if(!hitCheck(position))
 		return false;
+	if(!enabled)
+		return true; // Kliknięty poprawnie, więc zwracam true
 
 	wasClicked=true;
 
 	if(receiver)
 		{
-		LOG_DEBUG("[btn %p spr %s][receiver: %p][code %d]", this, sprite->getPath(), receiver, receiverCode);
+		LOG_DEBUG("[btn %p spr %s][receiver: %p][code %d]", this, sprite->getPath().c_str(), receiver, receiverCode);
 		(*receiver)|=receiverCode;
 		}
 
@@ -59,6 +65,8 @@ bool Button::hover(const Engine::Math::VectorI& position)
 	{
 	if(!hitCheck(position))
 		return false;
+	if(!enabled)
+		return true;
 
 	wasHovered=true;
 
