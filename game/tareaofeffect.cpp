@@ -80,6 +80,9 @@ bool TAreaOfEffect::attachToLevel(Level* level, const Engine::Math::VectorI& fpo
 
 bool TAreaOfEffect::removeFromLevel()
 	{
+	if(target)
+		target->unlock();
+
 	return true;
 	}
 

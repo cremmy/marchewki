@@ -39,7 +39,7 @@ void Panel::clear()
 
 bool Panel::click(const Engine::Math::VectorI& position)
 	{
-	LOG_DEBUG("pnl %p click %d,%d children: %d", this, position.x, position.y, children.size());
+	//LOG_DEBUG("pnl %p click %d,%d children: %d", this, position.x, position.y, children.size());
 
 	if(!hitCheck(position))
 		return false;

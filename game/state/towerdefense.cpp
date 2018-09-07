@@ -78,6 +78,7 @@ bool TowerDefense::init(Engine::Core::Application *application)
 		LOG_ERROR("Nie udalo sie wstawic spawnera");
 		return false;
 		}
+	level.addResources(10.0f);
 
 	// Moja paranoja nie pozwala mi zaakceptować tego kodu
 	// ...ale moja wiara w 'jakoś to będzie' pozwala mi zostawić modyfikacje na później
@@ -96,8 +97,8 @@ bool TowerDefense::init(Engine::Core::Application *application)
 
 	interface=new UI::Window(
 		{128, Engine::Render::getInstance().getWindowHeight()},
-		Engine::Graphics::SpritePtr("sprite/collectible.xml"),
-		true);
+		Engine::Graphics::SpritePtr("sprite/gui_bg.xml"),
+		false);
 
 	ifaceBtnTSingle=new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_tsingle.xml"), &ifaceReceiver, IFACE_BUILD_SINGLE);
 	ifaceBtnTAOE=   new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_taoe.xml"), &ifaceReceiver, IFACE_BUILD_AOE);
@@ -106,12 +107,12 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	ifaceBtnUpgrade=new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_upgrade.xml"), &ifaceReceiver, IFACE_TURRET_UPGRADE);
 	ifaceBtnSell=   new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_sell.xml"), &ifaceReceiver, IFACE_TURRET_SELL);
 
-	interface->addChild(ifaceBtnTSingle, {16, 64+96*0}, true);
-	interface->addChild(ifaceBtnTAOE,    {16, 64+96*1}, true);
-	interface->addChild(ifaceBtnTMine,   {16, 64+96*2}, true);
-	interface->addChild(ifaceBtnTCarrot, {16, 64+96*3}, true);
-	interface->addChild(ifaceBtnUpgrade, {16, 64+96*4+16}, true);
-	interface->addChild(ifaceBtnSell,    {16, 64+96*5+16}, true);
+	interface->addChild(ifaceBtnTSingle, {8, 64+96*0}, true);
+	interface->addChild(ifaceBtnTAOE,    {8, 64+96*1}, true);
+	interface->addChild(ifaceBtnTMine,   {8, 64+96*2}, true);
+	interface->addChild(ifaceBtnTCarrot, {8, 64+96*3}, true);
+	interface->addChild(ifaceBtnUpgrade, {8, 64+96*4+16}, true);
+	interface->addChild(ifaceBtnSell,    {8, 64+96*5+16}, true);
 
 	initModeNone();
 
@@ -171,6 +172,14 @@ bool TowerDefense::update(float dt)
 			else if(e.data.keyboard.key==SDLK_r)
 				{
 				initModeBuilding(TurretType::PLAYER_CARROT_FIELD);
+				}
+			else if(e.data.keyboard.key==SDLK_a)
+				{
+				ifaceReceiver|=IFACE_TURRET_UPGRADE;
+				}
+			else if(e.data.keyboard.key==SDLK_s)
+				{
+				ifaceReceiver|=IFACE_TURRET_SELL;
 				}
 #ifdef BUILD_DEBUG
 			else if(e.data.keyboard.key==SDLK_z)
@@ -317,7 +326,7 @@ bool TowerDefense::update(float dt)
 				{
 				if(((const Level&)level).getField(fposMouse))
 					{
-					LOG_DEBUG("HIT: %d, %d [click %d %d]", fposMouse.x, fposMouse.y, e.data.mouse.x, e.data.mouse.y);
+					//LOG_DEBUG("HIT: %d, %d [click %d %d]", fposMouse.x, fposMouse.y, e.data.mouse.x, e.data.mouse.y);
 
 					switch(mode)
 						{
@@ -477,9 +486,9 @@ void TowerDefense::updateModeSelected(float dt)
 	ifaceBtnUpgrade->disable();
 	ifaceBtnSell->disable();
 
-	if(level.getResources()>=UPGRADE_COST)
+	if(level.getResources()>=UPGRADE_COST && turret->isUpgradable() && turret->getUpgrade()<turret->getMaxUpgrade())
 		ifaceBtnUpgrade->enable();
-	if(level.getResources()>=SELL_COST)
+	if(level.getResources()>=SELL_COST && turret->isRemovable())
 		ifaceBtnSell->enable();
 
 	if(ifaceReceiver&IFACE_TURRET_UPGRADE)
@@ -658,7 +667,7 @@ void TowerDefense::initModeSelected(const Engine::Math::VectorI fposition)
 	modeSelectedData.fposition=fposition;
 	modeSelectedData.field=((const Level*)&level)->getField(fposition);
 
-	if(!modeSelectedData.field || !modeSelectedData.field->turret)
+	if(!modeSelectedData.field || !modeSelectedData.field->turret || (!modeSelectedData.field->turret->isUpgradable() && !modeSelectedData.field->turret->isRemovable()))
 		{
 		return initModeNone();
 		}

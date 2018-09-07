@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<sprite name="gui_button_build-turret-single">
+<sprite name="gui_button_upgrade">
 	<image name="default">gui.png</image>
 
 	<animation name="default">

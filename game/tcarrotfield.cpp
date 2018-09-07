@@ -57,6 +57,9 @@ bool TCarrotField::attachToLevel(Level* level, const Engine::Math::VectorI& fpos
 
 bool TCarrotField::removeFromLevel()
 	{
+	if(target)
+		target->unlock();
+
 	return true;
 	}
 

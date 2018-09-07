@@ -54,7 +54,7 @@ bool Button::click(const Engine::Math::VectorI& position)
 
 	if(receiver)
 		{
-		LOG_DEBUG("[btn %p spr %s][receiver: %p][code %d]", this, sprite->getPath().c_str(), receiver, receiverCode);
+		//LOG_DEBUG("[btn %p spr %s][receiver: %p][code %d]", this, sprite->getPath().c_str(), receiver, receiverCode);
 		(*receiver)|=receiverCode;
 		}
 

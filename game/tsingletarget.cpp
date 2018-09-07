@@ -83,6 +83,9 @@ bool TSingleTarget::attachToLevel(Level* level, const Engine::Math::VectorI& fpo
 
 bool TSingleTarget::removeFromLevel()
 	{
+	if(target)
+		target->unlock();
+
 	return true;
 	}
 

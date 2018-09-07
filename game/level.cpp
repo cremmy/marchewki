@@ -167,7 +167,7 @@ void Level::print(float tinterp)
 				}*/
 
 			if(field->highlight)
-				Engine::Render::getInstance().setColor(Vector(1.0f, 0.7f, 0.1f, 1.0f));
+				Engine::Render::getInstance().setColor(Vector(1.2f, 1.3f, 1.2f, 1.0f));
 
 			if(field->owner==Field::Owner::ENEMY)
 				Engine::Render::getInstance().draw(Orientation::FLAT_XY+position, spriteFieldEnemy);
@@ -932,7 +932,7 @@ bool Level::destroyTurret(const Engine::Math::VectorI& fposition, bool noCost)
 
 	if(!noCost)
 		{
-		resources+=field->turret->getRemovalCost();
+		resources-=field->turret->getRemovalCost();
 		}
 
 	field->turret->removeFromLevel();
@@ -950,6 +950,14 @@ void Level::updateFieldOwners()
 	{
 	const int W=getWidth();
 	const int H=getHeight();
+
+	for(int y=0; y<H; ++y)
+		{
+		for(int x=0; x<W; ++x)
+			{
+			setFieldOwner({x,  y}, Field::Owner::NONE);
+			}
+		}
 
 	for(int y=0; y<H; ++y)
 		{

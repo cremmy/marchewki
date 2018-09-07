@@ -70,9 +70,9 @@ bool Level::refreshPath()
 		return abs(sx)+abs(sy);
 		};
 
-	auto getFieldThreat=[this, getNeighbour](GraphNode* node)->float
+	auto getFieldThreat=[this, getNeighbour, getDistance](GraphNode* node)->float
 		{
-		float threat=0;
+		float threat=0.0f;
 
 		for(int i=0; i<4; ++i)
 			{
@@ -154,7 +154,10 @@ bool Level::refreshPath()
 				continue;
 				}
 
-			const int alt=node->distance+getDistance(neighbour->x, neighbour->y) + getFieldThreat(neighbour);
+			const int WEIGHT=getDistance(neighbour->x, neighbour->y);
+			const int THREAT=getFieldThreat(neighbour);
+
+			const int alt=node->distance + WEIGHT + (THREAT<WEIGHT)?THREAT:0;
 
 			if(alt<neighbour->distance)
 				{
@@ -210,6 +213,12 @@ bool Level::refreshPath()
 					break;
 
 				node=node->prev;
+				}
+
+			if(node->x!=0 || node->y!=0)
+				{
+				LOG_WARNING("Petla w grafie");
+				//return false;
 				}
 			}
 		}

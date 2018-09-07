@@ -63,6 +63,9 @@ bool TMine::attachToLevel(Level* level, const Engine::Math::VectorI& fposition)
 
 bool TMine::removeFromLevel()
 	{
+	if(target)
+		target->unlock();
+
 	return true;
 	}
 
