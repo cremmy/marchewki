@@ -10,6 +10,7 @@
 #include "../engine/debug/log.h"
 
 #include "level.h"
+#include "math_utils.h"
 #include "psingletarget.h"
 #include "unit.h"
 
@@ -42,21 +43,16 @@ bool TSingleTarget::updateFieldOwners() const
 		return false;
 		}
 
-	auto taxiDistance=[](const VectorI& a, const VectorI& b)->int
-		{
-		return std::abs(a.x-b.x)+std::abs(a.y-b.y);
-		};
-
 	for(int y=-upgrade-1; y<=upgrade+1; ++y)
 		{
 		for(int x=-upgrade-1; x<=upgrade+1; ++x)
 			{
-			if(taxiDistance(fposition, fposition+VectorI(x, y))>upgrade+1)
+			if(MathUtils::taxiDistance(fposition, fposition+VectorI(x, y))>upgrade+1)
 				{
 				continue;
 				}
 
-			level->setFieldOwner(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			level->fieldClaim(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
 			}
 		}
 
@@ -83,8 +79,23 @@ bool TSingleTarget::attachToLevel(Level* level, const Engine::Math::VectorI& fpo
 
 bool TSingleTarget::removeFromLevel()
 	{
+	using namespace Engine::Math;
+
 	if(target)
 		target->unlock();
+
+	for(int y=-upgrade-1; y<=upgrade+1; ++y)
+		{
+		for(int x=-upgrade-1; x<=upgrade+1; ++x)
+			{
+			if(MathUtils::taxiDistance(fposition, fposition+VectorI(x, y))>upgrade+1)
+				{
+				continue;
+				}
+
+			level->fieldRelease(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			}
+		}
 
 	return true;
 	}

@@ -16,12 +16,12 @@
  *
  */
 /* Pomysły:
- *  - Muzyka z 'pozytywki' - pojedyncze sample odtwarzane według pewnego wzoru, im wyższy poziom bazy tym większa część sampli przełączana jest na przesterowane/fałszywe
+ *  ~ Muzyka z 'pozytywki' - pojedyncze sample odtwarzane według pewnego wzoru, im wyższy poziom bazy tym większa część sampli przełączana jest na przesterowane/fałszywe
  *  ~ Jeśli wieża obok jednostki wroga jest polem marchewkowym, to idź do niej. Po wejściu na to pole, HP gracza spada o 1.
  */
 /* TODO:
  *  + Paski zdrowia pod osłabionymi jednostkami wroga
- *  - Świeczki informujące o poziomie wieży
+ *  + Świeczki informujące o poziomie wieży
  *  + Pociski wylatujące z wież?
  *  + Wieże:
  *    + Pojedyncza
@@ -33,11 +33,11 @@
  * - Niszczenie wież wroga/zajmowanie pól wroga
  * - Tworzenie nowych wież wroga
  * - Ograniczenie dostępnego terenu pod budowę wież przez gracza
- * - Obsługa zasobów
+ * + Obsługa zasobów
  * - Obsługa HP gracza (utrata zasobów po wejściu wroga do bazy?)
- * - Interfejs graficzny
+ * + Interfejs graficzny
  * - Obsługa reguł gry
- * - Zliczanie wież w pobliżu ścieżki
+ * + Zliczanie wież w pobliżu ścieżki
  */
 // SDL_main
 #include <cstdio>

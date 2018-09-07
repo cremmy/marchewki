@@ -34,7 +34,7 @@ bool TMine::updateFieldOwners() const
 	{
 	using namespace Engine::Math;
 
-	if(!level->setFieldOwner(fposition, Level::Field::Owner::PLAYER))
+	if(!level->fieldClaim(fposition, Level::Field::Owner::PLAYER))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
@@ -65,6 +65,8 @@ bool TMine::removeFromLevel()
 	{
 	if(target)
 		target->unlock();
+
+	level->fieldRelease(fposition, Level::Field::Owner::PLAYER);
 
 	return true;
 	}

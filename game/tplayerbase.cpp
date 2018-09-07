@@ -30,7 +30,7 @@ bool TPlayerBase::updateFieldOwners() const
 	{
 	using namespace Engine::Math;
 
-	if(!level->setFieldOwner(fposition, Level::Field::Owner::PLAYER))
+	if(!level->fieldClaim(fposition, Level::Field::Owner::PLAYER))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
@@ -42,7 +42,7 @@ bool TPlayerBase::updateFieldOwners() const
 		{
 		for(int x=-FIELD_RANGE; x<=FIELD_RANGE; ++x)
 			{
-			level->setFieldOwner(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			level->fieldClaim(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
 			}
 		}
 
@@ -57,18 +57,23 @@ bool TPlayerBase::attachToLevel(Level* level, const Engine::Math::VectorI& fposi
 		return false;
 		}
 
-	// Level się tym zajmuje
-	/*if(!updateFieldOwners())
-		{
-		LOG_ERROR("Nie udalo sie ustawic wlascicieli pol");
-		return false;
-		}*/
-
 	return true;
 	}
 
 bool TPlayerBase::removeFromLevel()
 	{
+	using namespace Engine::Math;
+
+	const int FIELD_RANGE=(upgrade>=3)?2:1;
+
+	for(int y=-FIELD_RANGE; y<=FIELD_RANGE; ++y)
+		{
+		for(int x=-FIELD_RANGE; x<=FIELD_RANGE; ++x)
+			{
+			level->fieldRelease(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			}
+		}
+
 	return true;
 	}
 
@@ -130,9 +135,6 @@ void TPlayerBase::update(float dt)
 			sprite.setAnimation("5");
 			}
 		}
-
-	// Zasoby
-	level->addResources(-upgrade*dt);
 
 	// Jednostki
 	if(cooldown>0.0f)

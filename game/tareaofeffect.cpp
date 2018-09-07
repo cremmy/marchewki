@@ -7,11 +7,11 @@
 
 #include "tareaofeffect.h"
 
-
 #include "../engine/debug/log.h"
 #include "../engine/render/render.h"
 
 #include "level.h"
+#include "math_utils.h"
 #include "pareaofeffect.h"
 #include "unit.h"
 
@@ -40,27 +40,22 @@ bool TAreaOfEffect::updateFieldOwners() const
 	{
 	using namespace Engine::Math;
 
-	if(!level->setFieldOwner(fposition, Level::Field::Owner::PLAYER))
+	if(!level->fieldClaim(fposition, Level::Field::Owner::PLAYER))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
 		}
 
-	auto taxiDistance=[](const VectorI& a, const VectorI& b)->int
-		{
-		return std::abs(a.x-b.x)+std::abs(a.y-b.y);
-		};
-
 	for(int y=-upgrade-1; y<=upgrade+1; ++y)
 		{
 		for(int x=-upgrade-1; x<=upgrade+1; ++x)
 			{
-			if(taxiDistance(fposition, fposition+VectorI(x, y))>upgrade+1)
-				{
-				continue;
-				}
+			//if(taxiDistance(fposition, fposition+VectorI(x, y))>upgrade+1)
+			//	{
+			//	continue;
+			//	}
 
-			level->setFieldOwner(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			level->fieldClaim(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
 			}
 		}
 
@@ -80,8 +75,18 @@ bool TAreaOfEffect::attachToLevel(Level* level, const Engine::Math::VectorI& fpo
 
 bool TAreaOfEffect::removeFromLevel()
 	{
+	using namespace Engine::Math;
+
 	if(target)
 		target->unlock();
+
+	for(int y=-upgrade-1; y<=upgrade+1; ++y)
+		{
+		for(int x=-upgrade-1; x<=upgrade+1; ++x)
+			{
+			level->fieldRelease(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			}
+		}
 
 	return true;
 	}

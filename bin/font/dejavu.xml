@@ -1,0 +1,1124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sprite name="dejavu.png">
+	<image name="default">dejavu.png</image>
+	<animation name="0"><!--   -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="0" y="0" w="16" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="1"><!-- ! -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="18" y="0" w="4" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="2"><!-- " -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="33" y="0" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="3"><!-- # -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="49" y="0" w="13" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="4"><!-- $ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="67" y="0" w="9" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="5"><!-- % -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="81" y="0" w="16" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="6"><!-- & -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="0" y="0" w="16" h="24" offsetx="0" offsety="0" /><!-- empty -->
+		</direction>
+	</animation>
+	<animation name="7"><!-- ' -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="113" y="0" w="4" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="8"><!-- ( -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="129" y="0" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="9"><!-- ) -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="145" y="0" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="10"><!-- * -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="161" y="0" w="9" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="11"><!-- + -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="178" y="0" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="12"><!-- , -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="192" y="0" w="5" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="13"><!-- - -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="209" y="0" w="7" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="14"><!-- . -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="225" y="0" w="4" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="15"><!-- / -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="240" y="0" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="16"><!-- 0 -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="257" y="0" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="17"><!-- 1 -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="274" y="0" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="18"><!-- 2 -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="289" y="0" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="19"><!-- 3 -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="305" y="0" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="20"><!-- 4 -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="321" y="0" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="21"><!-- 5 -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="337" y="0" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="22"><!-- 6 -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="353" y="0" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="23"><!-- 7 -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="369" y="0" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="24"><!-- 8 -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="385" y="0" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="25"><!-- 9 -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="401" y="0" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="26"><!-- : -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="417" y="0" w="4" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="27"><!-- ; -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="432" y="0" w="5" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="28"><!-- < -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="450" y="0" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="29"><!-- = -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="466" y="0" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="30"><!-- > -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="482" y="0" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="31"><!-- ? -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="497" y="0" w="9" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="32"><!-- @ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="1" y="24" w="16" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="33"><!-- A -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="16" y="24" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="34"><!-- B -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="33" y="24" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="35"><!-- C -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="49" y="24" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="36"><!-- D -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="65" y="24" w="13" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="37"><!-- E -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="81" y="24" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="38"><!-- F -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="97" y="24" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="39"><!-- G -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="113" y="24" w="13" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="40"><!-- H -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="129" y="24" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="41"><!-- I -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="146" y="24" w="4" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="42"><!-- J -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="160" y="24" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="43"><!-- K -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="177" y="24" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="44"><!-- L -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="193" y="24" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="45"><!-- M -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="209" y="24" w="15" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="46"><!-- N -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="225" y="24" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="47"><!-- O -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="241" y="24" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="48"><!-- P -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="257" y="24" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="49"><!-- Q -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="273" y="24" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="50"><!-- R -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="289" y="24" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="51"><!-- S -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="305" y="24" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="52"><!-- T -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="320" y="24" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="53"><!-- U -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="337" y="24" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="54"><!-- V -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="352" y="24" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="55"><!-- W -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="366" y="24" w="18" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="56"><!-- X -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="384" y="24" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="57"><!-- Y -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="400" y="24" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="58"><!-- Z -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="417" y="24" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="59"><!-- [ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="433" y="24" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="60"><!-- \ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="448" y="24" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="61"><!-- ] -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="465" y="24" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="62"><!-- ^ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="483" y="24" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="63"><!-- _ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="496" y="24" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="64"><!-- ` -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="1" y="48" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="65"><!-- a -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="17" y="48" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="66"><!-- b -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="33" y="48" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="67"><!-- c -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="49" y="48" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="68"><!-- d -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="65" y="48" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="69"><!-- e -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="81" y="48" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="70"><!-- f -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="97" y="48" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="71"><!-- g -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="113" y="48" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="72"><!-- h -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="129" y="48" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="73"><!-- i -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="145" y="48" w="4" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="74"><!-- j -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="160" y="48" w="5" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="75"><!-- k -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="177" y="48" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="76"><!-- l -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="193" y="48" w="4" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="77"><!-- m -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="209" y="48" w="16" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="78"><!-- n -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="225" y="48" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="79"><!-- o -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="241" y="48" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="80"><!-- p -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="257" y="48" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="81"><!-- q -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="273" y="48" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="82"><!-- r -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="289" y="48" w="9" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="83"><!-- s -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="305" y="48" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="84"><!-- t -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="321" y="48" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="85"><!-- u -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="337" y="48" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="86"><!-- v -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="352" y="48" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="87"><!-- w -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="369" y="48" w="15" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="88"><!-- x -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="384" y="48" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="89"><!-- y -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="400" y="48" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="90"><!-- z -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="417" y="48" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="91"><!-- { -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="434" y="48" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="92"><!-- | -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="450" y="48" w="4" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="93"><!-- } -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="466" y="48" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="94"><!-- ~ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="482" y="48" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="95"><!--  -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="496" y="48" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="96"><!-- € -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="0" y="72" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="97"><!--  -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="0" y="0" w="16" h="24" offsetx="0" offsety="0" /><!-- empty -->
+		</direction>
+	</animation>
+	<animation name="98"><!-- ‚ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="33" y="72" w="5" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="99"><!-- ƒ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="0" y="0" w="16" h="24" offsetx="0" offsety="0" /><!-- empty -->
+		</direction>
+	</animation>
+	<animation name="100"><!-- „ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="65" y="72" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="101"><!-- … -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="81" y="72" w="16" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="102"><!-- † -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="97" y="72" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="103"><!-- ‡ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="113" y="72" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="104"><!-- ˆ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="0" y="0" w="16" h="24" offsetx="0" offsety="0" /><!-- empty -->
+		</direction>
+	</animation>
+	<animation name="105"><!-- ‰ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="145" y="72" w="16" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="106"><!-- Š -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="161" y="72" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="107"><!-- ‹ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="177" y="72" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="108"><!-- Œ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="193" y="72" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="109"><!--  -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="208" y="72" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="110"><!--  -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="225" y="72" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="111"><!--  -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="241" y="72" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="112"><!--  -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="0" y="0" w="16" h="24" offsetx="0" offsety="0" /><!-- empty -->
+		</direction>
+	</animation>
+	<animation name="113"><!-- ‘ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="274" y="72" w="5" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="114"><!-- ’ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="289" y="72" w="5" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="115"><!-- “ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="306" y="72" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="116"><!-- ” -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="321" y="72" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="117"><!-- • -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="338" y="72" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="118"><!-- – -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="353" y="72" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="119"><!-- — -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="369" y="72" w="16" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="120"><!-- ˜ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="0" y="0" w="16" h="24" offsetx="0" offsety="0" /><!-- empty -->
+		</direction>
+	</animation>
+	<animation name="121"><!-- ™ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="403" y="72" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="122"><!-- š -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="417" y="72" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="123"><!-- › -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="434" y="72" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="124"><!-- œ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="449" y="72" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="125"><!--  -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="465" y="72" w="9" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="126"><!--  -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="481" y="72" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="127"><!-- Ÿ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="497" y="72" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="128"><!--   -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="0" y="0" w="16" h="24" offsetx="0" offsety="0" /><!-- empty -->
+		</direction>
+	</animation>
+	<animation name="129"><!-- ¡ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="17" y="96" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="130"><!-- ¢ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="33" y="96" w="7" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="131"><!-- £ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="48" y="96" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="132"><!-- ¤ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="65" y="96" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="133"><!-- ¥ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="80" y="96" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="134"><!-- ¦ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="98" y="96" w="4" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="135"><!-- § -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="113" y="96" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="136"><!-- ¨ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="130" y="96" w="7" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="137"><!-- © -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="146" y="96" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="138"><!-- ª -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="161" y="96" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="139"><!-- « -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="177" y="96" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="140"><!-- ¬ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="194" y="96" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="141"><!-- ­ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="209" y="96" w="7" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="142"><!-- ® -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="226" y="96" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="143"><!-- ¯ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="241" y="96" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="144"><!-- ° -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="257" y="96" w="7" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="145"><!-- ± -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="274" y="96" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="146"><!-- ² -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="291" y="96" w="5" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="147"><!-- ³ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="304" y="96" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="148"><!-- ´ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="323" y="96" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="149"><!-- µ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="337" y="96" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="150"><!-- ¶ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="353" y="96" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="151"><!-- · -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="369" y="96" w="5" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="152"><!-- ¸ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="386" y="96" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="153"><!-- ¹ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="401" y="96" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="154"><!-- º -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="417" y="96" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="155"><!-- » -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="434" y="96" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="156"><!-- ¼ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="449" y="96" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="157"><!-- ½ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="466" y="96" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="158"><!-- ¾ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="481" y="96" w="9" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="159"><!-- ¿ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="497" y="96" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="160"><!-- À -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="1" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="161"><!-- Á -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="16" y="120" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="162"><!-- Â -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="32" y="120" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="163"><!-- Ã -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="48" y="120" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="164"><!-- Ä -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="64" y="120" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="165"><!-- Å -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="81" y="120" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="166"><!-- Æ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="97" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="167"><!-- Ç -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="113" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="168"><!-- È -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="129" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="169"><!-- É -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="145" y="120" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="170"><!-- Ê -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="161" y="120" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="171"><!-- Ë -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="177" y="120" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="172"><!-- Ì -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="193" y="120" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="173"><!-- Í -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="210" y="120" w="5" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="174"><!-- Î -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="224" y="120" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="175"><!-- Ï -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="241" y="120" w="13" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="176"><!-- Ğ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="256" y="120" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="177"><!-- Ñ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="273" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="178"><!-- Ò -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="289" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="179"><!-- Ó -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="305" y="120" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="180"><!-- Ô -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="321" y="120" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="181"><!-- Õ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="337" y="120" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="182"><!-- Ö -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="353" y="120" w="14" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="183"><!-- × -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="370" y="120" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="184"><!-- Ø -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="385" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="185"><!-- Ù -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="401" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="186"><!-- Ú -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="417" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="187"><!-- Û -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="433" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="188"><!-- Ü -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="449" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="189"><!-- İ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="464" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="190"><!-- Ş -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="480" y="120" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="191"><!-- ß -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="497" y="120" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="192"><!-- à -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="1" y="144" w="9" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="193"><!-- á -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="17" y="144" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="194"><!-- â -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="33" y="144" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="195"><!-- ã -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="49" y="144" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="196"><!-- ä -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="65" y="144" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="197"><!-- å -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="81" y="144" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="198"><!-- æ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="97" y="144" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="199"><!-- ç -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="113" y="144" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="200"><!-- è -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="129" y="144" w="10" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="201"><!-- é -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="145" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="202"><!-- ê -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="161" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="203"><!-- ë -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="177" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="204"><!-- ì -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="193" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="205"><!-- í -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="209" y="144" w="6" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="206"><!-- î -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="224" y="144" w="7" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="207"><!-- ï -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="241" y="144" w="15" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="208"><!-- ğ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="257" y="144" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="209"><!-- ñ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="273" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="210"><!-- ò -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="289" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="211"><!-- ó -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="305" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="212"><!-- ô -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="321" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="213"><!-- õ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="337" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="214"><!-- ö -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="353" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="215"><!-- ÷ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="370" y="144" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="216"><!-- ø -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="385" y="144" w="9" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="217"><!-- ù -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="401" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="218"><!-- ú -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="417" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="219"><!-- û -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="433" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="220"><!-- ü -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="449" y="144" w="11" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="221"><!-- ı -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="464" y="144" w="12" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="222"><!-- ş -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="481" y="144" w="8" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+	<animation name="223"><!-- ÿ -->
+		<direction name="down" fps="0" loopto="0">
+			<frame x="499" y="144" w="4" h="24" offsetx="0" offsety="0" />
+		</direction>
+	</animation>
+</sprite>

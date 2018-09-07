@@ -7,6 +7,8 @@
 
 #include "towerdefense.h"
 
+#include <iomanip>
+#include <sstream>
 #include <SDL2/SDL.h>
 
 #include "../../engine/debug/log.h"
@@ -78,7 +80,7 @@ bool TowerDefense::init(Engine::Core::Application *application)
 		LOG_ERROR("Nie udalo sie wstawic spawnera");
 		return false;
 		}
-	level.addResources(10.0f);
+	level.addResources(123456.0f);
 
 	// Moja paranoja nie pozwala mi zaakceptować tego kodu
 	// ...ale moja wiara w 'jakoś to będzie' pozwala mi zostawić modyfikacje na później
@@ -113,6 +115,14 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	interface->addChild(ifaceBtnTCarrot, {8, 64+96*3}, true);
 	interface->addChild(ifaceBtnUpgrade, {8, 64+96*4+16}, true);
 	interface->addChild(ifaceBtnSell,    {8, 64+96*5+16}, true);
+
+	ifaceResourcesIcon=Engine::Graphics::SpritePtr("sprite/collectible.xml");
+	if(!ifaceResourcesText.init("font/dejavu.xml", "", 96, 48))
+		{
+		LOG_ERROR("Nie udalo sie zainicjowac tekstu");
+		return false;
+		}
+	ifaceResourcesText.setAlignRight();
 
 	initModeNone();
 
@@ -177,7 +187,7 @@ bool TowerDefense::update(float dt)
 				{
 				ifaceReceiver|=IFACE_TURRET_UPGRADE;
 				}
-			else if(e.data.keyboard.key==SDLK_s)
+			else if(e.data.keyboard.key==SDLK_c)
 				{
 				ifaceReceiver|=IFACE_TURRET_SELL;
 				}
@@ -465,6 +475,15 @@ bool TowerDefense::update(float dt)
 		ifaceReceiver=0;
 		}
 
+	const float RES_DRAIN=level.getResourceDrain();
+	std::stringstream ss;
+	ss.setf(std::ios::fixed);
+	ss << std::setprecision(2) << level.getResources();
+	ss << "\n" << ((RES_DRAIN<0.0f)?"+":"-");
+	ss << std::setprecision(2) << std::abs(RES_DRAIN);
+	ifaceResourcesText.setStr(ss.str());
+	ifaceResourcesText.update();
+
 	return false;
 	}
 
@@ -560,6 +579,9 @@ void TowerDefense::print(float tinterp)
 
 	Render::getInstance().setRenderMode(Engine::Render::RenderMode::GUI);
 	interface->print(tinterp);
+
+	Render::getInstance().draw(Orientation::GUI+Vector(12, 48), ifaceResourcesIcon);
+	ifaceResourcesText.print(Orientation::GUI+Vector(12, 8));
 	}
 
 

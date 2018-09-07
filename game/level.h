@@ -143,6 +143,8 @@ namespace Game
 
 			void setResources(float s) {resources=s;}
 			void addResources(float s) {resources+=s; if(resources<0.0f) resources=0.0f;}
+			bool fieldClaim(const Engine::Math::VectorI& fposition, Field::Owner who) {return (getFieldOwner(fposition)==Field::Owner::NONE)?setFieldOwner(fposition, who):(getFieldOwner(fposition)==who);}
+			bool fieldRelease(const Engine::Math::VectorI& fposition, Field::Owner who) {return (getFieldOwner(fposition)==who)?setFieldOwner(fposition, Field::Owner::NONE):false;}
 			bool setFieldOwner(const Engine::Math::VectorI& fposition, Field::Owner owner);
 			bool setFieldHighlight(const Engine::Math::VectorI& fposition);
 			bool buildTurret(const Engine::Math::VectorI& fposition, TurretType type);

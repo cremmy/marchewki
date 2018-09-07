@@ -18,6 +18,11 @@ namespace Game
 			const float Z_DISTANCE=raypos.z/raydir.z;
 			return raypos-raydir*Z_DISTANCE;
 			}
+
+		inline int taxiDistance(const Engine::Math::VectorI& a, const Engine::Math::VectorI& b)
+			{
+			return std::abs(a.x-b.x)+std::abs(a.y-b.y);
+			};
 		}
 	}
 

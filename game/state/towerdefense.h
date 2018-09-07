@@ -9,6 +9,7 @@
 
 #include "../../engine/base/applicationstate.h"
 #include "../../engine/core/appeventlistener.h"
+#include "../../engine/graphics/ui/text.h"
 #include "../../engine/render/camera.h"
 
 #include "../level.h"
@@ -84,6 +85,8 @@ namespace Game
 				UI::Button* ifaceBtnTCarrot;
 				UI::Button* ifaceBtnUpgrade;
 				UI::Button* ifaceBtnSell;
+				Engine::Graphics::SpritePtr ifaceResourcesIcon;
+				Engine::Graphics::UI::Text ifaceResourcesText;
 
 				struct
 					{

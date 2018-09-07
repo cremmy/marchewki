@@ -760,11 +760,18 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 
 	switch(type)
 		{
-		case TurretType::PLAYER_BASE:
-		case TurretType::PLAYER_CARROT_FIELD:
 		case TurretType::PLAYER_UNIT_SINGLE_TARGET:
 		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT:
 		case TurretType::PLAYER_UNIT_MINE:
+			if(field->owner!=Field::Owner::PLAYER)
+				{
+				LOG_WARNING("Mozna zbudowac tylko na polu gracza");
+				return false;
+				}
+		/* no break */
+
+		case TurretType::PLAYER_BASE:
+		case TurretType::PLAYER_CARROT_FIELD:
 			if(field->owner==Field::Owner::ENEMY)
 				{
 				LOG_WARNING("Nie mozna zbudowac wiezy gracza na polu przeciwnika");
@@ -899,8 +906,7 @@ bool Level::destroyTurret(const Engine::Math::VectorI& fposition, bool noCost)
 				{
 				--farmsPlayer;
 				}
-				/* no break */
-		// break;
+		/* no break */
 
 		case TurretType::PLAYER_BASE:
 		case TurretType::PLAYER_UNIT_SINGLE_TARGET:
@@ -951,13 +957,13 @@ void Level::updateFieldOwners()
 	const int W=getWidth();
 	const int H=getHeight();
 
-	for(int y=0; y<H; ++y)
+	/*for(int y=0; y<H; ++y)
 		{
 		for(int x=0; x<W; ++x)
 			{
 			setFieldOwner({x,  y}, Field::Owner::NONE);
 			}
-		}
+		}*/
 
 	for(int y=0; y<H; ++y)
 		{
