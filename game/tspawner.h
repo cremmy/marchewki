@@ -13,15 +13,44 @@ namespace Game
 	{
 	class TSpawner: public Turret
 		{
+		public:
+			struct WaveDef
+				{
+				int uinfantry;
+				int uarmored;
+				float hp;
+				float cooldownUnit;
+				float cooldownWave;
+				int level;
+				};
+
 		protected:
+			enum State
+				{
+				STATE_NORMAL,
+				STATE_ATTACKED,
+				STATE_OVERLOAD,
+				};
+
 			virtual bool updateFieldOwners() const override;
 
+			State state;
 			int wave;
+			int waveUnit;
+			const WaveDef* waveCurDef;
 
 			/*Engine::Graphics::SpritePtr spriteEnemy;*/
 
+			void initStateNormal();
+			void initStateAttacked();
+			void initStateOverload();
+
+			void updateStateNormal(float dt);
+			void updateStateAttacked(float dt);
+			void updateStateOverload(float dt);
+
 		public:
-			TSpawner(): Turret(), wave(0)
+			TSpawner(): Turret(), state(STATE_NORMAL), wave(0), waveUnit(0), waveCurDef(nullptr)
 				{
 				//
 				}

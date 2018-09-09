@@ -8,6 +8,7 @@
 #include "level.h"
 
 #include <algorithm>
+#include <limits>
 
 #include "../engine/debug/log.h"
 #include "../engine/render/render.h"
@@ -20,7 +21,8 @@ bool Level::refreshPath()
 	{
 	const unsigned WIDTH=getWidth();
 	const unsigned HEIGHT=getHeight();
-	const int DISTANCE_INF=0x7FFF;
+	const float DISTANCE_INF=std::numeric_limits<float>::max();
+	const float MIN_WEIGHT=0.5f;
 
 	if(WIDTH<1u || HEIGHT<1u)
 		return false;
@@ -74,41 +76,43 @@ bool Level::refreshPath()
 		{
 		float threat=0.0f;
 
-		for(int i=0; i<4; ++i)
+		for(int oy=-1; oy<=1; ++oy)
 			{
-			GraphNode* neighbour=getNeighbour(node, i);
-
-			if(!neighbour)
-				continue;
-
-			const Field* field=getField({neighbour->x, neighbour->y});
-
-			if(!field->turret)
+			for(int ox=-1; ox<=1; ++ox)
 				{
-				continue;
-				}
+				const int x=node->x+ox;
+				const int y=node->y+oy;
 
-			switch(field->turret->getType())
-				{
-				case TurretType::PLAYER_UNIT_SINGLE_TARGET:
-					threat+=1.0f;
-				break;
+				const Field* field=getField({x, y});
 
-				case TurretType::PLAYER_UNIT_AREA_OF_EFFECT:
-					threat+=1.5f;
-				break;
+				if(!field || !field->turret)
+					{
+					continue;
+					}
 
-				case TurretType::PLAYER_UNIT_MINE:
-					threat+=2.0f;
-				break;
+				switch(field->turret->getType())
+					{
+					case TurretType::PLAYER_UNIT_SINGLE_TARGET:
+						threat+=1.0f;
+					break;
 
-				case TurretType::PLAYER_CARROT_FIELD:
-					threat-=1.0f;
-				break;
+					case TurretType::PLAYER_UNIT_AREA_OF_EFFECT:
+						threat+=2.5f;
+					break;
 
-				default:
-					//
-				break;
+					case TurretType::PLAYER_UNIT_MINE:
+						if(ox==0 && oy==0)
+							threat+=9.0f;
+					break;
+
+					case TurretType::PLAYER_CARROT_FIELD:
+						threat-=1.0f;
+					break;
+
+					default:
+						//
+					break;
+					}
 				}
 			}
 
@@ -154,10 +158,10 @@ bool Level::refreshPath()
 				continue;
 				}
 
-			const int WEIGHT=getDistance(neighbour->x, neighbour->y);
-			const int THREAT=getFieldThreat(neighbour);
+			const float THREAT=getFieldThreat(neighbour);
+			const float WEIGHT=1.0f + THREAT;
 
-			const int alt=node->distance + WEIGHT + (THREAT<WEIGHT)?THREAT:0;
+			const float alt=node->distance + ((WEIGHT>=MIN_WEIGHT)?WEIGHT:MIN_WEIGHT);
 
 			if(alt<neighbour->distance)
 				{
@@ -190,8 +194,14 @@ bool Level::refreshPath()
 		}*/
 	for(int y=0; y<getHeight(); ++y)
 		{
+		//fprintf(stdout, "\n");
 		for(int x=0; x<getWidth(); ++x)
 			{
+			//if(nodes[y][x].distance==DISTANCE_INF)
+			//	fprintf(stdout, "__.__- ");
+			//else
+			//	fprintf(stdout, "%5.2f%c ", nodes[y][x].distance, (!nodes[y][x].prev)?'-':(nodes[y][x].prev->x<x)?'<':(nodes[y][x].prev->x>x)?'>':(nodes[y][x].prev->y<y)?'^':'v');
+
 			Field* field=getField({x, y});
 
 			if(!field->turret)
@@ -217,11 +227,12 @@ bool Level::refreshPath()
 
 			if(node->x!=0 || node->y!=0)
 				{
-				LOG_WARNING("Petla w grafie");
+				LOG_ERROR("Petla w grafie");
 				//return false;
 				}
 			}
 		}
+	//fprintf(stdout, "\n");
 
 	++pathVersion;
 

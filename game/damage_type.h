@@ -13,6 +13,7 @@ namespace Game
 		{
 		SINGLE_TARGET,
 		AOE,
+		AOE_TRAP,
 		};
 	}
 

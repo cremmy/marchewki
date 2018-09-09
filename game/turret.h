@@ -77,7 +77,7 @@ namespace Game
 
 			void setHP(float s) {hp=s;}
 			void setUpgrade(int s) {if(s<0 || s>MAX_UPGRADE) return; else upgrade=s; updateFieldOwners();}
-			bool incUpgrade() {if(upgrade>MAX_UPGRADE) return false; else upgrade+=1; updateFieldOwners(); return true;} // TODO Przenieść tutaj używanie zaosbów
+			bool incUpgrade() {if(upgrade>=MAX_UPGRADE) return false; else upgrade+=1; updateFieldOwners(); return true;} // TODO Przenieść tutaj używanie zaosbów
 			void setTarget(Unit* target);
 		};
 

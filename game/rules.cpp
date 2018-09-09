@@ -7,7 +7,7 @@
 
 #include "rules.h"
 
-int ruleset;
+static int ruleset;
 
 Rules getRuleset()
 	{

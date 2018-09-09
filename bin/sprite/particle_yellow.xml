@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<sprite name="particle">
+	<image name="default">particle.png</image>
+
+	<animation name="default">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="0" y="8" w="8" h="8" offsetx="4" offsety="4"></frame>
+		</direction>
+	</animation>
+</sprite>

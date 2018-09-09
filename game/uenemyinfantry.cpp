@@ -175,22 +175,25 @@ void UEnemyInfantry::clear()
 
 void UEnemyInfantry::damage(DamageType dmgType, float dmg)
 	{
-	/*switch(dmgType)
+	switch(dmgType)
 		{
-		default:
-		case DamageType::SINGLE_TARGET:
-		case DamageType::AOE:
-			hp-=dmg;
+		case DamageType::AOE_TRAP:
+			hp-=dmg*1.25f;
+			damageTimer=0.75f;
 		break;
-		}*/
 
-	hp-=dmg;
+
+		default:
+		case DamageType::AOE:
+		case DamageType::SINGLE_TARGET:
+			hp-=dmg*1.0f;
+			damageTimer=0.5f;
+		break;
+		}
 
 	if(hp<=0.0f)
 		{
-		level->spawnCollectible(position, 1.0f);
+		level->spawnCollectible(position, hp);
 		}
-
-	damageTimer=0.5f;
 	}
 

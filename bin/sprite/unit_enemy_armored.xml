@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<sprite name="base">
+	<image name="default">unit_enemy_armored.png</image>
+
+	<animation name="standing">
+		<direction name="left" fps="0" loopto="0">
+			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="44"></frame>
+		</direction>
+		<direction name="right" fps="0" loopto="0">
+			<frame x="48" y="0" w="24" h="48" offsetx="10" offsety="44"></frame>
+		</direction>
+	</animation>
+	<animation name="moving">
+		<direction name="left" fps="12" loopto="0">
+			<frame x="24" y="0" w="24" h="48" offsetx="10" offsety="48"></frame>
+			<frame x="24" y="0" w="24" h="48" offsetx="10" offsety="50"></frame>
+			<frame x="24" y="0" w="24" h="48" offsetx="10" offsety="49"></frame>
+			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="47"></frame>
+			<frame x="0" y="0" w="24" h="48" offsetx="10" offsety="44"></frame>
+		</direction>
+		<direction name="right" fps="12" loopto="0">
+			<frame x="72" y="0" w="24" h="48" offsetx="10" offsety="48"></frame>
+			<frame x="72" y="0" w="24" h="48" offsetx="10" offsety="50"></frame>
+			<frame x="72" y="0" w="24" h="48" offsetx="10" offsety="49"></frame>
+			<frame x="48" y="0" w="24" h="48" offsetx="10" offsety="47"></frame>
+			<frame x="48" y="0" w="24" h="48" offsetx="10" offsety="44"></frame>
+		</direction>
+	</animation>
+</sprite>

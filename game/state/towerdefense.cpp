@@ -80,7 +80,7 @@ bool TowerDefense::init(Engine::Core::Application *application)
 		LOG_ERROR("Nie udalo sie wstawic spawnera");
 		return false;
 		}
-	level.addResources(123456.0f);
+	level.addResources(12345.0f);
 
 	// Moja paranoja nie pozwala mi zaakceptować tego kodu
 	// ...ale moja wiara w 'jakoś to będzie' pozwala mi zostawić modyfikacje na później
@@ -90,10 +90,12 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	// Preload spritów
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/collectible.xml"));
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/projectile.xml"));
+	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/unit_enemy_armored.xml"));
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/unit_enemy_infantry.xml"));
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/unit_player_acolyte.xml"));
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/particle_red.xml"));
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/particle_green.xml"));
+	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/particle_yellow.xml"));
 
 	mb.setNotes(VIVALDI);
 
@@ -478,7 +480,10 @@ bool TowerDefense::update(float dt)
 	const float RES_DRAIN=level.getResourceDrain();
 	std::stringstream ss;
 	ss.setf(std::ios::fixed);
-	ss << std::setprecision(2) << level.getResources();
+	if(level.getResources()<=9000)
+		ss << std::setprecision(2) << level.getResources();
+	else
+		ss << ">9000.00";
 	ss << "\n" << ((RES_DRAIN<0.0f)?"+":"-");
 	ss << std::setprecision(2) << std::abs(RES_DRAIN);
 	ifaceResourcesText.setStr(ss.str());

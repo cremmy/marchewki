@@ -25,6 +25,7 @@
 #include "tspawner.h"
 
 #include "unit.h"
+#include "uenemyarmored.h"
 #include "uenemyinfantry.h"
 #include "uplayeracolyte.h"
 
@@ -55,17 +56,34 @@ void Level::update(float dt)
 	const int W=getWidth();
 	const int H=getHeight();
 
+	highlightEmitterTimeout-=dt;
+
 	for(int y=0; y<H; ++y)
 		{
 		for(int x=0; x<W; ++x)
 			{
 			Field* field=getField({x, y});
 
-			if(field->turret)
+			if(field->highlight)
 				{
-				field->turret->update(dt);
+				addEmitter(new ParticleEmitter(ParticleEmitterType::LINEAR_UP, getFieldPosition({x, y}), 0.5f, Engine::Graphics::SpritePtr("sprite/particle_yellow.xml"), 100, getFieldDiagonalSize()*0.25f, 90, 96, 0.25f));
+				}
+
+			if(!field->turret)
+				continue;
+
+			field->turret->update(dt);
+
+			if(!field->turret->isAlive())
+				{
+				destroyTurret({x,  y}, true);
 				}
 			}
+		}
+
+	if(highlightEmitterTimeout<0.0f)
+		{
+		highlightEmitterTimeout=0.5f;
 		}
 
 	resources-=getResourceDrain()*dt;
@@ -212,6 +230,35 @@ void Level::print(float tinterp)
 				}
 			}
 		}
+
+#ifdef BUILD_DEBUG
+	glDisable(GL_DEPTH_TEST);
+	for(int y=0u; y<H; ++y)
+		{
+		for(int x=0u; x<W; ++x)
+			{
+			/*Field* field=getField({x, y});
+
+			const Vector position=Engine::Math::Vector(
+					(x  )*getFieldWidth(),
+					(y+1)*getFieldHeight());*/
+
+			const GraphNode& node=nodes[y][x];
+			if(node.prev)
+				{
+				const Vector center=getFieldPosition({x, y});
+				const Vector dir=VectorNormalize(getFieldPosition({node.prev->x, node.prev->y}) - center);
+				const Vector head=center+dir*32.0f;
+				const Vector headL=MatrixRotZ<float>(135.0f)*dir*16.0f;
+				const Vector headR=MatrixRotZ<float>(-135.0f)*dir*16.0f;
+
+				Engine::Render::getInstance().drawLine(center+Vector(0, 0, 8), head+Vector(0, 0, 8), Vector(1.0f, 1.0f, 1.0f, 0.75f));
+				Engine::Render::getInstance().drawLine(head+Vector(0, 0, 8), head+headL+Vector(0, 0, 8), Vector(1.0f, 1.0f, 1.0f, 0.75f));
+				Engine::Render::getInstance().drawLine(head+Vector(0, 0, 8), head+headR+Vector(0, 0, 8), Vector(1.0f, 1.0f, 1.0f, 0.75f));
+				}
+			}
+		}
+#endif
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -1007,7 +1054,7 @@ bool Level::spawnUnit(UnitType type, const Engine::Math::VectorI& fposition, con
 		break;
 
 		case UnitType::ENEMY_ARMORED:
-			//unit=new UEnemyInfantry();
+			unit=new UEnemyArmored();
 		break;
 
 		default:

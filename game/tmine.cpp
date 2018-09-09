@@ -110,7 +110,7 @@ void TMine::update(float dt)
 				ready=false;
 				for(auto unit: units)
 					{
-					unit->damage(DamageType::AOE, 2.0f-1.5f*upgrade/MAX_UPGRADE);
+					unit->damage(DamageType::AOE_TRAP, 2.0f-1.5f*upgrade/MAX_UPGRADE);
 					}
 
 				cooldown+=getCooldown();
