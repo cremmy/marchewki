@@ -166,6 +166,10 @@ void TSpawner::update(float dt)
 
 	switch(state)
 		{
+		case STATE_SPAWNING:
+			updateStateSpawning(dt);
+		break;
+
 		case STATE_ATTACKED:
 			updateStateAttacked(dt);
 		break;
@@ -179,6 +183,11 @@ void TSpawner::update(float dt)
 			updateStateNormal(dt);
 		break;
 		}
+	}
+
+void TSpawner::updateStateSpawning(float dt)
+	{
+	//
 	}
 
 void TSpawner::updateStateNormal(float dt)

@@ -33,8 +33,21 @@
 		</direction>
 	</animation>
 	<animation name="5">
-		<direction name="right" fps="0" loopto="0">
-			<frame x="480" y="0" w="96" h="128" offsetx="50" offsety="102"></frame>
+		<direction name="right" fps="2" loopto="0">
+			<frame x="480" y="0" w="96" h="128" offsetx="50" offsety="102"></frame><!-- center -->
+			<frame x="480" y="0" w="96" h="128" offsetx="50" offsety="102"></frame><!-- center -->
+			<frame x="480" y="128" w="96" h="128" offsetx="50" offsety="102"></frame><!-- right, up -->
+			<frame x="480" y="0" w="96" h="128" offsetx="50" offsety="102"></frame><!-- center -->
+			<frame x="480" y="0" w="96" h="128" offsetx="50" offsety="102"></frame><!-- center -->
+			<frame x="384" y="128" w="96" h="128" offsetx="50" offsety="102"></frame><!-- right, down -->
+			<frame x="480" y="0" w="96" h="128" offsetx="50" offsety="102"></frame><!-- center -->
+			<frame x="480" y="0" w="96" h="128" offsetx="50" offsety="102"></frame><!-- center -->
+			<frame x="384" y="256" w="96" h="128" offsetx="50" offsety="102"></frame><!-- left, down -->
+			<frame x="480" y="0" w="96" h="128" offsetx="50" offsety="102"></frame><!-- center -->
+			<frame x="480" y="0" w="96" h="128" offsetx="50" offsety="102"></frame><!-- center -->
+			<frame x="480" y="256" w="96" h="128" offsetx="50" offsety="102"></frame><!-- left, up -->
+			<frame x="480" y="0" w="96" h="128" offsetx="50" offsety="102"></frame><!-- center -->
+			<frame x="480" y="0" w="96" h="128" offsetx="50" offsety="102"></frame><!-- center -->
 		</direction>
 	</animation>
 	

@@ -27,6 +27,7 @@ namespace Game
 		protected:
 			enum State
 				{
+				STATE_SPAWNING,
 				STATE_NORMAL,
 				STATE_ATTACKED,
 				STATE_OVERLOAD,
@@ -45,6 +46,7 @@ namespace Game
 			void initStateAttacked();
 			void initStateOverload();
 
+			void updateStateSpawning(float dt);
 			void updateStateNormal(float dt);
 			void updateStateAttacked(float dt);
 			void updateStateOverload(float dt);
