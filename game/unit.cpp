@@ -22,8 +22,8 @@ void Unit::print(float tinterp)
 	if(const Level::Field* field=((const Level*)level)->getField(level->getPositionOnField(position)))
 		{
 		if(field->turret &&
-			((getType()==UnitType::PLAYER_ACOLYTE && field->turret->getType()==TurretType::PLAYER_BASE) ||
-			 (getType()!=UnitType::PLAYER_ACOLYTE && field->turret->getType()==TurretType::ENEMY_SPAWNER)))
+			((getType()==UnitType::PLAYER_ACOLYTE && field->turret->getType()==TurretType::PLAYER_BASE)/* ||
+			 (getType()!=UnitType::PLAYER_ACOLYTE && field->turret->getType()==TurretType::ENEMY_SPAWNER)*/))
 			return;
 		}
 

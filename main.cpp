@@ -31,13 +31,16 @@
  * + Zbierajki wypadające z pokonanych wrogów
  * + Jednostka gracza zbierająca zbierajki
  * - Niszczenie wież wroga/zajmowanie pól wroga
- * - Tworzenie nowych wież wroga
- * - Ograniczenie dostępnego terenu pod budowę wież przez gracza
+ * ~ Tworzenie nowych wież wroga
+ * + Ograniczenie dostępnego terenu pod budowę wież przez gracza
  * + Obsługa zasobów
  * - Obsługa HP gracza (utrata zasobów po wejściu wroga do bazy?)
  * + Interfejs graficzny
  * - Obsługa reguł gry
  * + Zliczanie wież w pobliżu ścieżki
+ * + Ruch kamery strzałkami
+ * - Nie odznaczać przy ruchu kamerą?
+ * + Miny generują zasoby - więcej gdy na cooldownie?
  */
 // SDL_main
 #include <cstdio>

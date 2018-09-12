@@ -64,12 +64,12 @@ float Game::getTurretResourceDrain(TurretType type, int upgrade)
 	{
 	switch(type)
 		{
-		case TurretType::PLAYER_BASE:                return  -(upgrade+1)*0.25f;
-		case TurretType::PLAYER_CARROT_FIELD:        return   0.0f;
+		case TurretType::PLAYER_BASE:                return   0.25f*upgrade;
+		case TurretType::PLAYER_CARROT_FIELD:        return   0.00f;
 
 		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return   0.01f;
 		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT: return   0.05f;
-		case TurretType::PLAYER_UNIT_MINE:           return   0.0f;
+		case TurretType::PLAYER_UNIT_MINE:           return (-0.05f)*upgrade;
 
 		default:
 		//case TurretType::ENEMY_SPAWNER:

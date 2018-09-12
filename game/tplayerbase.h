@@ -37,7 +37,8 @@ namespace Game
 //			virtual bool isFlat() const {return false;}
 //			virtual bool isUpgradable() const override {return false;}
 //			virtual bool isRemovable() const override {return false;}
-			virtual float getCooldown() const {return 10.0f-upgrade*1.0f;}
+			virtual float getResourceDrain() const override;
+			virtual float getCooldown() const override;
 		};
 
 	} /* namespace Game */

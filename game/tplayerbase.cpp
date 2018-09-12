@@ -87,6 +87,16 @@ void TPlayerBase::update(float dt)
 	sprite.update(dt);
 	spriteUpgrade.update(dt);
 
+	if(hp<=0.0f)
+		{
+		if(upgrade!=0)
+			{
+			setUpgrade(0);
+			sprite.setAnimation("0");
+			}
+		return;
+		}
+
 	if(PERCENT<0.30f)
 		{
 		if(upgrade!=0)
@@ -149,3 +159,17 @@ void TPlayerBase::update(float dt)
 		}
 	}
 
+float TPlayerBase::getResourceDrain() const
+	{
+	if(upgrade<1)
+		{
+		return -level->getResourceDrainFields();
+		}
+
+	return getTurretResourceDrain(getType(), upgrade);
+	}
+
+float TPlayerBase::getCooldown() const
+	{
+	return 10.0f-upgrade*1.0f;
+	}

@@ -81,6 +81,8 @@ namespace Game
 			unsigned turretsEnemy;
 			unsigned farmsPlayer;
 
+			float turretEnemySpawnCooldown;
+
 			unsigned unlockedCollectibles;
 			float resources;
 
@@ -89,7 +91,8 @@ namespace Game
 			unsigned pathVersion; // Zwiększane o 1 za każdym razem gdy ścieżki są przeliczane
 
 		public:
-			Level(): ownedByPlayer(0u), ownedByEnemy(0u), turretsPlayer(0u), turretsEnemy(0u), farmsPlayer(0u), unlockedCollectibles(0u), resources(0.0f), highlightEmitterTimeout(0.0f), pathVersion(0u)
+			Level(): ownedByPlayer(0u), ownedByEnemy(0u), turretsPlayer(0u), turretsEnemy(0u), farmsPlayer(0u), turretEnemySpawnCooldown(0.0f),
+				unlockedCollectibles(0u), resources(0.0f), highlightEmitterTimeout(0.0f), pathVersion(0u)
 				{
 				//
 				}
@@ -123,6 +126,7 @@ namespace Game
 			bool isDepleted() const {return resources<=0.0f;}
 			float getResources() const {return resources;}
 			float getResourceDrain() const;
+			float getResourceDrainFields() const;
 			const Field* getField(const Engine::Math::VectorI& fposition) const;
 			Field::Owner getFieldOwner(const Engine::Math::VectorI& fposition) const;
 			unsigned getFieldWidth() const {return spriteFieldNeutral->getW();}

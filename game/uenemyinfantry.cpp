@@ -62,6 +62,11 @@ void UEnemyInfantry::update(float dt)
 	if(fieldXY.x==0 && fieldXY.y==0)
 		{
 		hp=0.0f;
+
+		Turret* turret=((const Level*)level)->getField(fieldXY)->turret;
+		if(turret)
+			turret->setHP(turret->getHP()-1.0f);
+
 		return;
 		}
 

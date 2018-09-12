@@ -31,6 +31,9 @@
 
 using namespace Game;
 
+const float FIELD_DRAIN=0.05f;
+const float FIRST_SPAWNER_DELAY=15.0f;
+
 bool Level::init(unsigned w, unsigned h)
 	{
 	clear();
@@ -53,6 +56,8 @@ bool Level::init(unsigned w, unsigned h)
 
 void Level::update(float dt)
 	{
+	using namespace Engine::Math;
+
 	const int W=getWidth();
 	const int H=getHeight();
 
@@ -74,10 +79,10 @@ void Level::update(float dt)
 
 			field->turret->update(dt);
 
-			if(!field->turret->isAlive())
+			/*if(!field->turret->isAlive() && field->turret->getType()!=TurretType::PLAYER_BASE)
 				{
 				destroyTurret({x,  y}, true);
-				}
+				}*/
 			}
 		}
 
@@ -89,6 +94,49 @@ void Level::update(float dt)
 	resources-=getResourceDrain()*dt;
 	if(resources<0.0f)
 		resources=0.0f;
+
+	if(getEnemyTurretCount()==0u && getPlayerFieldCount()<(unsigned)(W*H))
+		{
+		if(turretEnemySpawnCooldown<FIRST_SPAWNER_DELAY)
+			turretEnemySpawnCooldown+=dt;
+		else
+			{
+			turretEnemySpawnCooldown=FIRST_SPAWNER_DELAY-0.25f;
+
+			const VectorI newSpawnerFPos={rand()%W, rand()%H};
+
+			if(getFieldOwner(newSpawnerFPos)==Field::Owner::NONE)
+				{
+				bool good=true;
+
+				for(int ox=-1; ox<1; ++ox)
+					{
+					for(int oy=-1; oy<1; ++oy)
+						{
+						if(getFieldOwner(newSpawnerFPos+VectorI(ox, oy))==Field::Owner::PLAYER)
+							{
+							good=false;
+							}
+						}
+					}
+
+				if(good)
+					{
+					if(buildTurret(newSpawnerFPos, TurretType::ENEMY_SPAWNER))
+						{
+						//LOG_INFO("Wstawiono spawner");
+						turretEnemySpawnCooldown=0.0f;
+						}
+					}
+
+				LOG_DEBUG("Wylosowano: %d,%d: %s", newSpawnerFPos.x, newSpawnerFPos.y, (good?"OK":"gracz w poblizu"));
+				}
+			}
+		}
+	else
+		{
+		turretEnemySpawnCooldown=0.0f;
+		}
 
 	//LOG_DEBUG("Resources: %f", resources);
 
@@ -232,16 +280,16 @@ void Level::print(float tinterp)
 		}
 
 #ifdef BUILD_DEBUG
-	glDisable(GL_DEPTH_TEST);
+	/*glDisable(GL_DEPTH_TEST);
 	for(int y=0u; y<H; ++y)
 		{
 		for(int x=0u; x<W; ++x)
 			{
-			/*Field* field=getField({x, y});
+			Field* field=getField({x, y});
 
 			const Vector position=Engine::Math::Vector(
 					(x  )*getFieldWidth(),
-					(y+1)*getFieldHeight());*/
+					(y+1)*getFieldHeight());
 
 			const GraphNode& node=nodes[y][x];
 			if(node.prev)
@@ -257,7 +305,7 @@ void Level::print(float tinterp)
 				Engine::Render::getInstance().drawLine(head+Vector(0, 0, 8), head+headR+Vector(0, 0, 8), Vector(1.0f, 1.0f, 1.0f, 0.75f));
 				}
 			}
-		}
+		}*/
 #endif
 
 	glEnable(GL_DEPTH_TEST);
@@ -616,8 +664,6 @@ const Level::Field* Level::getField(const Engine::Math::VectorI& fposition) cons
 
 float Level::getResourceDrain() const
 	{
-	const float FIELD_DRAIN=0.05f;
-
 	const int W=getWidth();
 	const int H=getHeight();
 
@@ -636,9 +682,14 @@ float Level::getResourceDrain() const
 			}
 		}
 
-	ret+=(ownedByPlayer-turretsPlayer)*FIELD_DRAIN;
+	ret+=getResourceDrainFields();
 
 	return ret;
+	}
+
+float Level::getResourceDrainFields() const
+	{
+	return (ownedByPlayer-turretsPlayer)*FIELD_DRAIN;
 	}
 
 Level::Field::Owner Level::getFieldOwner(const Engine::Math::VectorI& fposition) const

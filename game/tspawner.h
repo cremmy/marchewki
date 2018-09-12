@@ -27,6 +27,7 @@ namespace Game
 		protected:
 			enum State
 				{
+				STATE_PRE_SPAWN,
 				STATE_SPAWNING,
 				STATE_NORMAL,
 				STATE_ATTACKED,
@@ -42,6 +43,7 @@ namespace Game
 
 			/*Engine::Graphics::SpritePtr spriteEnemy;*/
 
+			void initStateSpawning();
 			void initStateNormal();
 			void initStateAttacked();
 			void initStateOverload();
@@ -52,7 +54,7 @@ namespace Game
 			void updateStateOverload(float dt);
 
 		public:
-			TSpawner(): Turret(), state(STATE_NORMAL), wave(0), waveUnit(0), waveCurDef(nullptr)
+			TSpawner(): Turret(), state(STATE_PRE_SPAWN), wave(0), waveUnit(0), waveCurDef(nullptr)
 				{
 				//
 				}
@@ -69,6 +71,7 @@ namespace Game
 
 			virtual TurretType getType() const override {return TurretType::ENEMY_SPAWNER;}
 			virtual bool isWalkable() const override {return true;}
+			virtual bool isFlat() const {return true;}
 //			virtual bool isUpgradable() const override {return false;}
 //			virtual bool isRemovable() const override {return false;}
 //			virtual float getRange() const override {return 0.0f;}

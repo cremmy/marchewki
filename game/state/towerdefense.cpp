@@ -17,6 +17,7 @@
 
 #include "../level.h"
 #include "../math_utils.h"
+#include "../tplayerbase.h"
 #include "../turret.h"
 
 #include "../musicbox.h"
@@ -30,6 +31,9 @@ using namespace Game::State;
 const float CAMERA_ANGLE=45.0f;
 const float CAMERA_ELEVATION=30.0f;
 const float CAMERA_DISTANCE=1024.0f;
+
+const int KEYBOARD_CAM_MOVEMENT_SPEED_X=16;
+const int KEYBOARD_CAM_MOVEMENT_SPEED_Y=12;
 
 MusicBox mb;
 
@@ -86,6 +90,7 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	// ...ale moja wiara w 'jakoś to będzie' pozwala mi zostawić modyfikacje na później
 	//                                                                              ...czyli nigdy, o ile będzie działało
 	playerBase=(TPlayerBase*)(((const Level&)level).getField({0, 0})->turret);
+	playerBase->setHP(5.0f);
 
 	// Preload spritów
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/collectible.xml"));
@@ -96,6 +101,7 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/particle_red.xml"));
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/particle_green.xml"));
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/particle_yellow.xml"));
+	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/particle_spawn.xml"));
 
 	mb.setNotes(VIVALDI);
 
@@ -111,15 +117,15 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	ifaceBtnUpgrade=new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_upgrade.xml"), &ifaceReceiver, IFACE_TURRET_UPGRADE);
 	ifaceBtnSell=   new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_sell.xml"), &ifaceReceiver, IFACE_TURRET_SELL);
 
-	interface->addChild(ifaceBtnTSingle, {8, 64+96*0}, true);
-	interface->addChild(ifaceBtnTAOE,    {8, 64+96*1}, true);
-	interface->addChild(ifaceBtnTMine,   {8, 64+96*2}, true);
-	interface->addChild(ifaceBtnTCarrot, {8, 64+96*3}, true);
-	interface->addChild(ifaceBtnUpgrade, {8, 64+96*4+16}, true);
-	interface->addChild(ifaceBtnSell,    {8, 64+96*5+16}, true);
+	interface->addChild(ifaceBtnTSingle, {8, 96+96*0}, true);
+	interface->addChild(ifaceBtnTAOE,    {8, 96+96*1}, true);
+	interface->addChild(ifaceBtnTMine,   {8, 96+96*2}, true);
+	interface->addChild(ifaceBtnTCarrot, {8, 96+96*3}, true);
+	interface->addChild(ifaceBtnUpgrade, {8, 96+96*4+16}, true);
+	interface->addChild(ifaceBtnSell,    {8, 96+96*5+16}, true);
 
 	ifaceResourcesIcon=Engine::Graphics::SpritePtr("sprite/collectible.xml");
-	if(!ifaceResourcesText.init("font/dejavu.xml", "", 96, 48))
+	if(!ifaceResourcesText.init("font/dejavu.xml", "", 96, 96))
 		{
 		LOG_ERROR("Nie udalo sie zainicjowac tekstu");
 		return false;
@@ -146,6 +152,9 @@ bool TowerDefense::update(float dt)
 	camera.getRay(mx, my, raypos, raydir);
 	const Vector POS_CUR=MathUtils::getPositionAtZ0ByRay(raypos, raydir);
 	fposMouse=level.getPositionOnField(POS_CUR);
+
+	int camMoveX=0;
+	int camMoveY=0;
 
 	while(popEvent(e)) // Engine::Core::EventListener::popEvent(e)
 		{
@@ -201,10 +210,6 @@ bool TowerDefense::update(float dt)
 				else if(level.getHeight()<20)
 					level.resizeIncreaseYByOne();
 				}
-			else if(e.data.keyboard.key==SDLK_x)
-				{
-				LOG_DEBUG("[res %12.2f][drain %12f]", level.getResources(), level.getResourceDrain());
-				}
 #endif
 			}
 		/*****************************************************************************/
@@ -217,33 +222,8 @@ bool TowerDefense::update(float dt)
 			/*****************************************************************************/
 			if(e.data.mouse.key&SDL_BUTTON(3))
 				{
-				camera.getRay(mx-e.data.mouse.x, my-e.data.mouse.y, raypos, raydir);
-				const Vector POS_PREV=MathUtils::getPositionAtZ0ByRay(raypos, raydir);
-
-				camera.move((POS_PREV-POS_CUR));
-
-				// Zapobieganie zbytniemu oddaleniu kamery
-				const Vector LEVEL_MIN=level.getFieldPosition({0, 0});
-				const Vector LEVEL_MAX=level.getFieldPosition({level.getWidth()-1, level.getHeight()-1});
-				const Vector CAMERA_CENTER=MathUtils::getPositionAtZ0ByRay(camera.getPosition(), camera.getForward());
-
-				if(CAMERA_CENTER.x<LEVEL_MIN.x)
-					{
-					camera.move(Vector(LEVEL_MIN.x-CAMERA_CENTER.x, 0.0f));
-					}
-				else if(CAMERA_CENTER.x>LEVEL_MAX.x)
-					{
-					camera.move(Vector(LEVEL_MAX.x-CAMERA_CENTER.x, 0.0f));
-					}
-
-				if(CAMERA_CENTER.y<LEVEL_MIN.y)
-					{
-					camera.move(Vector(0.0f, LEVEL_MIN.y-CAMERA_CENTER.y));
-					}
-				else if(CAMERA_CENTER.y>LEVEL_MAX.y)
-					{
-					camera.move(Vector(0.0f, LEVEL_MAX.y-CAMERA_CENTER.y));
-					}
+				camMoveX+=e.data.mouse.x;
+				camMoveY+=e.data.mouse.y;
 				}
 			}
 		/*****************************************************************************/
@@ -377,6 +357,43 @@ bool TowerDefense::update(float dt)
 		}
 
 	/*****************************************************************************/
+	/**** Klawiaturowy ruch kamery ***********************************************/
+	/*****************************************************************************/
+	camMoveX+=KEYBOARD_CAM_MOVEMENT_SPEED_X*(SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT]-SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RIGHT]);
+	camMoveY+=KEYBOARD_CAM_MOVEMENT_SPEED_Y*(SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP]-SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN]);
+
+	if(camMoveX!=0 || camMoveY!=0)
+		{
+		camera.getRay(mx-camMoveX, my-camMoveY, raypos, raydir);
+		const Vector POS_PREV=MathUtils::getPositionAtZ0ByRay(raypos, raydir);
+
+		camera.move((POS_PREV-POS_CUR));
+
+		// Zapobieganie zbytniemu oddaleniu kamery
+		const Vector LEVEL_MIN=level.getFieldPosition({0, 0});
+		const Vector LEVEL_MAX=level.getFieldPosition({level.getWidth()-1, level.getHeight()-1});
+		const Vector CAMERA_CENTER=MathUtils::getPositionAtZ0ByRay(camera.getPosition(), camera.getForward());
+
+		if(CAMERA_CENTER.x<LEVEL_MIN.x)
+			{
+			camera.move(Vector(LEVEL_MIN.x-CAMERA_CENTER.x, 0.0f));
+			}
+		else if(CAMERA_CENTER.x>LEVEL_MAX.x)
+			{
+			camera.move(Vector(LEVEL_MAX.x-CAMERA_CENTER.x, 0.0f));
+			}
+
+		if(CAMERA_CENTER.y<LEVEL_MIN.y)
+			{
+			camera.move(Vector(0.0f, LEVEL_MIN.y-CAMERA_CENTER.y));
+			}
+		else if(CAMERA_CENTER.y>LEVEL_MAX.y)
+			{
+			camera.move(Vector(0.0f, LEVEL_MAX.y-CAMERA_CENTER.y));
+			}
+		}
+
+	/*****************************************************************************/
 	/**** Faktyczny obrót kamery *************************************************/
 	/*****************************************************************************/
 	if(camTargetAngle!=camCurrentAngle)
@@ -486,6 +503,11 @@ bool TowerDefense::update(float dt)
 		ss << ">9000.00";
 	ss << "\n" << ((RES_DRAIN<0.0f)?"+":"-");
 	ss << std::setprecision(2) << std::abs(RES_DRAIN);
+	ss << "\nHP: ";
+	if(playerBase->getHP()>0.0f)
+		ss << std::setprecision(2) << playerBase->getHP();
+	else
+		ss << "ZERO";
 	ifaceResourcesText.setStr(ss.str());
 	ifaceResourcesText.update();
 
@@ -526,8 +548,8 @@ void TowerDefense::updateModeSelected(float dt)
 
 		if(!turret->incUpgrade())
 			{
-			// TODO Sygnał dźwiękowy (fail)
-			LOG_WARNING("Nie udalo sie ulepszyc wiezy");
+			// TODO Sygnał dźwiękowy (fail) ... a moze lepiej nie?
+			//LOG_WARNING("Nie udalo sie ulepszyc wiezy");
 			return;
 			}
 
@@ -586,7 +608,7 @@ void TowerDefense::print(float tinterp)
 	interface->print(tinterp);
 
 	Render::getInstance().draw(Orientation::GUI+Vector(12, 48), ifaceResourcesIcon);
-	ifaceResourcesText.print(Orientation::GUI+Vector(12, 8));
+	ifaceResourcesText.print(Orientation::GUI+Vector(16, 8));
 	}
 
 
@@ -699,3 +721,4 @@ void TowerDefense::initModeSelected(const Engine::Math::VectorI fposition)
 		return initModeNone();
 		}
 	}
+

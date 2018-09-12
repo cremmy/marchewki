@@ -123,6 +123,16 @@ void TMine::update(float dt)
 	}
 
 
+float TMine::getResourceDrain() const
+	{
+	if(ready)
+		{
+		return 0.0f;
+		}
+
+	return getTurretResourceDrain(getType(), upgrade);
+	}
+
 float TMine::getRange() const
 	{
 	//return level->getFieldDiagonalSize()*0.5f;

@@ -58,7 +58,7 @@ namespace Game
 			float getConstructionCost() const {return getTurretConstructionCost(getType());}
 			float getUpgradeCost() const {return getTurretUpgradeCost(getType(), upgrade);}
 			float getRemovalCost() const {return getTurretRemovalCost(getType(), upgrade);}
-			float getResourceDrain() const {return getTurretResourceDrain(getType(), upgrade);}
+			virtual float getResourceDrain() const {return getTurretResourceDrain(getType(), upgrade);}
 			virtual TurretType getType() const=0;
 			virtual bool isWalkable() const {return false;}
 			virtual bool isFlat() const {return false;}

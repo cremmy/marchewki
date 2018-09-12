@@ -10,13 +10,14 @@
 #include "../engine/debug/log.h"
 
 #include "level.h"
+#include "particleemitter.h"
 
 using namespace Game;
 
 const int WAVE_COUNT=50;
 const TSpawner::WaveDef WAVE_DEFINITIONS[WAVE_COUNT]=
 	{
-		{ 1,  0,  1.00f, 2.00f, 10.0f, 0},
+		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
 		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
 		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
 		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
@@ -82,7 +83,7 @@ bool TSpawner::init()
 		return false;
 		}*/
 
-	initStateNormal();
+	state=STATE_PRE_SPAWN;
 
 	return true;
 	}
@@ -131,6 +132,19 @@ bool TSpawner::removeFromLevel()
 
 
 
+void TSpawner::initStateSpawning()
+	{
+	state=STATE_SPAWNING;
+
+	wave=0;
+	waveUnit=0;
+	waveCurDef=nullptr;
+
+	cooldown=15.0f;
+
+	level->addEmitter(new ParticleEmitter(ParticleEmitterType::EXPLOSION, level->getFieldPosition(fposition), cooldown, Engine::Graphics::SpritePtr("sprite/particle_spawn.xml"), 0.6f, 4.0f, 96.0f, 256.0f, 1.0f));
+	}
+
 void TSpawner::initStateNormal()
 	{
 	state=STATE_NORMAL;
@@ -166,6 +180,10 @@ void TSpawner::update(float dt)
 
 	switch(state)
 		{
+		case STATE_PRE_SPAWN:
+			initStateSpawning();
+		break;
+
 		case STATE_SPAWNING:
 			updateStateSpawning(dt);
 		break;
@@ -187,14 +205,18 @@ void TSpawner::update(float dt)
 
 void TSpawner::updateStateSpawning(float dt)
 	{
-	//
+	if(cooldown<=0.0f)
+		{
+		initStateNormal();
+		return;
+		}
 	}
 
 void TSpawner::updateStateNormal(float dt)
 	{
 	using namespace Engine::Math;
 
-	LOG_DEBUG("[wave %d][cd %.2f/%.2f]", wave, cooldown, waveCurDef->cooldownWave);
+	//LOG_DEBUG("[wave %d][cd %.2f/%.2f]", wave, cooldown, waveCurDef->cooldownWave);
 
 	if(cooldown<=0.0f)
 		{
@@ -231,7 +253,7 @@ void TSpawner::updateStateNormal(float dt)
 
 			waveCurDef=&WAVE_DEFINITIONS[wave];
 
-			cooldown=0.2f;//waveCurDef->cooldownWave;
+			cooldown=waveCurDef->cooldownWave;
 			waveUnit=0;
 
 			sprite.setAnimation(waveCurDef->level);
@@ -240,7 +262,7 @@ void TSpawner::updateStateNormal(float dt)
 		else
 			{
 			++waveUnit;
-			cooldown=0.5f;//waveCurDef->cooldownUnit;
+			cooldown=waveCurDef->cooldownUnit;
 
 			if(waveUnit<waveCurDef->uarmored)
 				level->spawnUnit(UnitType::ENEMY_ARMORED, fposition, Engine::Math::VectorI(0, 0), waveCurDef->hp, level->getFieldDiagonalSize()*0.5f);
