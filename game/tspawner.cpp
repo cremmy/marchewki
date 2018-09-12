@@ -11,6 +11,7 @@
 
 #include "level.h"
 #include "particleemitter.h"
+#include "rules.h"
 
 using namespace Game;
 
@@ -239,7 +240,11 @@ void TSpawner::updateStateNormal(float dt)
 				}
 			}
 
-		if(waveUnit>=waveCurDef->uinfantry+waveCurDef->uarmored)
+		if(!isRuleEnabled(RULE_ENEMY_SPAWN_UNITS))
+			{
+			cooldown=1.0f;
+			}
+		else if(waveUnit>=waveCurDef->uinfantry+waveCurDef->uarmored)
 			{
 			if(wave<WAVE_COUNT-1)
 				{

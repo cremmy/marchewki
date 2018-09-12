@@ -12,6 +12,7 @@
 
 #include "level.h"
 #include "psingletarget.h"
+#include "rules.h"
 #include "unit.h"
 
 using namespace Game;
@@ -89,8 +90,16 @@ void TCarrotField::update(float dt)
 
 		if(level->isUnitOnField(fposition))
 			{
-			panic=true;
-			cooldown=getCooldown();
+			int countPlayer; // getUnitsOnFieldCount zeruje... a przynajmniej powinno
+			int countEnemy;  // jw.
+
+			level->getUnitsOnFieldCount(fposition, countEnemy, countPlayer);
+
+			if((isRuleEnabled(RULE_PLAYER_STOMPS_CARROTS) && countPlayer>0) || countEnemy>0)
+				{
+				panic=true;
+				cooldown=getCooldown();
+				}
 			}
 		}
 	// Wrogie jednostki na polu

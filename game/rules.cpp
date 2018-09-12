@@ -19,6 +19,11 @@ bool isRuleEnabled(Rules rule)
 	return (ruleset&rule)==rule;
 	}
 
+void setRuleset(Rules rules)
+	{
+	ruleset=rules;
+	}
+
 void enableRule(Rules rule)
 	{
 	ruleset|=rule;

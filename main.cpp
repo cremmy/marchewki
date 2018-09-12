@@ -34,13 +34,23 @@
  * ~ Tworzenie nowych wież wroga
  * + Ograniczenie dostępnego terenu pod budowę wież przez gracza
  * + Obsługa zasobów
- * - Obsługa HP gracza (utrata zasobów po wejściu wroga do bazy?)
+ * - Obsługa HP gracza
+ *    + Utrata HP po wejściu wroga do bazy
+ *    - Powolna utrata HP gdy zasoby==0
+ *    - Koniec gry gdy HP=0
+ * - Wygranie gry
  * + Interfejs graficzny
- * - Obsługa reguł gry
+ * ~ Obsługa reguł gry
  * + Zliczanie wież w pobliżu ścieżki
  * + Ruch kamery strzałkami
  * - Nie odznaczać przy ruchu kamerą?
  * + Miny generują zasoby - więcej gdy na cooldownie?
+ * - Okienko z opisem wieży (hover nad przyciskiem)
+ * - Tutorial
+ */
+/* Balans:
+ *  - Za duży drain z pól na wczesnych etapach gry
+ *  - Jedna wieża nie radzi sobie z początkowymi falami
  */
 // SDL_main
 #include <cstdio>

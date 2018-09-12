@@ -153,7 +153,7 @@ void UEnemyArmored::damage(DamageType dmgType, float dmg)
 
 	if(hp<=0.0f)
 		{
-		level->spawnCollectible(position, hp);
+		level->spawnCollectible(position, maxhp);
 		}
 	}
 

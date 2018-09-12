@@ -101,6 +101,7 @@ namespace Game
 				std::list<Engine::Graphics::SpritePtr> spriteCache;
 
 			public:
+				// TODO parametry gry w konstruktorze (początkowe zasoby, reguły, wielkość planszy)
 				TowerDefense();
 				virtual ~TowerDefense();
 

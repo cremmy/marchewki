@@ -17,6 +17,7 @@
 
 #include "../level.h"
 #include "../math_utils.h"
+#include "../rules.h"
 #include "../tplayerbase.h"
 #include "../turret.h"
 
@@ -63,6 +64,8 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_KEY_UP, *this);
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_WHEEL, *this);
 
+	setRuleset(RULESET_HARD);
+
 	if(!level.init(8, 6))
 		{
 		LOG_ERROR("Nie udalo sie zainicjowac poziomu");
@@ -84,7 +87,7 @@ bool TowerDefense::init(Engine::Core::Application *application)
 		LOG_ERROR("Nie udalo sie wstawic spawnera");
 		return false;
 		}
-	level.addResources(12345.0f);
+	level.addResources(6.66f);
 
 	// Moja paranoja nie pozwala mi zaakceptować tego kodu
 	// ...ale moja wiara w 'jakoś to będzie' pozwala mi zostawić modyfikacje na później

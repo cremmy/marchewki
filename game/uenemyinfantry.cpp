@@ -14,6 +14,7 @@
 #include "../engine/debug/log.h"
 
 #include "level.h"
+#include "rules.h"
 #include "turret.h"
 
 using namespace Game;
@@ -136,7 +137,7 @@ void UEnemyInfantry::update(float dt)
 
 			target=level->getFieldPosition(fieldXY) + Vector(OX, OY);
 			}
-		else if(isAnyNeighbourACarrotField(fieldXY, target))
+		else if(isRuleEnabled(RULE_ENEMY_PREFER_CARROTS) && isAnyNeighbourACarrotField(fieldXY, target))
 			{
 			//
 			}
@@ -198,7 +199,7 @@ void UEnemyInfantry::damage(DamageType dmgType, float dmg)
 
 	if(hp<=0.0f)
 		{
-		level->spawnCollectible(position, hp);
+		level->spawnCollectible(position, maxhp);
 		}
 	}
 

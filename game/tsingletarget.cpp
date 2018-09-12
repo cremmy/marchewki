@@ -132,7 +132,7 @@ void TSingleTarget::update(float dt)
 		if(target)
 			{
 			//target->damage(DamageType::SINGLE_TARGET, 1.0f);
-			Projectile* projectile=new PSingleTarget(target, 1.0f, getRange());
+			Projectile* projectile=new PSingleTarget(target, 1.0f, getRange()*(1.5f+0.2*upgrade));
 			if(!projectile->init())
 				{
 				cooldown+=10.0f;

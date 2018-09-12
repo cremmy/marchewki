@@ -13,6 +13,7 @@
 #include "../engine/debug/log.h"
 #include "../engine/render/render.h"
 
+#include "rules.h"
 #include "turret.h"
 
 using namespace Game;
@@ -158,7 +159,7 @@ bool Level::refreshPath()
 				continue;
 				}
 
-			const float THREAT=getFieldThreat(neighbour);
+			const float THREAT=(isRuleEnabled(RULE_ENEMY_AVOID_TURRETS))?getFieldThreat(neighbour):0.0f;
 			const float WEIGHT=1.0f + THREAT;
 
 			const float alt=node->distance + ((WEIGHT>=MIN_WEIGHT)?WEIGHT:MIN_WEIGHT);

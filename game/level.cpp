@@ -13,8 +13,9 @@
 #include "collectible.h"
 
 #include "projectile.h"
-
 #include "particleemitter.h"
+
+#include "rules.h"
 
 #include "turret.h"
 #include "tareaofeffect.h"
@@ -31,7 +32,7 @@
 
 using namespace Game;
 
-const float FIELD_DRAIN=0.05f;
+const float FIELD_DRAIN=0.01f; // Procent całości na sekundę
 const float FIRST_SPAWNER_DELAY=15.0f;
 
 bool Level::init(unsigned w, unsigned h)
@@ -91,7 +92,8 @@ void Level::update(float dt)
 		highlightEmitterTimeout=0.5f;
 		}
 
-	resources-=getResourceDrain()*dt;
+	if(isRuleEnabled(RULE_DRAIN_RESOURCES))
+		resources-=getResourceDrain()*dt;
 	if(resources<0.0f)
 		resources=0.0f;
 
@@ -689,7 +691,7 @@ float Level::getResourceDrain() const
 
 float Level::getResourceDrainFields() const
 	{
-	return (ownedByPlayer-turretsPlayer)*FIELD_DRAIN;
+	return (ownedByPlayer-turretsPlayer)*FIELD_DRAIN*resources;
 	}
 
 Level::Field::Owner Level::getFieldOwner(const Engine::Math::VectorI& fposition) const
@@ -844,7 +846,7 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 		return false;
 		}
 
-	if(resources<getTurretConstructionCost(type))
+	if(isRuleEnabled(RULE_BUILDING_COST) && resources<getTurretConstructionCost(type))
 		{
 		LOG_WARNING("Brak wystarczajacych zasobow (%.2f -> %.2f)", resources, getTurretConstructionCost(type));
 		return false;
@@ -975,7 +977,8 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 		return false;
 		}
 
-	resources-=turret->getConstructionCost();
+	if(isRuleEnabled(RULE_BUILDING_COST))
+		resources-=turret->getConstructionCost();
 
 	return true;
 	}
@@ -989,6 +992,9 @@ bool Level::destroyTurret(const Engine::Math::VectorI& fposition, bool noCost)
 
 	if(!field->turret)
 		return false;
+
+	if(!isRuleEnabled(RULE_BUILDING_COST))
+		noCost=true;
 
 	if(!noCost && field->turret->getRemovalCost()>resources)
 		{

@@ -6,17 +6,17 @@
  */
 
 #include "turret_type.h"
-
+#include "consts.h"
 
 float Game::getTurretConstructionCost(TurretType type)
 	{
 	switch(type)
 		{
-		case TurretType::PLAYER_CARROT_FIELD:        return  0.0f;
+		case TurretType::PLAYER_CARROT_FIELD:        return TurretBaseCostConstruction::PLAYER_CARROT_FIELD;
 
-		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return  5.0f;
-		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT: return 25.0f;
-		case TurretType::PLAYER_UNIT_MINE:           return  2.0f;
+		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return TurretBaseCostConstruction::PLAYER_UNIT_SINGLE_TARGET;
+		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT: return TurretBaseCostConstruction::PLAYER_UNIT_AREA_OF_EFFECT;
+		case TurretType::PLAYER_UNIT_MINE:           return TurretBaseCostConstruction::PLAYER_UNIT_MINE;
 
 		default:
 		//case TurretType::PLAYER_BASE:
@@ -29,11 +29,11 @@ float Game::getTurretUpgradeCost(TurretType type, int /*upgrade*/)
 	{
 	switch(type)
 		{
-		case TurretType::PLAYER_CARROT_FIELD:        return  0.0f;
+		case TurretType::PLAYER_CARROT_FIELD:        return TurretBaseCostUpgrade::PLAYER_CARROT_FIELD;
 
-		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return  4.0f;
-		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT: return 12.5f;
-		case TurretType::PLAYER_UNIT_MINE:           return  1.0f;
+		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return TurretBaseCostUpgrade::PLAYER_UNIT_SINGLE_TARGET;
+		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT: return TurretBaseCostUpgrade::PLAYER_UNIT_AREA_OF_EFFECT;
+		case TurretType::PLAYER_UNIT_MINE:           return TurretBaseCostUpgrade::PLAYER_UNIT_MINE;
 
 		default:
 		//case TurretType::PLAYER_BASE:
@@ -46,11 +46,11 @@ float Game::getTurretRemovalCost(TurretType type, int /*upgrade*/)
 	{
 	switch(type)
 		{
-		case TurretType::PLAYER_CARROT_FIELD:        return  0.0f;
+		case TurretType::PLAYER_CARROT_FIELD:        return TurretBaseCostRemoval::PLAYER_CARROT_FIELD;
 
-		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return  -2.5f;
-		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT: return -12.5f;
-		case TurretType::PLAYER_UNIT_MINE:           return  10.0f;
+		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return TurretBaseCostRemoval::PLAYER_UNIT_SINGLE_TARGET;
+		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT: return TurretBaseCostRemoval::PLAYER_UNIT_AREA_OF_EFFECT;
+		case TurretType::PLAYER_UNIT_MINE:           return TurretBaseCostRemoval::PLAYER_UNIT_MINE;
 
 		default:
 		//case TurretType::PLAYER_BASE:
@@ -64,12 +64,12 @@ float Game::getTurretResourceDrain(TurretType type, int upgrade)
 	{
 	switch(type)
 		{
-		case TurretType::PLAYER_BASE:                return   0.25f*upgrade;
-		case TurretType::PLAYER_CARROT_FIELD:        return   0.00f;
+		case TurretType::PLAYER_BASE:                return TurretBaseResourceDrain::PLAYER_BASE*upgrade;
+		case TurretType::PLAYER_CARROT_FIELD:        return TurretBaseResourceDrain::PLAYER_CARROT_FIELD;
 
-		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return   0.01f;
-		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT: return   0.05f;
-		case TurretType::PLAYER_UNIT_MINE:           return (-0.05f)*upgrade;
+		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return TurretBaseResourceDrain::PLAYER_UNIT_SINGLE_TARGET;
+		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT: return TurretBaseResourceDrain::PLAYER_UNIT_AREA_OF_EFFECT;
+		case TurretType::PLAYER_UNIT_MINE:           return TurretBaseResourceDrain::PLAYER_UNIT_MINE*(upgrade+1);
 
 		default:
 		//case TurretType::ENEMY_SPAWNER:
