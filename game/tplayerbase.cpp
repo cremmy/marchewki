@@ -155,7 +155,7 @@ void TPlayerBase::update(float dt)
 		{
 		cooldown+=getCooldown();
 
-		level->spawnUnit(UnitType::PLAYER_ACOLYTE, fposition, {0, 0}, 1.0f, level->getFieldDiagonalSize()*0.6f);
+		level->spawnUnit(UnitType::PLAYER_ACOLYTE, fposition, {0, 0}, 1.0f, level->getFieldDiagonalSize()*UNIT_PLAYER_ACOLYTE_SPEED);
 		}
 	}
 

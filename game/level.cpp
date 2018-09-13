@@ -11,6 +11,7 @@
 #include "../engine/render/render.h"
 
 #include "collectible.h"
+#include "consts.h"
 
 #include "projectile.h"
 #include "particleemitter.h"
@@ -31,9 +32,6 @@
 #include "uplayeracolyte.h"
 
 using namespace Game;
-
-const float FIELD_DRAIN=0.01f; // Procent całości na sekundę
-const float FIRST_SPAWNER_DELAY=15.0f;
 
 bool Level::init(unsigned w, unsigned h)
 	{
@@ -99,11 +97,11 @@ void Level::update(float dt)
 
 	if(getEnemyTurretCount()==0u && getPlayerFieldCount()<(unsigned)(W*H))
 		{
-		if(turretEnemySpawnCooldown<FIRST_SPAWNER_DELAY)
+		if(turretEnemySpawnCooldown<SPAWNER_TIMEOUT_FIRST)
 			turretEnemySpawnCooldown+=dt;
 		else
 			{
-			turretEnemySpawnCooldown=FIRST_SPAWNER_DELAY-0.25f;
+			turretEnemySpawnCooldown=SPAWNER_TIMEOUT_FIRST-0.25f;
 
 			const VectorI newSpawnerFPos={rand()%W, rand()%H};
 
@@ -691,7 +689,7 @@ float Level::getResourceDrain() const
 
 float Level::getResourceDrainFields() const
 	{
-	return (ownedByPlayer-turretsPlayer)*FIELD_DRAIN*resources;
+	return (ownedByPlayer-turretsPlayer)*FIELD_RESOURCE_DRAIN*resources;
 	}
 
 Level::Field::Owner Level::getFieldOwner(const Engine::Math::VectorI& fposition) const

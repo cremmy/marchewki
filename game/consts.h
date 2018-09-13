@@ -39,9 +39,9 @@ namespace Game
 		{
 		const float PLAYER_BASE=                 0.01f;
 		const float PLAYER_CARROT_FIELD=         0.0f;
-		const float PLAYER_UNIT_SINGLE_TARGET=  -2.5f;
-		const float PLAYER_UNIT_AREA_OF_EFFECT=-12.5f;
-		const float PLAYER_UNIT_MINE=           10.0f;
+		const float PLAYER_UNIT_SINGLE_TARGET=   0.01f;
+		const float PLAYER_UNIT_AREA_OF_EFFECT=  0.05f;
+		const float PLAYER_UNIT_MINE=           -0.5f;
 		}
 
 	const float FIELD_RESOURCE_DRAIN=            0.001f; // VAL * resources * empty fields owned by player
@@ -51,21 +51,21 @@ namespace Game
 	/*****************************************************************************/
 	namespace TurretBaseDamage
 		{
-		const float PLAYER_UNIT_SINGLE_TARGET=   0.00f;
-		const float PLAYER_UNIT_AREA_OF_EFFECT=  0.00f;
-		const float PLAYER_UNIT_MINE=            0.00f;
+		const float PLAYER_UNIT_SINGLE_TARGET=   1.00f;
+		const float PLAYER_UNIT_AREA_OF_EFFECT=  0.75f;
+		const float PLAYER_UNIT_MINE=            2.00f;
 		}
 	namespace TurretMaxDamage
 		{
-		const float PLAYER_UNIT_SINGLE_TARGET=   0.00f;
-		const float PLAYER_UNIT_AREA_OF_EFFECT=  0.00f;
-		const float PLAYER_UNIT_MINE=            0.00f;
+		const float PLAYER_UNIT_SINGLE_TARGET=   2.00f;
+		const float PLAYER_UNIT_AREA_OF_EFFECT=  1.50f;
+		const float PLAYER_UNIT_MINE=            1.00f;
 		}
 	/*****************************************************************************/
 	/**** Zasięg wież ************************************************************/
 	/*****************************************************************************/
 	// VAL * level->getFieldDiagonal()
-	namespace TurretBaseRange
+	/*namespace TurretBaseRange
 		{
 		const float PLAYER_UNIT_SINGLE_TARGET=   0.00f;
 		const float PLAYER_UNIT_AREA_OF_EFFECT=  0.00f;
@@ -76,20 +76,23 @@ namespace Game
 		const float PLAYER_UNIT_SINGLE_TARGET=   0.00f;
 		const float PLAYER_UNIT_AREA_OF_EFFECT=  0.00f;
 		const float PLAYER_UNIT_MINE=            0.00f;
-		}
+		}*/
+
+	const float TURRET_AREA_OF_EFFECT_EXPLOSION_MOD=0.5f;
+
 	/*****************************************************************************/
 	/**** Prędkości pocisków *****************************************************/
 	/*****************************************************************************/
 	// VAL * level->getFieldDiagonal()
 	namespace ProjectileBaseSpeed
 		{
-		const float SINGLE_TARGET=   0.00f;
-		const float AREA_OF_EFFECT=  0.00f;
+		const float SINGLE_TARGET=   1.0f;
+		const float AREA_OF_EFFECT=  0.5f;
 		}
 	namespace ProjectileMaxSpeed // Prędkość na maksymalnym poziomie ulepszenia
 		{
-		const float SINGLE_TARGET=   0.00f;
-		const float AREA_OF_EFFECT=  0.00f;
+		const float SINGLE_TARGET=   1.2f;
+		const float AREA_OF_EFFECT=  0.75f;
 		}
 	/*****************************************************************************/
 	/**** Poziom groźności wież **************************************************/

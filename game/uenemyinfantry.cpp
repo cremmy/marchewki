@@ -13,6 +13,7 @@
 
 #include "../engine/debug/log.h"
 
+#include "consts.h"
 #include "level.h"
 #include "rules.h"
 #include "turret.h"
@@ -132,7 +133,7 @@ void UEnemyInfantry::update(float dt)
 
 		if(isFieldACarrotField(fieldXY))
 			{
-			cooldownEating=0.5f;
+			cooldownEating=UNIT_ENEMY_INFANTRY_EATING_COOLDOWN;
 			sprite.setAnimation(0);
 
 			target=level->getFieldPosition(fieldXY) + Vector(OX, OY);
@@ -181,21 +182,31 @@ void UEnemyInfantry::clear()
 
 void UEnemyInfantry::damage(DamageType dmgType, float dmg)
 	{
+	const float prevhp=hp;
 	switch(dmgType)
 		{
-		case DamageType::AOE_TRAP:
-			hp-=dmg*1.25f;
-			damageTimer=0.75f;
+		case DamageType::SINGLE_TARGET:
+			hp-=dmg*UnitDamageModifier::INFANTRY_SINGLE_TARGET;
+			damageTimer=0.5f*UnitDamageModifier::INFANTRY_SINGLE_TARGET;
 		break;
 
+		case DamageType::AOE:
+			hp-=dmg*UnitDamageModifier::INFANTRY_AREA_OF_EFFECT;
+			damageTimer=0.5f*UnitDamageModifier::INFANTRY_AREA_OF_EFFECT;
+		break;
+
+		case DamageType::AOE_TRAP:
+			hp-=dmg*UnitDamageModifier::INFANTRY_AREA_OF_EFFECT_TRAP;
+			damageTimer=0.5f*UnitDamageModifier::INFANTRY_AREA_OF_EFFECT_TRAP;
+		break;
 
 		default:
-		case DamageType::AOE:
-		case DamageType::SINGLE_TARGET:
-			hp-=dmg*1.0f;
+			hp-=dmg;
 			damageTimer=0.5f;
 		break;
 		}
+
+	LOG_DEBUG("Damaged: %.2f/%.2f (%.2f->%.2f)", prevhp-hp, dmg, prevhp, hp);
 
 	if(hp<=0.0f)
 		{

@@ -9,6 +9,7 @@
 
 #include "../engine/debug/log.h"
 
+#include "consts.h"
 #include "level.h"
 #include "math_utils.h"
 #include "psingletarget.h"
@@ -132,7 +133,11 @@ void TSingleTarget::update(float dt)
 		if(target)
 			{
 			//target->damage(DamageType::SINGLE_TARGET, 1.0f);
-			Projectile* projectile=new PSingleTarget(target, 1.0f, getRange()*(1.5f+0.2*upgrade));
+			Projectile* projectile=new PSingleTarget(
+				target,
+				TurretBaseDamage::PLAYER_UNIT_SINGLE_TARGET + (TurretBaseDamage::PLAYER_UNIT_SINGLE_TARGET-TurretBaseDamage::PLAYER_UNIT_SINGLE_TARGET)*(upgrade/(float)MAX_UPGRADE),
+				(ProjectileBaseSpeed::SINGLE_TARGET + (ProjectileMaxSpeed::SINGLE_TARGET-ProjectileBaseSpeed::SINGLE_TARGET)*(upgrade/(float)MAX_UPGRADE))*getRange()
+				);
 			if(!projectile->init())
 				{
 				cooldown+=10.0f;
@@ -163,9 +168,9 @@ float TSingleTarget::getRange() const
 	switch(upgrade)
 		{
 		case 3:  return FIELD_DIAGONAL*2.0f;
-		case 2:  return FIELD_DIAGONAL*1.75f;
-		case 1:  return FIELD_DIAGONAL*1.5f;
-		default: return FIELD_DIAGONAL*1.0f;
+		case 2:  return FIELD_DIAGONAL*1.875f;
+		case 1:  return FIELD_DIAGONAL*1.6f;
+		default: return FIELD_DIAGONAL*1.2f;
 		}
 	}
 

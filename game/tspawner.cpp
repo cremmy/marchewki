@@ -9,6 +9,7 @@
 
 #include "../engine/debug/log.h"
 
+#include "consts.h"
 #include "level.h"
 #include "particleemitter.h"
 #include "rules.h"
@@ -141,7 +142,7 @@ void TSpawner::initStateSpawning()
 	waveUnit=0;
 	waveCurDef=nullptr;
 
-	cooldown=15.0f;
+	cooldown=SPAWNER_COOLDOWN_SPAWNING;
 
 	level->addEmitter(new ParticleEmitter(ParticleEmitterType::EXPLOSION, level->getFieldPosition(fposition), cooldown, Engine::Graphics::SpritePtr("sprite/particle_spawn.xml"), 0.6f, 4.0f, 96.0f, 256.0f, 1.0f));
 	}

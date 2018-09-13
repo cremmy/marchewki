@@ -22,6 +22,7 @@
 
 #include "../engine/debug/log.h"
 
+#include "consts.h"
 #include "level.h"
 #include "turret.h"
 
@@ -131,18 +132,18 @@ void UEnemyArmored::damage(DamageType dmgType, float dmg)
 	switch(dmgType)
 		{
 		case DamageType::SINGLE_TARGET:
-			hp-=dmg*1.50f;
-			damageTimer=0.75f;
+			hp-=dmg*UnitDamageModifier::ARMORED_SINGLE_TARGET;
+			damageTimer=0.5f*UnitDamageModifier::INFANTRY_AREA_OF_EFFECT;
 		break;
 
 		case DamageType::AOE:
-			hp-=dmg*0.25f;
-			damageTimer=0.25f;
+			hp-=dmg*UnitDamageModifier::ARMORED_AREA_OF_EFFECT;
+			damageTimer=0.5f*UnitDamageModifier::ARMORED_AREA_OF_EFFECT;
 		break;
 
 		case DamageType::AOE_TRAP:
-			hp-=dmg*0.75f;
-			damageTimer=0.3f;
+			hp-=dmg*UnitDamageModifier::ARMORED_AREA_OF_EFFECT_TRAP;
+			damageTimer=0.5f*UnitDamageModifier::ARMORED_AREA_OF_EFFECT_TRAP;
 		break;
 
 		default:

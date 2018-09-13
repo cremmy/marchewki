@@ -9,6 +9,7 @@
 
 #include "../engine/debug/log.h"
 
+#include "consts.h"
 #include "level.h"
 #include "particleemitter.h"
 #include "psingletarget.h"
@@ -110,7 +111,9 @@ void TMine::update(float dt)
 				ready=false;
 				for(auto unit: units)
 					{
-					unit->damage(DamageType::AOE_TRAP, 2.0f-1.5f*upgrade/MAX_UPGRADE);
+					unit->damage(
+						DamageType::AOE_TRAP,
+						TurretBaseDamage::PLAYER_UNIT_AREA_OF_EFFECT + (TurretBaseDamage::PLAYER_UNIT_AREA_OF_EFFECT-TurretBaseDamage::PLAYER_UNIT_AREA_OF_EFFECT)*(upgrade/(float)MAX_UPGRADE));
 					}
 
 				cooldown+=getCooldown();

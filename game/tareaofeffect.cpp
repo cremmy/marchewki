@@ -10,6 +10,7 @@
 #include "../engine/debug/log.h"
 #include "../engine/render/render.h"
 
+#include "consts.h"
 #include "level.h"
 #include "math_utils.h"
 #include "pareaofeffect.h"
@@ -118,7 +119,12 @@ void TAreaOfEffect::update(float dt)
 		if(target)
 			{
 			//target->damage(DamageType::SINGLE_TARGET, 1.0f);
-			Projectile* projectile=new PAreaOfEffect(target->getPosition(), getRange()*0.5f, 0.75f, getRange());
+			Projectile* projectile=new PAreaOfEffect(
+					target->getPosition(),
+					TURRET_AREA_OF_EFFECT_EXPLOSION_MOD*getRange(),
+					TurretBaseDamage::PLAYER_UNIT_AREA_OF_EFFECT + (TurretBaseDamage::PLAYER_UNIT_AREA_OF_EFFECT-TurretBaseDamage::PLAYER_UNIT_AREA_OF_EFFECT)*(upgrade/(float)MAX_UPGRADE),
+					(ProjectileBaseSpeed::AREA_OF_EFFECT + (ProjectileMaxSpeed::AREA_OF_EFFECT-ProjectileBaseSpeed::AREA_OF_EFFECT)*(upgrade/(float)MAX_UPGRADE))*getRange()
+					);
 			if(!projectile->init())
 				{
 				cooldown+=10.0f;

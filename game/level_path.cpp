@@ -13,6 +13,7 @@
 #include "../engine/debug/log.h"
 #include "../engine/render/render.h"
 
+#include "consts.h"
 #include "rules.h"
 #include "turret.h"
 
@@ -94,20 +95,20 @@ bool Level::refreshPath()
 				switch(field->turret->getType())
 					{
 					case TurretType::PLAYER_UNIT_SINGLE_TARGET:
-						threat+=1.0f;
+						threat+=TurretThreat::PLAYER_UNIT_SINGLE_TARGET;
 					break;
 
 					case TurretType::PLAYER_UNIT_AREA_OF_EFFECT:
-						threat+=2.5f;
+						threat+=TurretThreat::PLAYER_UNIT_AREA_OF_EFFECT;
 					break;
 
 					case TurretType::PLAYER_UNIT_MINE:
 						if(ox==0 && oy==0)
-							threat+=9.0f;
+							threat+=TurretThreat::PLAYER_UNIT_MINE;
 					break;
 
 					case TurretType::PLAYER_CARROT_FIELD:
-						threat-=1.0f;
+						threat+=TurretThreat::PLAYER_CARROT_FIELD;
 					break;
 
 					default:

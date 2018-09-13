@@ -63,7 +63,7 @@ void UPlayerAcolyte::update(float dt)
 			level->addResources(targetCollectible->collect());
 			targetCollectible=nullptr;
 
-			collectCooldown=1.0f;
+			collectCooldown=UNIT_PLAYER_ACOLYTE_COLLECT_COOLDOWN;
 			sprite.setAnimation(1);
 			level->addEmitter(new ParticleEmitter(ParticleEmitterType::LINEAR_UP, position, 0.5f, Engine::Graphics::SpritePtr("sprite/particle_green.xml"), 100, 8, 200, 250, 1.0f));
 			}
