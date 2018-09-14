@@ -67,8 +67,8 @@ float Game::getTurretResourceDrain(TurretType type, int upgrade)
 		case TurretType::PLAYER_BASE:                return TurretBaseResourceDrain::PLAYER_BASE*upgrade;
 		case TurretType::PLAYER_CARROT_FIELD:        return TurretBaseResourceDrain::PLAYER_CARROT_FIELD;
 
-		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return TurretBaseResourceDrain::PLAYER_UNIT_SINGLE_TARGET;
-		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT: return TurretBaseResourceDrain::PLAYER_UNIT_AREA_OF_EFFECT;
+		case TurretType::PLAYER_UNIT_SINGLE_TARGET:  return TurretBaseResourceDrain::PLAYER_UNIT_SINGLE_TARGET*(upgrade+1);
+		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT: return TurretBaseResourceDrain::PLAYER_UNIT_AREA_OF_EFFECT*(upgrade+1);
 		case TurretType::PLAYER_UNIT_MINE:           return TurretBaseResourceDrain::PLAYER_UNIT_MINE*(upgrade+1);
 
 		default:

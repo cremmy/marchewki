@@ -41,10 +41,10 @@ namespace Game
 		const float PLAYER_CARROT_FIELD=         0.0f;
 		const float PLAYER_UNIT_SINGLE_TARGET=   0.01f;
 		const float PLAYER_UNIT_AREA_OF_EFFECT=  0.05f;
-		const float PLAYER_UNIT_MINE=           -0.5f;
+		const float PLAYER_UNIT_MINE=           -0.1f;
 		}
 
-	const float FIELD_RESOURCE_DRAIN=            0.001f; // VAL * resources * empty fields owned by player
+	const float FIELD_RESOURCE_DRAIN=            0.002f; // VAL * resources * empty fields owned by player
 
 	/*****************************************************************************/
 	/**** Obrażenia wież *********************************************************/

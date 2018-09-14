@@ -689,7 +689,7 @@ float Level::getResourceDrain() const
 
 float Level::getResourceDrainFields() const
 	{
-	return (ownedByPlayer-turretsPlayer)*FIELD_RESOURCE_DRAIN*resources;
+	return (ownedByPlayer)*FIELD_RESOURCE_DRAIN*resources;
 	}
 
 Level::Field::Owner Level::getFieldOwner(const Engine::Math::VectorI& fposition) const

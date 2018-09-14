@@ -120,6 +120,7 @@ void TMine::update(float dt)
 
 				sprite.setAnimation("shooting");
 				level->addEmitter(new ParticleEmitter(ParticleEmitterType::LINEAR_UP, position, 0.5f, Engine::Graphics::SpritePtr("sprite/particle_red.xml"), 200, getRange()*0.5f, 192, 256, 0.5f));
+				level->addEmitter(new ParticleEmitter(ParticleEmitterType::LINEAR_UP, position, cooldown, Engine::Graphics::SpritePtr("sprite/particle_green.xml"), 10, getRange()*0.25f, 192, 256, 0.5f));
 				}
 			}
 		}

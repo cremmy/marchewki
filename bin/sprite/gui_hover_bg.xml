@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<sprite name="gui_bg">
+<sprite name="gui_hover_bg">
 	<image name="default">gui.png</image>
 
 	<animation name="default">
 		<direction name="right" fps="0" loopto="0">
-			<frame x="384" y="0" w="128" h="112" offsetx="0" offsety="0"></frame>
+			<frame x="0" y="320" w="512" h="192" offsetx="0" offsety="0"></frame>
 		</direction>
 	</animation>
 </sprite>

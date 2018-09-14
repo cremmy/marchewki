@@ -127,6 +127,13 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	interface->addChild(ifaceBtnUpgrade, {8, 96+96*4+16}, true);
 	interface->addChild(ifaceBtnSell,    {8, 96+96*5+16}, true);
 
+	ifaceBtnTSingle->setHoverMessage("Koszt: 25.0 (Utrzymanie: -0.01)\nUlepszenie: -5.0\nSprzedanie: +12.5\nOsłabia wszystkich na polu gdy wejdzie [POZIOM]+1 jednostek. Generuje zasoby gdy nieaktywne.");
+	ifaceBtnTAOE->setHoverMessage("ifaceBtnTAOE");
+	ifaceBtnTMine->setHoverMessage("ifaceBtnTMine");
+	ifaceBtnTCarrot->setHoverMessage("ifaceBtnTCarrot");
+	ifaceBtnUpgrade->setHoverMessage("Ulepsz zaznaczoną wieżę");
+	ifaceBtnSell->setHoverMessage("Sprzedaj zaznaczoną wieżę");
+
 	ifaceResourcesIcon=Engine::Graphics::SpritePtr("sprite/collectible.xml");
 	if(!ifaceResourcesText.init("font/dejavu.xml", "", 96, 96))
 		{
@@ -212,6 +219,10 @@ bool TowerDefense::update(float dt)
 					level.resizeIncreaseXByOne();
 				else if(level.getHeight()<20)
 					level.resizeIncreaseYByOne();
+				}
+			else if(e.data.keyboard.key==SDLK_x)
+				{
+				level.addResources(50);
 				}
 #endif
 			}
@@ -449,6 +460,11 @@ bool TowerDefense::update(float dt)
 	/**** Sterowanie *************************************************************/
 	/*****************************************************************************/
 	level.update(dt);
+	if(SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_SPACE])
+		{
+		level.update(dt);
+		level.update(dt);
+		}
 
 	//mb.setCreepiness(playerBase->getUpgrade()/(float)(playerBase->getMaxUpgrade()-1));
 	//mb.setCreepiness(1.0f);
@@ -653,6 +669,8 @@ void TowerDefense::clear()
 	ifaceBtnTCarrot=nullptr;
 	ifaceBtnUpgrade=nullptr;
 	ifaceBtnSell=nullptr;
+
+	spriteCache.clear();
 	}
 
 void TowerDefense::pause()

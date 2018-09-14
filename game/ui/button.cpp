@@ -35,11 +35,23 @@ void Button::print(float tinterp)
 		Render::getInstance().setColor(Vector(0.95f, 1.0f, 0.95f, 1.0f));
 		}
 
-	wasClicked=false;
-	wasHovered=false;
-
 	Render::getInstance().draw(Orientation::GUI+Vector(position.x, position.y), sprite);
 	Render::getInstance().setColor(Vector(1, 1, 1, 1));
+
+	if(wasHovered && hoverBackground)
+		{
+		const int WINDOW_W=Render::getInstance().getWindowWidth();
+		const int WINDOW_H=Render::getInstance().getWindowHeight();
+		const int HOVER_W=hoverBackground.getCurrentFrame().getWidth();
+		const int HOVER_H=hoverBackground.getCurrentFrame().getHeight();
+
+		hoverPosition=VectorClamp(VectorI(128, 0), hoverPosition, VectorI(WINDOW_W-HOVER_W, WINDOW_H-HOVER_H));
+		Render::getInstance().draw(Orientation::GUI+Vector(hoverPosition.x, hoverPosition.y), hoverBackground);
+		hoverMessage.print(Orientation::GUI+Vector(hoverPosition.x+8, hoverPosition.y+8));
+		}
+
+	wasClicked=false;
+	wasHovered=false;
 	}
 
 
@@ -69,6 +81,15 @@ bool Button::hover(const Engine::Math::VectorI& position)
 		return true;
 
 	wasHovered=true;
+	hoverPosition=position;
 
 	return true;
+	}
+
+void Button::setHoverMessage(const std::string& text)
+	{
+	hoverBackground=Engine::Graphics::SpritePtr("sprite/gui_hover_bg.xml");
+	hoverMessage.init("font/dejavu.xml", "", hoverBackground.getCurrentFrame().getWidth()-16, hoverBackground.getCurrentFrame().getHeight()-16);
+	hoverMessage=text;
+	hoverMessage.update();
 	}
