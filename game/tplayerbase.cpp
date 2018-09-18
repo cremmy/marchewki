@@ -9,6 +9,7 @@
 
 #include "../engine/debug/log.h"
 
+#include "consts.h"
 #include "level.h"
 
 using namespace Game;

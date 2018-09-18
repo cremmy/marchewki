@@ -8,6 +8,7 @@
 #include "towerdefense.h"
 
 #include <iomanip>
+#include <regex>
 #include <sstream>
 #include <SDL2/SDL.h>
 
@@ -15,6 +16,8 @@
 #include "../../engine/render/camera.h"
 #include "../../engine/render/render.h"
 
+#include "../consts.h"
+#include "../gui_messages.h"
 #include "../level.h"
 #include "../math_utils.h"
 #include "../rules.h"
@@ -37,6 +40,18 @@ const int KEYBOARD_CAM_MOVEMENT_SPEED_X=16;
 const int KEYBOARD_CAM_MOVEMENT_SPEED_Y=12;
 
 MusicBox mb;
+
+std::string prepareTurretMessage(const std::string& base, float cost, float drain, float upgrade, float sell)
+	{
+	std::string ret=base;
+
+	ret=std::regex_replace(ret, std::regex("%c"), std::to_string(cost));
+	ret=std::regex_replace(ret, std::regex("%d"), std::to_string(drain));
+	ret=std::regex_replace(ret, std::regex("%u"), std::to_string(upgrade));
+	ret=std::regex_replace(ret, std::regex("%s"), std::to_string(sell));
+
+	return ret;
+	}
 
 TowerDefense::TowerDefense(): mode(Mode::NONE), level(), playerBase(nullptr), camera(),
 	camTargetAngle(1), camCurrentAngle(1),
@@ -127,12 +142,30 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	interface->addChild(ifaceBtnUpgrade, {8, 96+96*4+16}, true);
 	interface->addChild(ifaceBtnSell,    {8, 96+96*5+16}, true);
 
-	ifaceBtnTSingle->setHoverMessage("Koszt: 25.0 (Utrzymanie: -0.01)\nUlepszenie: -5.0\nSprzedanie: +12.5\nOsłabia wszystkich na polu gdy wejdzie [POZIOM]+1 jednostek. Generuje zasoby gdy nieaktywne.");
-	ifaceBtnTAOE->setHoverMessage("ifaceBtnTAOE");
-	ifaceBtnTMine->setHoverMessage("ifaceBtnTMine");
-	ifaceBtnTCarrot->setHoverMessage("ifaceBtnTCarrot");
-	ifaceBtnUpgrade->setHoverMessage("Ulepsz zaznaczoną wieżę");
-	ifaceBtnSell->setHoverMessage("Sprzedaj zaznaczoną wieżę");
+	ifaceBtnTSingle->setHoverMessage(
+		prepareTurretMessage(GUI_MESSAGE_BTN_TURRET_SINGLE,
+			TurretBaseCostConstruction::PLAYER_UNIT_SINGLE_TARGET,
+			TurretBaseResourceDrain::PLAYER_UNIT_SINGLE_TARGET,
+			TurretBaseCostUpgrade::PLAYER_UNIT_SINGLE_TARGET,
+			TurretBaseCostRemoval::PLAYER_UNIT_SINGLE_TARGET));
+	ifaceBtnTAOE->setHoverMessage(
+			prepareTurretMessage(GUI_MESSAGE_BTN_TURRET_AOE,
+				TurretBaseCostConstruction::PLAYER_UNIT_AREA_OF_EFFECT,
+				TurretBaseResourceDrain::PLAYER_UNIT_AREA_OF_EFFECT,
+				TurretBaseCostUpgrade::PLAYER_UNIT_AREA_OF_EFFECT,
+				TurretBaseCostRemoval::PLAYER_UNIT_AREA_OF_EFFECT));
+	ifaceBtnTMine->setHoverMessage(
+			prepareTurretMessage(GUI_MESSAGE_BTN_TURRET_MINE,
+				TurretBaseCostConstruction::PLAYER_UNIT_MINE,
+				TurretBaseResourceDrain::PLAYER_UNIT_MINE,
+				TurretBaseCostUpgrade::PLAYER_UNIT_MINE,
+				TurretBaseCostRemoval::PLAYER_UNIT_MINE));
+	ifaceBtnTCarrot->setHoverMessage(
+			prepareTurretMessage(GUI_MESSAGE_BTN_CARROT_FIELD,
+				TurretBaseCostConstruction::PLAYER_CARROT_FIELD,
+				TurretBaseResourceDrain::PLAYER_CARROT_FIELD,
+				TurretBaseCostUpgrade::PLAYER_CARROT_FIELD,
+				TurretBaseCostRemoval::PLAYER_CARROT_FIELD));
 
 	ifaceResourcesIcon=Engine::Graphics::SpritePtr("sprite/collectible.xml");
 	if(!ifaceResourcesText.init("font/dejavu.xml", "", 96, 96))
@@ -741,5 +774,14 @@ void TowerDefense::initModeSelected(const Engine::Math::VectorI fposition)
 		{
 		return initModeNone();
 		}
+
+	ifaceBtnUpgrade->setHoverMessage(
+		prepareTurretMessage(
+			GUI_MESSAGE_BTN_UPGRADE,
+			modeSelectedData.field->turret->getUpgradeCost(), 0, 0, 0));
+	ifaceBtnSell->setHoverMessage(
+		prepareTurretMessage(
+			GUI_MESSAGE_BTN_SELL,
+			modeSelectedData.field->turret->getRemovalCost(), 0, 0, 0));
 	}
 

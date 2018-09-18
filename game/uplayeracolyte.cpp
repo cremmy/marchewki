@@ -9,6 +9,7 @@
 
 #include "../engine/debug/log.h"
 
+#include "consts.h"
 #include "collectible.h"
 #include "level.h"
 #include "particleemitter.h"

@@ -31,12 +31,12 @@
  * + Zbierajki wypadające z pokonanych wrogów
  * + Jednostka gracza zbierająca zbierajki
  * - Niszczenie wież wroga/zajmowanie pól wroga
- * ~ Tworzenie nowych wież wroga
+ * ~ Tworzenie nowych wież wroga (tworzenie pierwszej gdy brak jakichkolwiek)
  * + Ograniczenie dostępnego terenu pod budowę wież przez gracza
  * + Obsługa zasobów
  * - Obsługa HP gracza
  *    + Utrata HP po wejściu wroga do bazy
- *    - Powolna utrata HP gdy zasoby==0
+ *    + Powolna utrata HP gdy zasoby==0
  *    - Koniec gry gdy HP=0
  * - Wygranie gry
  * + Interfejs graficzny
@@ -47,10 +47,11 @@
  * + Miny generują zasoby - więcej gdy na cooldownie?
  * - Okienko z opisem wieży (hover nad przyciskiem)
  * - Tutorial
+ * - Menu główne
  */
 /* Balans:
- *  - Za duży drain z pól na wczesnych etapach gry
- *  - Jedna wieża nie radzi sobie z początkowymi falami
+ *  + Za duży drain z pól na wczesnych etapach gry
+ *  + Jedna wieża nie radzi sobie z początkowymi falami
  */
 // SDL_main
 #include <cstdio>
