@@ -19,11 +19,11 @@ using namespace Game;
 const int WAVE_COUNT=50;
 const TSpawner::WaveDef WAVE_DEFINITIONS[WAVE_COUNT]=
 	{
-		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
-		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
-		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
-		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
-		{ 2,  0,  1.00f, 2.00f,  5.0f, 0},
+		{ 0,  1,  1.00f, 2.00f,  5.0f, 0},
+		{ 0,  1,  1.00f, 2.00f,  5.0f, 0},
+		{ 0,  1,  1.00f, 2.00f,  5.0f, 0},
+		{ 0,  1,  1.00f, 2.00f,  5.0f, 0},
+		{ 0,  1,  1.00f, 2.00f,  5.0f, 0},
 		{ 2,  0,  1.00f, 2.00f,  4.5f, 0},
 		{ 2,  0,  1.00f, 2.00f,  4.5f, 0},
 		{ 3,  0,  1.00f, 2.00f,  4.5f, 0},
@@ -70,6 +70,53 @@ const TSpawner::WaveDef WAVE_DEFINITIONS[WAVE_COUNT]=
 		{ 1,  9, 10.43f, 0.52f,  3.0f, 2},
 		{ 0, 10, 10.95f, 0.50f,  3.0f, 2},
 	};
+
+
+bool TSpawner::isFieldSafe(const Level* level, const Engine::Math::VectorI& fposition)
+	{
+	using namespace Engine::Math;
+
+	for(int oy=-1; oy<=1; ++oy)
+		{
+		for(int ox=-1; ox<=1; ++ox)
+			{
+			const Level::Field* field=level->getField(fposition+VectorI(ox, oy));
+
+			if(!field)
+				continue;
+
+			if(!field->turret)
+				continue;
+
+			if(field->turret->getType()==TurretType::PLAYER_UNIT_AREA_OF_EFFECT)
+				return false;
+			}
+		}
+
+	return true;
+	}
+
+bool TSpawner::isFieldExtraSafe(const Level* level, const Engine::Math::VectorI& fposition)
+	{
+	using namespace Engine::Math;
+
+	for(int oy=-1; oy<=1; ++oy)
+		{
+		for(int ox=-1; ox<=1; ++ox)
+			{
+			const Level::Field* field=level->getField(fposition+VectorI(ox, oy));
+
+			if(!field)
+				continue;
+
+			if(field->owner==Level::Field::Owner::PLAYER)
+				return false;
+			}
+		}
+
+	return true;
+	}
+
 
 bool TSpawner::init()
 	{
@@ -267,13 +314,14 @@ void TSpawner::updateStateNormal(float dt)
 			}
 		else
 			{
-			++waveUnit;
 			cooldown=waveCurDef->cooldownUnit;
 
 			if(waveUnit<waveCurDef->uarmored)
 				level->spawnUnit(UnitType::ENEMY_ARMORED, fposition, Engine::Math::VectorI(0, 0), waveCurDef->hp, level->getFieldDiagonalSize()*0.5f);
 			else
 				level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), waveCurDef->hp, level->getFieldDiagonalSize()*(0.5f + wave/20*0.2f));
+
+			++waveUnit;
 			}
 		}
 	}

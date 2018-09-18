@@ -44,7 +44,7 @@ namespace Game
 		const float PLAYER_UNIT_MINE=           -0.1f;
 		}
 
-	const float FIELD_RESOURCE_DRAIN=            0.002f; // VAL * resources * empty fields owned by player
+	const float FIELD_RESOURCE_DRAIN=            0.005f; // VAL * resources * empty fields owned by player
 
 	/*****************************************************************************/
 	/**** Obrażenia wież *********************************************************/

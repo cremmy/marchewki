@@ -559,7 +559,7 @@ bool TowerDefense::update(float dt)
 	if(playerBase->getHP()>0.0f)
 		ss << std::setprecision(2) << playerBase->getHP();
 	else
-		ss << "ZERO";
+		ss << "0.0";
 	ifaceResourcesText.setStr(ss.str());
 	ifaceResourcesText.update();
 
@@ -569,12 +569,19 @@ bool TowerDefense::update(float dt)
 
 void TowerDefense::updateModeBuilding(float dt)
 	{
-	//
+	if(playerBase->getHP()<=0.0f)
+		return initModeNone();
 	}
 
 void TowerDefense::updateModeSelected(float dt)
 	{
 	level.setFieldHighlight(modeSelectedData.fposition);
+
+	if(!modeSelectedData.field->turret)
+		{
+		initModeNone();
+		return;
+		}
 
 	Turret* turret=modeSelectedData.field->turret;
 	const float UPGRADE_COST=turret->getUpgradeCost();
@@ -731,6 +738,9 @@ void TowerDefense::initModeBuilding(TurretType turret)
 	{
 	LOG_DEBUG("Mode: BUILDING; Turret: %d", turret);
 
+	if(playerBase->getHP()<=0.0f)
+		return initModeNone();
+
 	mode=Mode::BUILDING;
 	modeBuildData.turret=turret;
 
@@ -765,6 +775,9 @@ void TowerDefense::initModeBuilding(TurretType turret)
 void TowerDefense::initModeSelected(const Engine::Math::VectorI fposition)
 	{
 	LOG_DEBUG("Mode: SELECTED; Field: %d,%d", fposition.x, fposition.y);
+
+	if(playerBase->getHP()<=0.0f)
+		return initModeNone();
 
 	mode=Mode::SELECTED;
 	modeSelectedData.fposition=fposition;

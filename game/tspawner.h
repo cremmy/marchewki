@@ -63,6 +63,9 @@ namespace Game
 				//
 				}
 
+			static bool isFieldSafe(const Level* level, const Engine::Math::VectorI& fposition);
+			static bool isFieldExtraSafe(const Level* level, const Engine::Math::VectorI& fposition);
+
 			virtual bool init() override;
 			virtual bool attachToLevel(Level* level, const Engine::Math::VectorI& fposition) override;
 			virtual bool removeFromLevel() override;

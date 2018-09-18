@@ -138,6 +138,11 @@ void UEnemyInfantry::update(float dt)
 
 			target=level->getFieldPosition(fieldXY) + Vector(OX, OY);
 			}
+		else if(((const Level*)level)->getField({0, 0})->turret->getHP()<=0.0)
+			{
+			VectorI next=VectorClamp(VectorI(0, 0), fieldXY+VectorI(1-2*(rand()%2), 1-2*(rand()%2)), VectorI(level->getWidth()-1, level->getHeight()-1));
+			target=level->getFieldPosition(next) + Vector(OX, OY);
+			}
 		else if(isRuleEnabled(RULE_ENEMY_PREFER_CARROTS) && isAnyNeighbourACarrotField(fieldXY, target))
 			{
 			//
@@ -210,7 +215,7 @@ void UEnemyInfantry::damage(DamageType dmgType, float dmg)
 
 	if(hp<=0.0f)
 		{
-		level->spawnCollectible(position, maxhp);
+		level->spawnCollectible(position, 1.0f);
 		}
 	}
 

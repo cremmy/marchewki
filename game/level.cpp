@@ -93,7 +93,11 @@ void Level::update(float dt)
 	if(isRuleEnabled(RULE_DRAIN_RESOURCES))
 		resources-=getResourceDrain()*dt;
 	if(resources<0.0f)
+		{
+		Turret* pbase=getField({0, 0})->turret;
+		pbase->setHP(pbase->getHP()+resources);
 		resources=0.0f;
+		}
 
 	if(getEnemyTurretCount()==0u && getPlayerFieldCount()<(unsigned)(W*H))
 		{
@@ -105,32 +109,16 @@ void Level::update(float dt)
 
 			const VectorI newSpawnerFPos={rand()%W, rand()%H};
 
-			if(getFieldOwner(newSpawnerFPos)==Field::Owner::NONE)
+			if(TSpawner::isFieldExtraSafe(this, newSpawnerFPos))
 				{
-				bool good=true;
-
-				for(int ox=-1; ox<1; ++ox)
+				if(buildTurret(newSpawnerFPos, TurretType::ENEMY_SPAWNER))
 					{
-					for(int oy=-1; oy<1; ++oy)
-						{
-						if(getFieldOwner(newSpawnerFPos+VectorI(ox, oy))==Field::Owner::PLAYER)
-							{
-							good=false;
-							}
-						}
+					//LOG_INFO("Wstawiono spawner");
+					turretEnemySpawnCooldown=0.0f;
 					}
-
-				if(good)
-					{
-					if(buildTurret(newSpawnerFPos, TurretType::ENEMY_SPAWNER))
-						{
-						//LOG_INFO("Wstawiono spawner");
-						turretEnemySpawnCooldown=0.0f;
-						}
-					}
-
-				LOG_DEBUG("Wylosowano: %d,%d: %s", newSpawnerFPos.x, newSpawnerFPos.y, (good?"OK":"gracz w poblizu"));
 				}
+			else
+				LOG_DEBUG("Wylosowano: %d,%d: gracz w poblizu", newSpawnerFPos.x, newSpawnerFPos.y);
 			}
 		}
 	else

@@ -75,7 +75,7 @@ namespace Engine
 				void setDirection(Sprite::DirectionName direction);
 				void setFrame(unsigned idx);
 				void setFrameRate(float s) {const unsigned f=getFrameNumber(); fps=s; setFrame(f);}
-				void restoreFrameRate(float s) {fps=direction->getFramesPerSecond();}
+				void restoreFrameRate() {fps=direction->getFramesPerSecond();}
 
 				Render::ShaderPtr& getShader() {return shader;}
 				const Render::ShaderPtr& getShader() const {return shader;}

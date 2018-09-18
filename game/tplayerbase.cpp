@@ -11,6 +11,7 @@
 
 #include "consts.h"
 #include "level.h"
+#include "particleemitter.h"
 
 using namespace Game;
 
@@ -81,6 +82,8 @@ bool TPlayerBase::removeFromLevel()
 
 void TPlayerBase::update(float dt)
 	{
+	using namespace Engine::Math;
+
 	const unsigned FIELDS_ALL=level->getWidth()*level->getHeight();
 	const unsigned FIELDS_PLAYER=level->getPlayerFieldCount()-level->getPlayerFarmCount();
 	const float PERCENT=(float)FIELDS_PLAYER/FIELDS_ALL;
@@ -90,6 +93,47 @@ void TPlayerBase::update(float dt)
 
 	if(hp<=0.0f)
 		{
+		if(level->getPlayerTurretCount()>1)
+			{
+			cooldown-=dt;
+
+			if(cooldown<=0.0f)
+				{
+				cooldown=0.5f;
+
+				for(int distance=1; distance<std::max(level->getWidth(), level->getHeight()); ++distance)
+					{
+					for(int oy=-distance; oy<=distance; ++oy)
+						{
+						for(int ox=-distance; ox<=distance; ++ox)
+							{
+							const Level::Field* field=((const Level*)level)->getField(fposition+VectorI(ox, oy));
+
+							if(!field)
+								continue;
+
+							const Turret* turret=field->turret;
+
+							if(!turret || turret->getType()==TurretType::PLAYER_BASE || turret->getType()==TurretType::ENEMY_SPAWNER || turret->getType()==TurretType::PLAYER_CARROT_FIELD)
+								continue;
+
+							level->destroyTurret(fposition+VectorI(ox, oy), true);
+							level->addEmitter(new ParticleEmitter(
+								ParticleEmitterType::EXPLOSION,
+								level->getFieldPosition(fposition+VectorI(ox, oy)),
+								0.5f,
+								Engine::Graphics::SpritePtr("sprite/particle_green.xml"),
+								200.0f,
+								level->getFieldDiagonalSize()*0.5f,
+								32.0f, 192.0f, 0.5f));
+
+							return;
+							}
+						}
+					}
+				}
+			}
+
 		if(upgrade!=0)
 			{
 			setUpgrade(0);

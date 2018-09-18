@@ -48,6 +48,7 @@ void UEnemyArmored::update(float dt)
 	{
 	using namespace Engine::Math;
 
+	// TODO wystawić to do consts.h
 	const int FIELDS_BEFORE_COOLDOWN=4;
 	const int FIELDS_BEFORE_COOLDOWN_INCREMENT=2;
 	const int MAX_COOLDOWN_MULTIPLIER=10;
@@ -87,6 +88,11 @@ void UEnemyArmored::update(float dt)
 	if(cooldownWalking>0.0f)
 		{
 		cooldownWalking-=dt;
+
+		if(cooldownWalking<=0.0f)
+			{
+			sprite.restoreFrameRate();
+			}
 		}
 	else if(VectorLength(position-target)<DISTANCE)
 		{
@@ -96,12 +102,20 @@ void UEnemyArmored::update(float dt)
 		const float OX=(rand()/(RAND_MAX+1.0f)*FW-FW/2.0f)*0.45f;
 		const float OY=(rand()/(RAND_MAX+1.0f)*FH-FH/2.0f)*0.45f;
 
-		const VectorI nextFieldXY=level->findPath(fieldXY);
-		target=level->getFieldPosition(nextFieldXY) + Vector(OX, OY);
+		if(((const Level*)level)->getField({0, 0})->turret->getHP()<=0.0)
+			{
+			target=level->getFieldPosition(fieldXY) + Vector(OX, OY);
+			}
+		else
+			{
+			const VectorI nextFieldXY=level->findPath(fieldXY);
+			target=level->getFieldPosition(nextFieldXY) + Vector(OX, OY);
+			}
 
 		++fieldsWalked;
-		if(FIELDS_BEFORE_COOLDOWN>4)
+		if(fieldsWalked>FIELDS_BEFORE_COOLDOWN)
 			{
+			//speed=std::max(speed*0.8f, level->getFieldDiagonalSize()*0.1f);
 			cooldownWalking=std::min((fieldsWalked-FIELDS_BEFORE_COOLDOWN)/FIELDS_BEFORE_COOLDOWN_INCREMENT+1, MAX_COOLDOWN_MULTIPLIER) * COOLDOWN_PER_FIELD;
 			}
 		}
@@ -154,7 +168,7 @@ void UEnemyArmored::damage(DamageType dmgType, float dmg)
 
 	if(hp<=0.0f)
 		{
-		level->spawnCollectible(position, maxhp);
+		level->spawnCollectible(position, 1.5f);
 		}
 	}
 
