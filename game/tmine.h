@@ -14,7 +14,7 @@ namespace Game
 	class TMine: public Turret
 		{
 		protected:
-			virtual bool updateFieldOwners() const override;
+			virtual bool updateFieldOwners() override;
 
 			bool ready;
 

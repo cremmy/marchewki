@@ -36,7 +36,7 @@ namespace Game
 				STATE_OVERCHARGE,
 				};
 
-			virtual bool updateFieldOwners() const override;
+			virtual bool updateFieldOwners() override;
 
 			State state;
 			int wave;

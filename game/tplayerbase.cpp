@@ -28,11 +28,11 @@ bool TPlayerBase::init()
 	return true;
 	}
 
-bool TPlayerBase::updateFieldOwners() const
+bool TPlayerBase::updateFieldOwners()
 	{
 	using namespace Engine::Math;
 
-	if(!level->fieldClaim(fposition, Level::Field::Owner::PLAYER))
+	if(!fieldClaim(fposition, Level::Field::Owner::PLAYER))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
@@ -44,7 +44,7 @@ bool TPlayerBase::updateFieldOwners() const
 		{
 		for(int x=-FIELD_RANGE; x<=FIELD_RANGE; ++x)
 			{
-			level->fieldClaim(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			fieldClaim(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
 			}
 		}
 
@@ -72,7 +72,7 @@ bool TPlayerBase::removeFromLevel()
 		{
 		for(int x=-FIELD_RANGE; x<=FIELD_RANGE; ++x)
 			{
-			level->fieldRelease(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			fieldRelease(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
 			}
 		}
 

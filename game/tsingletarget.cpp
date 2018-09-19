@@ -34,11 +34,11 @@ bool TSingleTarget::init()
 	return true;
 	}
 
-bool TSingleTarget::updateFieldOwners() const
+bool TSingleTarget::updateFieldOwners()
 	{
 	using namespace Engine::Math;
 
-	if(!level->setFieldOwner(fposition, Level::Field::Owner::PLAYER))
+	if(!fieldClaim(fposition, Level::Field::Owner::PLAYER))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
@@ -53,7 +53,7 @@ bool TSingleTarget::updateFieldOwners() const
 				continue;
 				}
 
-			level->fieldClaim(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			fieldClaim(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
 			}
 		}
 
@@ -94,7 +94,7 @@ bool TSingleTarget::removeFromLevel()
 				continue;
 				}
 
-			level->fieldRelease(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			fieldRelease(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
 			}
 		}
 

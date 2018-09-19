@@ -14,7 +14,7 @@ namespace Game
 	class TSingleTarget: public Turret
 		{
 		protected:
-			virtual bool updateFieldOwners() const override;
+			virtual bool updateFieldOwners() override;
 
 			Engine::Graphics::SpritePtr spriteProjectile;
 

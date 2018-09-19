@@ -62,7 +62,7 @@ namespace Game
 				};
 
 			Field* getField(const Engine::Math::VectorI& fposition);
-			//void updateFieldOwners();
+			void updateFieldOwners();
 
 			// field[Y][X]
 			std::vector<std::vector<Field*>> field;

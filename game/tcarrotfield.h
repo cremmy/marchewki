@@ -14,7 +14,7 @@ namespace Game
 	class TCarrotField: public Turret
 		{
 		protected:
-			virtual bool updateFieldOwners() const override;
+			virtual bool updateFieldOwners() override;
 
 			bool panic;
 

@@ -14,7 +14,7 @@ namespace Game
 	class TPlayerBase: public Turret
 		{
 		protected:
-			virtual bool updateFieldOwners() const override;
+			virtual bool updateFieldOwners() override;
 
 		public:
 			TPlayerBase(): Turret(5)

@@ -268,6 +268,7 @@ void Level::print(float tinterp)
 		}
 
 #ifdef BUILD_DEBUG
+	// Kierunek ruchu
 	/*glDisable(GL_DEPTH_TEST);
 	for(int y=0u; y<H; ++y)
 		{
@@ -294,7 +295,8 @@ void Level::print(float tinterp)
 				}
 			}
 		}*/
-	for(int y=0u; y<H; ++y)
+	// Licznik zajetosci pol
+	/*for(int y=0u; y<H; ++y)
 		{
 		for(int x=0u; x<W; ++x)
 			{
@@ -311,7 +313,7 @@ void Level::print(float tinterp)
 
 				}
 			}
-		}
+		}*/
 #endif
 
 	glEnable(GL_DEPTH_TEST);
@@ -461,7 +463,7 @@ bool Level::resize(unsigned w, unsigned h)
 			}
 		}
 
-	//updateFieldOwners();
+	updateFieldOwners();
 	refreshPath();
 
 	return true;
@@ -684,7 +686,7 @@ float Level::getResourceDrain(bool gainOnly) const
 			if(!field->turret)
 				continue;
 
-			if(!gainOnly || field->turret->getResourceDrain()<0.0f)
+			if(!gainOnly || field->turret->getType()==TurretType::PLAYER_UNIT_MINE)
 				ret+=field->turret->getResourceDrain();
 			}
 		}
@@ -1017,7 +1019,7 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 		}
 
 	turret->updateFieldOwners();
-	//updateFieldOwners();
+	updateFieldOwners();
 
 	if(!refreshPath())
 		{
@@ -1103,25 +1105,25 @@ bool Level::destroyTurret(const Engine::Math::VectorI& fposition, bool noCost)
 	delete field->turret;
 	field->turret=nullptr;
 
-	//updateFieldOwners();
+	updateFieldOwners();
 
 	refreshPath();
 
 	return true;
 	}
 
-/*void Level::updateFieldOwners()
+void Level::updateFieldOwners()
 	{
 	const int W=getWidth();
 	const int H=getHeight();
 
-	for(int y=0; y<H; ++y)
+	/*for(int y=0; y<H; ++y)
 		{
 		for(int x=0; x<W; ++x)
 			{
 			setFieldOwner({x,  y}, Field::Owner::NONE);
 			}
-		}
+		}*/
 
 	for(int y=0; y<H; ++y)
 		{
@@ -1135,7 +1137,7 @@ bool Level::destroyTurret(const Engine::Math::VectorI& fposition, bool noCost)
 			field->turret->updateFieldOwners();
 			}
 		}
-	}*/
+	}
 
 bool Level::spawnUnit(UnitType type, const Engine::Math::VectorI& fposition, const Engine::Math::VectorI& target, float hp, float speed)
 	{

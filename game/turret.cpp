@@ -66,3 +66,40 @@ void Turret::setTarget(Unit* newTarget)
 		target->lock();
 		}
 	}
+
+
+bool Turret::fieldClaim(const Engine::Math::VectorI& fposition, Level::Field::Owner who)
+	{
+	const Level::Field* field=((const Level*)level)->getField(fposition);
+
+	if(!field)
+		return false;
+	if(claimedFields.find(field)!=claimedFields.end())
+		return true;
+
+	if(level->fieldClaim(fposition, who))
+		{
+		claimedFields.insert(field);
+		return true;
+		}
+
+	return false;
+	}
+
+bool Turret::fieldRelease(const Engine::Math::VectorI& fposition, Level::Field::Owner who)
+	{
+	const Level::Field* field=((const Level*)level)->getField(fposition);
+
+	if(!field)
+		return false;
+	if(claimedFields.find(field)==claimedFields.end())
+		return true;
+
+	if(level->fieldRelease(fposition, who))
+		{
+		claimedFields.erase(field);
+		return true;
+		}
+
+	return false;
+	}

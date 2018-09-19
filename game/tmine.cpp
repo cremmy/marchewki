@@ -31,11 +31,11 @@ bool TMine::init()
 	return true;
 	}
 
-bool TMine::updateFieldOwners() const
+bool TMine::updateFieldOwners()
 	{
 	using namespace Engine::Math;
 
-	if(!level->fieldClaim(fposition, Level::Field::Owner::PLAYER))
+	if(!fieldClaim(fposition, Level::Field::Owner::PLAYER))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
@@ -67,7 +67,7 @@ bool TMine::removeFromLevel()
 	if(target)
 		target->unlock();
 
-	level->fieldRelease(fposition, Level::Field::Owner::PLAYER);
+	fieldRelease(fposition, Level::Field::Owner::PLAYER);
 
 	return true;
 	}

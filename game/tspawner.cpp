@@ -137,20 +137,20 @@ bool TSpawner::init()
 	return true;
 	}
 
-bool TSpawner::updateFieldOwners() const
+bool TSpawner::updateFieldOwners()
 	{
 	using namespace Engine::Math;
 
-	if(!level->fieldClaim(fposition, Level::Field::Owner::ENEMY))
+	if(!fieldClaim(fposition, Level::Field::Owner::ENEMY))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
 		}
 
-	level->fieldClaim(fposition+VectorI(-1,  0), Level::Field::Owner::ENEMY);
-	level->fieldClaim(fposition+VectorI( 1,  0), Level::Field::Owner::ENEMY);
-	level->fieldClaim(fposition+VectorI( 0, -1), Level::Field::Owner::ENEMY);
-	level->fieldClaim(fposition+VectorI( 0,  1), Level::Field::Owner::ENEMY);
+	fieldClaim(fposition+VectorI(-1,  0), Level::Field::Owner::ENEMY);
+	fieldClaim(fposition+VectorI( 1,  0), Level::Field::Owner::ENEMY);
+	fieldClaim(fposition+VectorI( 0, -1), Level::Field::Owner::ENEMY);
+	fieldClaim(fposition+VectorI( 0,  1), Level::Field::Owner::ENEMY);
 
 	return true;
 	}

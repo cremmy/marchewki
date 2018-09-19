@@ -37,11 +37,11 @@ bool TAreaOfEffect::init()
 	return true;
 	}
 
-bool TAreaOfEffect::updateFieldOwners() const
+bool TAreaOfEffect::updateFieldOwners()
 	{
 	using namespace Engine::Math;
 
-	if(!level->fieldClaim(fposition, Level::Field::Owner::PLAYER))
+	if(!fieldClaim(fposition, Level::Field::Owner::PLAYER))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
@@ -56,7 +56,7 @@ bool TAreaOfEffect::updateFieldOwners() const
 			//	continue;
 			//	}
 
-			level->fieldClaim(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			fieldClaim(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
 			}
 		}
 
@@ -85,7 +85,7 @@ bool TAreaOfEffect::removeFromLevel()
 		{
 		for(int x=-upgrade-1; x<=upgrade+1; ++x)
 			{
-			level->fieldRelease(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			fieldRelease(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
 			}
 		}
 

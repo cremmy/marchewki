@@ -30,11 +30,11 @@ bool TCarrotField::init()
 	return true;
 	}
 
-bool TCarrotField::updateFieldOwners() const
+bool TCarrotField::updateFieldOwners()
 	{
 	using namespace Engine::Math;
 
-	if(!level->fieldClaim(fposition, Level::Field::Owner::PLAYER))
+	if(!fieldClaim(fposition, Level::Field::Owner::PLAYER))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
@@ -61,7 +61,7 @@ bool TCarrotField::removeFromLevel()
 	if(target)
 		target->unlock(); // Tiaa
 
-	level->fieldRelease(fposition, Level::Field::Owner::PLAYER);
+	fieldRelease(fposition, Level::Field::Owner::PLAYER);
 
 	return true;
 	}

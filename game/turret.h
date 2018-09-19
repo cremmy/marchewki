@@ -9,11 +9,13 @@
 
 #include "../engine/graphics/spriteptr.h"
 
+#include <set>
+
+#include "level.h"
 #include "turret_type.h"
 
 namespace Game
 	{
-	class Level;
 	class Unit;
 
 	class Turret
@@ -38,6 +40,10 @@ namespace Game
 
 			Unit* target;
 
+			std::set<const Level::Field*> claimedFields;
+			bool fieldClaim(const Engine::Math::VectorI& fposition, Level::Field::Owner who);
+			bool fieldRelease(const Engine::Math::VectorI& fposition, Level::Field::Owner who);
+
 		public:
 			Turret(int maxUpgrade=0): level(nullptr), fposition(-1, -1), hp(1.0f), upgrade(0), MAX_UPGRADE(maxUpgrade), cooldown(0.0f), target(nullptr)
 				{
@@ -50,7 +56,7 @@ namespace Game
 
 			virtual bool init()=0;
 			virtual bool attachToLevel(Level* level, const Engine::Math::VectorI& fposition)=0;
-			virtual bool updateFieldOwners() const=0;
+			virtual bool updateFieldOwners()=0;
 			virtual bool removeFromLevel()=0; // TODO Przenieść tutaj używanie zaosbów
 			virtual void update(float dt)=0;
 			virtual void print(float tinterp);
