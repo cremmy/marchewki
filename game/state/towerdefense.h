@@ -30,6 +30,12 @@ namespace Game
 		class TowerDefense: public Engine::Base::ApplicationState, public Engine::Core::AppEventListener
 			{
 			protected:
+				enum class State
+					{
+					PLAYING,
+					DEFEAT,
+					VICTORY,
+					} state;
 				enum class Mode
 					{
 					NONE,

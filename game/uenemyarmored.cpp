@@ -24,6 +24,7 @@
 
 #include "consts.h"
 #include "level.h"
+#include "rules.h"
 #include "turret.h"
 
 using namespace Game;
@@ -76,7 +77,7 @@ void UEnemyArmored::update(float dt)
 		hp=0.0f;
 
 		Turret* turret=((const Level*)level)->getField(fieldXY)->turret;
-		if(turret)
+		if(isRuleEnabled(RULE_DRAIN_HP) && turret)
 			turret->setHP(turret->getHP()-1.0f);
 
 		return;

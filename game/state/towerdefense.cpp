@@ -53,7 +53,7 @@ std::string prepareTurretMessage(const std::string& base, float cost, float drai
 	return ret;
 	}
 
-TowerDefense::TowerDefense(): mode(Mode::NONE), level(), playerBase(nullptr), camera(),
+TowerDefense::TowerDefense(): state(State::PLAYING), mode(Mode::NONE), level(), playerBase(nullptr), camera(),
 	camTargetAngle(1), camCurrentAngle(1),
 	camTargetZoomName(Zoom::ZOOM_100), camTargetZoom(1.0f), camCurrentZoom(1.0f),
 	ifaceReceiver(0), interface(nullptr), ifaceBtnTSingle(nullptr), ifaceBtnTAOE(nullptr), ifaceBtnTMine(nullptr), ifaceBtnTCarrot(nullptr), ifaceBtnUpgrade(nullptr), ifaceBtnSell(nullptr)
@@ -80,6 +80,8 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_WHEEL, *this);
 
 	setRuleset(RULESET_HARD);
+	disableRule(RULE_DRAIN_RESOURCES);
+	disableRule(RULE_DRAIN_HP);
 
 	if(!level.init(8, 6))
 		{

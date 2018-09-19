@@ -30,8 +30,10 @@ namespace Game
 				STATE_PRE_SPAWN,
 				STATE_SPAWNING,
 				STATE_NORMAL,
-				STATE_ATTACKED,
-				STATE_OVERLOAD,
+				STATE_SPREADING,
+				STATE_SPREADING_POST,
+				STATE_PANIC,
+				STATE_OVERCHARGE,
 				};
 
 			virtual bool updateFieldOwners() const override;
@@ -41,20 +43,28 @@ namespace Game
 			int waveUnit;
 			const WaveDef* waveCurDef;
 
+			float spreadCooldown;
+
 			/*Engine::Graphics::SpritePtr spriteEnemy;*/
 
 			void initStateSpawning();
 			void initStateNormal();
-			void initStateAttacked();
-			void initStateOverload();
+			void initStateSpreading();
+			void initStatePanic();
+			void initStateOvercharge();
 
 			void updateStateSpawning(float dt);
 			void updateStateNormal(float dt);
-			void updateStateAttacked(float dt);
-			void updateStateOverload(float dt);
+			void updateStateSpreading(float dt);
+			void updateStatePanic(float dt);
+			void updateStateOvercharge(float dt);
+
+			bool canSpread();
+			static bool canSpreadToField(const Level* level, const Engine::Math::VectorI& fposition);
+			static int getNearbySpawnerCount(const Level* level, const Engine::Math::VectorI& fposition);
 
 		public:
-			TSpawner(): Turret(), state(STATE_PRE_SPAWN), wave(0), waveUnit(0), waveCurDef(nullptr)
+			TSpawner(): Turret(), state(STATE_PRE_SPAWN), wave(0), waveUnit(0), waveCurDef(nullptr), spreadCooldown(0.0f)
 				{
 				//
 				}

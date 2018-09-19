@@ -78,10 +78,10 @@ void Level::update(float dt)
 
 			field->turret->update(dt);
 
-			/*if(!field->turret->isAlive() && field->turret->getType()!=TurretType::PLAYER_BASE)
+			if(!field->turret->isAlive() && field->turret->getType()!=TurretType::PLAYER_BASE)
 				{
 				destroyTurret({x,  y}, true);
-				}*/
+				}
 			}
 		}
 
@@ -90,9 +90,9 @@ void Level::update(float dt)
 		highlightEmitterTimeout=0.5f;
 		}
 
-	if(isRuleEnabled(RULE_DRAIN_RESOURCES))
-		resources-=getResourceDrain()*dt;
-	if(resources<0.0f)
+	resources-=getResourceDrain(!isRuleEnabled(RULE_DRAIN_RESOURCES))*dt;
+
+	if(isRuleEnabled(RULE_DRAIN_HP) && resources<0.0f)
 		{
 		Turret* pbase=getField({0, 0})->turret;
 		pbase->setHP(pbase->getHP()+resources);
@@ -294,6 +294,24 @@ void Level::print(float tinterp)
 				}
 			}
 		}*/
+	for(int y=0u; y<H; ++y)
+		{
+		for(int x=0u; x<W; ++x)
+			{
+			Field* field=getField({x, y});
+
+			const Vector position=getFieldPosition({x, y});
+
+			for(int i=1; i<field->ownerCount; ++i)
+				{
+				Engine::Render::getInstance().drawLine(
+					position - getFieldWidth()*0.4f*Vector(1, 0, 0) + getFieldHeight()*0.4f*Vector(0, 1, 0) + Vector(0, 0, i*5),
+					position - getFieldWidth()*0.4f*Vector(1, 0, 0) + getFieldHeight()*0.4f*Vector(0, 1, 0) + Vector(0, 0, i*5+4),
+					Vector(1.0f, 1.0f, 1.0f, 0.75f));
+
+				}
+			}
+		}
 #endif
 
 	glEnable(GL_DEPTH_TEST);
@@ -443,7 +461,7 @@ bool Level::resize(unsigned w, unsigned h)
 			}
 		}
 
-	updateFieldOwners();
+	//updateFieldOwners();
 	refreshPath();
 
 	return true;
@@ -650,7 +668,7 @@ const Level::Field* Level::getField(const Engine::Math::VectorI& fposition) cons
 	return field[fposition.y][fposition.x];
 	}
 
-float Level::getResourceDrain() const
+float Level::getResourceDrain(bool gainOnly) const
 	{
 	const int W=getWidth();
 	const int H=getHeight();
@@ -666,11 +684,13 @@ float Level::getResourceDrain() const
 			if(!field->turret)
 				continue;
 
-			ret+=field->turret->getResourceDrain();
+			if(!gainOnly || field->turret->getResourceDrain()<0.0f)
+				ret+=field->turret->getResourceDrain();
 			}
 		}
 
-	ret+=getResourceDrainFields();
+	if(!gainOnly)
+		ret+=getResourceDrainFields();
 
 	return ret;
 	}
@@ -747,6 +767,53 @@ Level::Field* Level::getFieldByRay(const Engine::Math::Vector& position, const E
 	return getField(fposition);
 	}
 
+
+bool Level::fieldClaim(const Engine::Math::VectorI& fposition, Field::Owner who)
+	{
+	Field* field=getField(fposition);
+
+	if(!field)
+		return false;
+
+	const Field::Owner fieldOwner=field->owner;
+
+	// Zajecie pustego pola
+	if(fieldOwner==Field::Owner::NONE)
+		{
+		field->ownerCount=1;
+		return setFieldOwner(fposition, who);
+		}
+	// Kolejna wieza zajmuje 'swoje' pole
+	else if(fieldOwner==who)
+		{
+		++field->ownerCount;
+
+		return true;
+		}
+
+	return false;
+	}
+bool Level::fieldRelease(const Engine::Math::VectorI& fposition, Field::Owner who)
+	{
+	Field* field=getField(fposition);
+
+	if(!field)
+		return false;
+
+	const Field::Owner fieldOwner=field->owner;
+
+	if(fieldOwner==who)
+		{
+		--field->ownerCount;
+
+		if(field->ownerCount<=0)
+			setFieldOwner(fposition, Field::Owner::NONE);
+
+		return true;
+		}
+
+	return false;
+	}
 
 bool Level::setFieldOwner(const Engine::Math::VectorI& fposition, Field::Owner owner)
 	{
@@ -949,7 +1016,8 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 		return false;
 		}
 
-	updateFieldOwners();
+	turret->updateFieldOwners();
+	//updateFieldOwners();
 
 	if(!refreshPath())
 		{
@@ -1035,25 +1103,25 @@ bool Level::destroyTurret(const Engine::Math::VectorI& fposition, bool noCost)
 	delete field->turret;
 	field->turret=nullptr;
 
-	updateFieldOwners();
+	//updateFieldOwners();
 
 	refreshPath();
 
 	return true;
 	}
 
-void Level::updateFieldOwners()
+/*void Level::updateFieldOwners()
 	{
 	const int W=getWidth();
 	const int H=getHeight();
 
-	/*for(int y=0; y<H; ++y)
+	for(int y=0; y<H; ++y)
 		{
 		for(int x=0; x<W; ++x)
 			{
 			setFieldOwner({x,  y}, Field::Owner::NONE);
 			}
-		}*/
+		}
 
 	for(int y=0; y<H; ++y)
 		{
@@ -1067,7 +1135,7 @@ void Level::updateFieldOwners()
 			field->turret->updateFieldOwners();
 			}
 		}
-	}
+	}*/
 
 bool Level::spawnUnit(UnitType type, const Engine::Math::VectorI& fposition, const Engine::Math::VectorI& target, float hp, float speed)
 	{

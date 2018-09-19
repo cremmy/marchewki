@@ -11,6 +11,7 @@
 
 #include "level.h"
 #include "particleemitter.h"
+#include "turret.h"
 #include "unit.h"
 
 using namespace Game;
@@ -100,6 +101,11 @@ void PAreaOfEffect::update(float dt)
 			}
 
 		//target->damage(damageType, damage);
+		const Level::Field* field=((const Level*)level)->getField(level->getPositionOnField(target));
+		if(field && field->turret && field->turret->getType()==TurretType::ENEMY_SPAWNER)
+			{
+			field->turret->setHP(field->turret->getHP()-0.1f);
+			}
 
 		level->addEmitter(new ParticleEmitter(ParticleEmitterType::EXPLOSION, target, 0.25f, Engine::Graphics::SpritePtr("sprite/particle_red.xml"), 400, damageRange*0.5f, 32, 96, 0.5f));
 

@@ -36,9 +36,10 @@ namespace Game
 					ENEMY,
 					};
 
-				Field(): owner(Owner::NONE), highlight(false), turret(nullptr) {}
+				Field(): owner(Owner::NONE), ownerCount(0), highlight(false), turret(nullptr) {}
 
 				Owner owner;
+				int ownerCount;
 				bool highlight;
 
 				Turret* turret;
@@ -61,7 +62,7 @@ namespace Game
 				};
 
 			Field* getField(const Engine::Math::VectorI& fposition);
-			void updateFieldOwners();
+			//void updateFieldOwners();
 
 			// field[Y][X]
 			std::vector<std::vector<Field*>> field;
@@ -125,7 +126,7 @@ namespace Game
 
 			bool isDepleted() const {return resources<=0.0f;}
 			float getResources() const {return resources;}
-			float getResourceDrain() const;
+			float getResourceDrain(bool gainOnly=false) const;
 			float getResourceDrainFields() const;
 			const Field* getField(const Engine::Math::VectorI& fposition) const;
 			Field::Owner getFieldOwner(const Engine::Math::VectorI& fposition) const;
@@ -149,8 +150,8 @@ namespace Game
 
 			void setResources(float s) {resources=s;}
 			void addResources(float s) {resources+=s; if(resources<0.0f) resources=0.0f;}
-			bool fieldClaim(const Engine::Math::VectorI& fposition, Field::Owner who) {return (getFieldOwner(fposition)==Field::Owner::NONE)?setFieldOwner(fposition, who):(getFieldOwner(fposition)==who);}
-			bool fieldRelease(const Engine::Math::VectorI& fposition, Field::Owner who) {return (getFieldOwner(fposition)==who)?setFieldOwner(fposition, Field::Owner::NONE):false;}
+			bool fieldClaim(const Engine::Math::VectorI& fposition, Field::Owner who);// {return (getFieldOwner(fposition)==Field::Owner::NONE)?setFieldOwner(fposition, who):(getFieldOwner(fposition)==who);}
+			bool fieldRelease(const Engine::Math::VectorI& fposition, Field::Owner who);// {return (getFieldOwner(fposition)==who)?setFieldOwner(fposition, Field::Owner::NONE):false;}
 			bool setFieldOwner(const Engine::Math::VectorI& fposition, Field::Owner owner);
 			bool setFieldHighlight(const Engine::Math::VectorI& fposition);
 			bool buildTurret(const Engine::Math::VectorI& fposition, TurretType type);

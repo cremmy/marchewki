@@ -19,11 +19,11 @@ using namespace Game;
 const int WAVE_COUNT=50;
 const TSpawner::WaveDef WAVE_DEFINITIONS[WAVE_COUNT]=
 	{
-		{ 0,  1,  1.00f, 2.00f,  5.0f, 0},
-		{ 0,  1,  1.00f, 2.00f,  5.0f, 0},
-		{ 0,  1,  1.00f, 2.00f,  5.0f, 0},
-		{ 0,  1,  1.00f, 2.00f,  5.0f, 0},
-		{ 0,  1,  1.00f, 2.00f,  5.0f, 0},
+		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
+		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
+		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
+		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
+		{ 1,  0,  1.00f, 2.00f,  5.0f, 0},
 		{ 2,  0,  1.00f, 2.00f,  4.5f, 0},
 		{ 2,  0,  1.00f, 2.00f,  4.5f, 0},
 		{ 3,  0,  1.00f, 2.00f,  4.5f, 0},
@@ -203,29 +203,49 @@ void TSpawner::initStateNormal()
 
 	cooldown=waveCurDef->cooldownWave;
 	waveUnit=0;
+
+	spreadCooldown=SPAWNER_TIMEOUT_SPREAD;
 	}
 
-void TSpawner::initStateAttacked()
+void TSpawner::initStateSpreading()
 	{
-	//
-	}
+	if(!isRuleEnabled(RULE_ENEMY_BUILD_TURRETS))
+		return;
 
-void TSpawner::initStateOverload()
-	{
-	/*state=STATE_OVERLOAD;
+	state=STATE_SPREADING;
 
 	wave=0;
-	waveCurDef=&WAVE_DEFINITIONS[wave];
+	waveCurDef=nullptr;
 
-	cooldown=waveCurDef->cooldownWave;
-	waveUnit=0;*/
+	cooldown=SPAWNER_COOLDOWN_SPREAD_PRE;
+	waveUnit=0;
+	}
+
+void TSpawner::initStatePanic()
+	{
+	state=STATE_PANIC;
+
+	//cooldown=waveCurDef->cooldownWave;
+	}
+
+void TSpawner::initStateOvercharge()
+	{
+	state=STATE_OVERCHARGE;
+
+	cooldown=0.0f;
+	wave=0;
+	waveUnit=0;
 	}
 
 void TSpawner::update(float dt)
 	{
 	sprite.update(dt);
 
-	cooldown-=dt;
+	if(hp<=0.0f)
+		return;
+
+	if(cooldown>0.0f)
+		cooldown-=dt;
 
 	switch(state)
 		{
@@ -237,12 +257,17 @@ void TSpawner::update(float dt)
 			updateStateSpawning(dt);
 		break;
 
-		case STATE_ATTACKED:
-			updateStateAttacked(dt);
+		case STATE_SPREADING:
+		case STATE_SPREADING_POST:
+			updateStateSpreading(dt);
 		break;
 
-		case STATE_OVERLOAD:
-			updateStateOverload(dt);
+		case STATE_PANIC:
+			updateStatePanic(dt);
+		break;
+
+		case STATE_OVERCHARGE:
+			updateStateOvercharge(dt);
 		break;
 
 		default:
@@ -267,74 +292,290 @@ void TSpawner::updateStateNormal(float dt)
 
 	//LOG_DEBUG("[wave %d][cd %.2f/%.2f]", wave, cooldown, waveCurDef->cooldownWave);
 
-	if(cooldown<=0.0f)
+	if(spreadCooldown>0.0f)
+		spreadCooldown-=dt;
+
+	if(cooldown>0.0f)
+		return;
+
+	if(!isFieldSafe(level, fposition) || hp<0.5f)
 		{
-		// Jeśli w poblizu sa wieze gracza - wejdz w tryb atakowanego
-		for(int oy=-1; oy<=1; ++oy)
+		return initStatePanic();
+		}
+	else if(isRuleEnabled(RULE_ENEMY_BUILD_TURRETS) && spreadCooldown<=0.0f)
+		{
+		if(canSpread())
+			return initStateSpreading();
+
+		spreadCooldown=SPAWNER_TIMEOUT_SPREAD;
+		}
+	else if(spreadCooldown<=0.0f && getNearbySpawnerCount(level, fposition)>4)
+		{
+		return initStateOvercharge();
+		}
+
+	if(!isRuleEnabled(RULE_ENEMY_SPAWN_UNITS))
+		{
+		cooldown=1.0f;
+		}
+	else if(waveUnit>=waveCurDef->uinfantry+waveCurDef->uarmored)
+		{
+		if(wave<WAVE_COUNT-1)
 			{
-			for(int ox=-1; ox<=1; ++ox)
-				{
-				const Level::Field* field=((const Level*)level)->getField(fposition+VectorI(ox, oy));
-
-				if(!field || !field->turret)
-					continue;
-
-				if(field->turret->getType()==TurretType::PLAYER_UNIT_SINGLE_TARGET ||
-				   field->turret->getType()==TurretType::PLAYER_UNIT_AREA_OF_EFFECT)
-					{
-					initStateAttacked();
-					//return;
-					}
-				}
-			}
-
-		if(!isRuleEnabled(RULE_ENEMY_SPAWN_UNITS))
-			{
-			cooldown=1.0f;
-			}
-		else if(waveUnit>=waveCurDef->uinfantry+waveCurDef->uarmored)
-			{
-			if(wave<WAVE_COUNT-1)
-				{
-				++wave;
-				}
-			else
-				{
-				initStateOverload();
-				//return;
-				}
-
-			waveCurDef=&WAVE_DEFINITIONS[wave];
-
-			cooldown=waveCurDef->cooldownWave;
-			waveUnit=0;
-
-			sprite.setAnimation(waveCurDef->level);
-			LOG_DEBUG("[wave %d][cd %.2f][i %2d a %2d cd %.2f][hp %.2f]", wave, waveCurDef->cooldownWave, waveCurDef->uinfantry, waveCurDef->uarmored, waveCurDef->cooldownUnit, waveCurDef->hp);
+			++wave;
 			}
 		else
 			{
-			cooldown=waveCurDef->cooldownUnit;
+			initStateSpreading();
+			//return;
+			}
 
-			if(waveUnit<waveCurDef->uarmored)
-				level->spawnUnit(UnitType::ENEMY_ARMORED, fposition, Engine::Math::VectorI(0, 0), waveCurDef->hp, level->getFieldDiagonalSize()*0.5f);
-			else
-				level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), waveCurDef->hp, level->getFieldDiagonalSize()*(0.5f + wave/20*0.2f));
+		waveCurDef=&WAVE_DEFINITIONS[wave];
 
-			++waveUnit;
+		cooldown=waveCurDef->cooldownWave;
+		waveUnit=0;
+
+		sprite.setAnimation(waveCurDef->level);
+		//LOG_DEBUG("[wave %d][cd %.2f][i %2d a %2d cd %.2f][hp %.2f]", wave, waveCurDef->cooldownWave, waveCurDef->uinfantry, waveCurDef->uarmored, waveCurDef->cooldownUnit, waveCurDef->hp);
+		}
+	else
+		{
+		cooldown=waveCurDef->cooldownUnit;
+
+		if(waveUnit<waveCurDef->uarmored)
+			level->spawnUnit(UnitType::ENEMY_ARMORED, fposition, Engine::Math::VectorI(0, 0), waveCurDef->hp, level->getFieldDiagonalSize()*0.5f);
+		else
+			level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), waveCurDef->hp, level->getFieldDiagonalSize()*(0.5f + wave/20*0.2f));
+
+		++waveUnit;
+		}
+	}
+
+void TSpawner::updateStateSpreading(float dt)
+	{
+	using namespace Engine::Math;
+
+	if(state==STATE_SPREADING)
+		{
+		if(cooldown>0.0f)
+			return;
+
+		// Wybierz losowe pole w zasięgu
+		if(!canSpread())
+			{
+			return initStateNormal();
+			}
+
+		bool good=false;
+		for(int i=0; i<4*SPAWNER_SPREAD_DISTANCE*SPAWNER_SPREAD_DISTANCE; ++i)
+			{
+			const int ox=(rand()%(SPAWNER_SPREAD_DISTANCE*2+1))-SPAWNER_SPREAD_DISTANCE;
+			const int oy=(rand()%(SPAWNER_SPREAD_DISTANCE*2+1))-SPAWNER_SPREAD_DISTANCE;
+
+			const VectorI newFPosition=fposition+VectorI(ox, oy);
+
+			if(!canSpreadToField(level, newFPosition))
+				continue;
+
+			if(!level->buildTurret(newFPosition, TurretType::ENEMY_SPAWNER))
+				{
+				LOG_WARNING("Nie udalo sie zasiedlic pola %d,%d", newFPosition.x, newFPosition.y);
+				break;
+				}
+
+			LOG_INFO("Zasiedlono pole %d,%d", newFPosition.x, newFPosition.y);
+
+			good=true;
+			break;
+			}
+
+		if(!good)
+			{
+			LOG_WARNING("Nie udalo sie losowo znalezc dobrego pola do zasiedlenia, grrr");
+
+			for(int oy=-SPAWNER_SPREAD_DISTANCE; oy<=SPAWNER_SPREAD_DISTANCE; ++oy)
+				{
+				for(int ox=-SPAWNER_SPREAD_DISTANCE; ox<=SPAWNER_SPREAD_DISTANCE; ++ox)
+					{
+					const VectorI newFPosition=fposition+VectorI(ox, oy);
+
+					if(!canSpreadToField(level, newFPosition))
+						continue;
+
+					if(!level->buildTurret(newFPosition, TurretType::ENEMY_SPAWNER))
+						{
+						LOG_WARNING("Nie udalo sie zasiedlic pola %d,%d", newFPosition.x, newFPosition.y);
+						break;
+						}
+
+					LOG_INFO("Zasiedlono pole %d,%d (nie losowo)", newFPosition.x, newFPosition.y);
+
+					good=true;
+					break;
+					}
+
+				if(good)
+					break;
+				}
+
+			if(!good)
+				{
+				LOG_WARNING("Nie znaleziono pola zdatnego do zasiedlenia");
+				return initStateOvercharge();
+				}
+
+			return;
+			}
+
+		cooldown=SPAWNER_COOLDOWN_SPREAD_POST;
+		state=STATE_SPREADING_POST;
+		}
+	else
+		{
+		if(cooldown>0.0f)
+			return;
+
+		return initStateNormal();
+		}
+	}
+
+void TSpawner::updateStatePanic(float dt)
+	{
+	if(cooldown>0.0f)
+		return;
+
+	if(!isRuleEnabled(RULE_ENEMY_SPAWN_UNITS))
+		{
+		cooldown=1.0f;
+		}
+	else if(waveUnit>=(waveCurDef->uinfantry+waveCurDef->uarmored)*4)
+		{
+		if(!isFieldExtraSafe(level, fposition))
+			{
+			hp=0.0f;
+			return;
+			}
+
+		hp=0.75f;
+
+		return initStateNormal();
+		}
+	else
+		{
+		const int ALL_UNITS_IN_WAVE=waveCurDef->uinfantry+waveCurDef->uarmored;
+
+		cooldown=waveCurDef->cooldownUnit*0.25;
+
+		if((waveUnit%ALL_UNITS_IN_WAVE)<waveCurDef->uarmored)
+			level->spawnUnit(UnitType::ENEMY_ARMORED, fposition, Engine::Math::VectorI(0, 0), waveCurDef->hp*2.0f, level->getFieldDiagonalSize()*0.75f);
+		else
+			level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), waveCurDef->hp*2.0f, level->getFieldDiagonalSize()*(0.75f + wave/20*0.2f));
+
+		++waveUnit;
+		}
+	}
+
+void TSpawner::updateStateOvercharge(float dt)
+	{
+	using namespace Engine::Math;
+
+	//LOG_DEBUG("[wave %d][cd %.2f/%.2f]", wave, cooldown, waveCurDef->cooldownWave);
+
+	if(spreadCooldown>0.0f)
+		spreadCooldown-=dt;
+
+	if(cooldown>0.0f)
+		return;
+
+	if(!isFieldSafe(level, fposition) || hp<0.5f)
+		{
+		return initStatePanic();
+		}
+
+	if(!isRuleEnabled(RULE_ENEMY_SPAWN_UNITS))
+		{
+		cooldown=1.0f;
+		}
+	else
+		{
+		if(wave>10)
+			{
+			hp-=0.4f;
+			return initStateNormal();
+			}
+
+		cooldown=std::max(0.75f - 0.5f*wave, 0.5f);
+
+		level->spawnUnit(UnitType::ENEMY_ARMORED, fposition, Engine::Math::VectorI(0, 0), 20.0f, level->getFieldDiagonalSize()*0.4f);
+
+		++waveUnit;
+
+		if(waveUnit>=10+wave*2)
+			{
+			cooldown*=4.0f;
+			++wave;
 			}
 		}
 	}
 
-void TSpawner::updateStateAttacked(float dt)
+
+bool TSpawner::canSpread()
 	{
-	hp=0.0f;
+	using namespace Engine::Math;
+
+	for(int oy=-SPAWNER_SPREAD_DISTANCE; oy<=SPAWNER_SPREAD_DISTANCE; ++oy)
+		{
+		for(int ox=-SPAWNER_SPREAD_DISTANCE; ox<=SPAWNER_SPREAD_DISTANCE; ++ox)
+			{
+			if(std::abs(oy)==SPAWNER_SPREAD_DISTANCE && std::abs(ox)==SPAWNER_SPREAD_DISTANCE)
+				continue;
+
+			if(canSpreadToField(level, fposition+VectorI(ox, oy)))
+				return true;
+			}
+		}
+
+	return false;
 	}
 
-void TSpawner::updateStateOverload(float dt)
+bool TSpawner::canSpreadToField(const Level* level, const Engine::Math::VectorI& fposition)
 	{
-	if(cooldown<=0.0f)
-		{
+	using namespace Engine::Math;
 
+	const Level::Field* field=level->getField(fposition);
+
+	if(!field)
+		return false;
+	if(field->turret)// && field->turret->getType()!=TurretType::PLAYER_CARROT_FIELD)
+		return false;
+
+	if(!isFieldExtraSafe(level, fposition))
+		return false;
+
+	return true;
+	}
+
+int TSpawner::getNearbySpawnerCount(const Level* level, const Engine::Math::VectorI& fposition)
+	{
+	using namespace Engine::Math;
+
+	int ret=0;
+
+	for(int oy=-1; oy<=1; ++oy)
+		{
+		for(int ox=-1; ox<=1; ++ox)
+			{
+			if(oy==0 && ox==0)
+				continue;
+
+			const Level::Field* field=level->getField(fposition);
+
+			if(!field)
+				return false;
+			if(field->turret && field->turret->getType()==TurretType::ENEMY_SPAWNER)
+				++ret;
+			}
 		}
+
+	return ret;
 	}

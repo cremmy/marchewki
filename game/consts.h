@@ -124,6 +124,11 @@ namespace Game
 
 	const float SPAWNER_TIMEOUT_FIRST=          15.0f;
 	const float SPAWNER_COOLDOWN_SPAWNING=      15.0f;
+	const float SPAWNER_TIMEOUT_SPREAD=         45.0f;
+	const float SPAWNER_COOLDOWN_SPREAD_PRE=    15.0f;
+	const float SPAWNER_COOLDOWN_SPREAD_POST=   SPAWNER_COOLDOWN_SPAWNING*0.66f;
+
+	const int SPAWNER_SPREAD_DISTANCE=          2;
 	}
 
 

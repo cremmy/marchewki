@@ -66,7 +66,7 @@ void UEnemyInfantry::update(float dt)
 		hp=0.0f;
 
 		Turret* turret=((const Level*)level)->getField(fieldXY)->turret;
-		if(turret)
+		if(isRuleEnabled(RULE_DRAIN_HP) && turret)
 			turret->setHP(turret->getHP()-1.0f);
 
 		return;
@@ -187,7 +187,7 @@ void UEnemyInfantry::clear()
 
 void UEnemyInfantry::damage(DamageType dmgType, float dmg)
 	{
-	const float prevhp=hp;
+	//const float prevhp=hp;
 	switch(dmgType)
 		{
 		case DamageType::SINGLE_TARGET:
@@ -211,7 +211,7 @@ void UEnemyInfantry::damage(DamageType dmgType, float dmg)
 		break;
 		}
 
-	LOG_DEBUG("Damaged: %.2f/%.2f (%.2f->%.2f)", prevhp-hp, dmg, prevhp, hp);
+	//LOG_DEBUG("Damaged: %.2f/%.2f (%.2f->%.2f)", prevhp-hp, dmg, prevhp, hp);
 
 	if(hp<=0.0f)
 		{

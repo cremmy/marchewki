@@ -52,6 +52,7 @@
 /* Balans:
  *  + Za duży drain z pól na wczesnych etapach gry
  *  + Jedna wieża nie radzi sobie z początkowymi falami
+ *  ? Drain z pól zalezny od procentowego zajęcia planszy?
  */
 // SDL_main
 #include <cstdio>
