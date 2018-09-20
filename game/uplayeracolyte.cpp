@@ -45,6 +45,8 @@ void UPlayerAcolyte::update(float dt)
 		return;
 		}
 
+	const bool PLAYER_ALIVE=((const Level*)level)->getField({0, 0})->turret->getHP()>0.0f;
+
 	if(collectCooldown>0.0f)
 		{
 		collectCooldown-=dt;
@@ -75,7 +77,7 @@ void UPlayerAcolyte::update(float dt)
 		}
 	else
 		{
-		if(level->getUnlockedCollectiblesCount()>0u)
+		if(PLAYER_ALIVE && level->getUnlockedCollectiblesCount()>0u)
 			{
 			targetCollectible=level->findUnlockedCollectible();
 			target=targetCollectible->getPosition();

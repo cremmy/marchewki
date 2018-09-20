@@ -12,6 +12,8 @@
 #include <sstream>
 #include <SDL2/SDL.h>
 
+#include "menuingame.h"
+
 #include "../../engine/debug/log.h"
 #include "../../engine/render/camera.h"
 #include "../../engine/render/render.h"
@@ -80,8 +82,6 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_WHEEL, *this);
 
 	setRuleset(RULESET_HARD);
-	disableRule(RULE_DRAIN_RESOURCES);
-	disableRule(RULE_DRAIN_HP);
 
 	if(!level.init(8, 6))
 		{
@@ -170,7 +170,7 @@ bool TowerDefense::init(Engine::Core::Application *application)
 				TurretBaseCostRemoval::PLAYER_CARROT_FIELD));
 
 	ifaceResourcesIcon=Engine::Graphics::SpritePtr("sprite/collectible.xml");
-	if(!ifaceResourcesText.init("font/dejavu.xml", "", 96, 96))
+	if(!ifaceResourcesText.init("font/dejavu.xml", "", 112, 96))
 		{
 		LOG_ERROR("Nie udalo sie zainicjowac tekstu");
 		return false;
@@ -205,20 +205,11 @@ bool TowerDefense::update(float dt)
 		{
 		if(e.getType()==Engine::Core::AppEvent::Type::KEY_DOWN)
 			{
-#ifdef BUILD_DEBUG
 			if(e.data.keyboard.key==SDLK_ESCAPE)
 				{
-				application->stop();
+				//application->stop();
+				application->pushState(new MenuIngame());
 				}
-			if(e.data.keyboard.key==SDLK_1)
-				{
-				camera.ortho(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 4000.0f);
-				}
-			else if(e.data.keyboard.key==SDLK_2)
-				{
-				camera.perspective(Engine::Render::getInstance().getWindowWidth(), Engine::Render::getInstance().getWindowHeight(), 1.0f, 4000.0f);
-				}
-#endif
 
 			/*****************************************************************************/
 			/**** Budowanie (klawiatura) *************************************************/
@@ -488,7 +479,7 @@ bool TowerDefense::update(float dt)
 		camera.setScale(camCurrentZoom);
 		camCurrentAngle-=0.01f;
 
-		LOG_DEBUG("[%f:%f][mod %f]", camCurrentZoom, camTargetZoom, MOD);
+		//LOG_DEBUG("[%f:%f][mod %f]", camCurrentZoom, camTargetZoom, MOD);
 		}
 
 	/*****************************************************************************/
@@ -505,65 +496,104 @@ bool TowerDefense::update(float dt)
 	//mb.setCreepiness(1.0f);
 	//mb.update(dt);
 
-	ifaceBtnTSingle->disable();
-	ifaceBtnTAOE->disable();
-	ifaceBtnTMine->disable();
-	ifaceBtnTCarrot->disable();
-
-	if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_SINGLE_TARGET))
-		ifaceBtnTSingle->enable();
-	if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_AREA_OF_EFFECT))
-		ifaceBtnTAOE->enable();
-	if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_MINE))
-		ifaceBtnTMine->enable();
-	if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_CARROT_FIELD))
-		ifaceBtnTCarrot->enable();
-
-	interface->hover({mx, my});
-	interface->update(dt);
-
-	switch(mode)
+	if(state==State::PLAYING)
 		{
-		case Mode::BUILDING:
-			updateModeBuilding(dt);
-		break;
+		if((int)level.getPlayerFarmCount()==level.getWidth()*level.getHeight()-1)
+			{
+			state=State::VICTORY;
+			}
+		else if(playerBase->getHP()<=0.0f)
+			{
+			state=State::DEFEAT;
+			}
 
-		case Mode::SELECTED:
-			updateModeSelected(dt);
-		break;
+		ifaceBtnTSingle->disable();
+		ifaceBtnTAOE->disable();
+		ifaceBtnTMine->disable();
+		ifaceBtnTCarrot->disable();
 
-		default:
-		case Mode::NONE:
-			//
-		break;
+		if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_SINGLE_TARGET))
+			ifaceBtnTSingle->enable();
+		if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_AREA_OF_EFFECT))
+			ifaceBtnTAOE->enable();
+		if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_MINE))
+			ifaceBtnTMine->enable();
+		if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_CARROT_FIELD))
+			ifaceBtnTCarrot->enable();
+
+		interface->hover({mx, my});
+		interface->update(dt);
+
+		switch(mode)
+			{
+			case Mode::BUILDING:
+				updateModeBuilding(dt);
+			break;
+
+			case Mode::SELECTED:
+				updateModeSelected(dt);
+			break;
+
+			default:
+			case Mode::NONE:
+				//
+			break;
+			}
+
+		if(ifaceReceiver!=0)
+			{
+			if(ifaceReceiver&IFACE_BUILD_SINGLE) initModeBuilding(TurretType::PLAYER_UNIT_SINGLE_TARGET);
+			if(ifaceReceiver&IFACE_BUILD_AOE) initModeBuilding(TurretType::PLAYER_UNIT_AREA_OF_EFFECT);
+			if(ifaceReceiver&IFACE_BUILD_MINE) initModeBuilding(TurretType::PLAYER_UNIT_MINE);
+			if(ifaceReceiver&IFACE_BUILD_CARROT_FIELD) initModeBuilding(TurretType::PLAYER_CARROT_FIELD);
+
+			ifaceReceiver=0;
+			}
+
+		const float RES_DRAIN=level.getResourceDrain();
+		std::stringstream ss;
+		ss.setf(std::ios::fixed);
+		if(level.getResources()<=9000)
+			ss << std::setprecision(2) << level.getResources();
+		else
+			ss << ">9000.00";
+		ss << "\n" << ((RES_DRAIN<0.0f)?"+":"-");
+		ss << std::setprecision(2) << std::abs(RES_DRAIN);
+		ss << "\nHP: ";
+		if(playerBase->getHP()>0.0f)
+			ss << std::setprecision(2) << playerBase->getHP();
+		else
+			ss << "0.0";
+		ifaceResourcesText.setStr(ss.str());
+		ifaceResourcesText.update();
 		}
-
-	if(ifaceReceiver!=0)
+	else
 		{
-		if(ifaceReceiver&IFACE_BUILD_SINGLE) initModeBuilding(TurretType::PLAYER_UNIT_SINGLE_TARGET);
-		if(ifaceReceiver&IFACE_BUILD_AOE) initModeBuilding(TurretType::PLAYER_UNIT_AREA_OF_EFFECT);
-		if(ifaceReceiver&IFACE_BUILD_MINE) initModeBuilding(TurretType::PLAYER_UNIT_MINE);
-		if(ifaceReceiver&IFACE_BUILD_CARROT_FIELD) initModeBuilding(TurretType::PLAYER_CARROT_FIELD);
+		if(state==State::VICTORY)
+			{
+			ifaceResourcesText.setStr("Wygrana!");
+			ifaceResourcesText.update();
 
-		ifaceReceiver=0;
+			ifaceBtnTSingle->disable();
+			ifaceBtnTAOE->disable();
+			ifaceBtnTMine->disable();
+			ifaceBtnTCarrot->disable();
+			ifaceBtnUpgrade->disable();
+			ifaceBtnSell->disable();
+			}
+		else
+			{
+			ifaceResourcesText.setStr("Przegrana");
+			ifaceResourcesText.update();
+
+			ifaceBtnTSingle->disable();
+			ifaceBtnTAOE->disable();
+			ifaceBtnTMine->disable();
+			ifaceBtnTCarrot->disable();
+			ifaceBtnUpgrade->disable();
+			ifaceBtnSell->disable();
+			}
 		}
-
-	const float RES_DRAIN=level.getResourceDrain();
-	std::stringstream ss;
-	ss.setf(std::ios::fixed);
-	if(level.getResources()<=9000)
-		ss << std::setprecision(2) << level.getResources();
-	else
-		ss << ">9000.00";
-	ss << "\n" << ((RES_DRAIN<0.0f)?"+":"-");
-	ss << std::setprecision(2) << std::abs(RES_DRAIN);
-	ss << "\nHP: ";
-	if(playerBase->getHP()>0.0f)
-		ss << std::setprecision(2) << playerBase->getHP();
-	else
-		ss << "0.0";
-	ifaceResourcesText.setStr(ss.str());
-	ifaceResourcesText.update();
 
 	return false;
 	}
@@ -668,8 +698,9 @@ void TowerDefense::print(float tinterp)
 	Render::getInstance().setRenderMode(Engine::Render::RenderMode::GUI);
 	interface->print(tinterp);
 
-	Render::getInstance().draw(Orientation::GUI+Vector(12, 48), ifaceResourcesIcon);
-	ifaceResourcesText.print(Orientation::GUI+Vector(16, 8));
+	if(state==State::PLAYING)
+		Render::getInstance().draw(Orientation::GUI+Vector(12, 48), ifaceResourcesIcon);
+	ifaceResourcesText.print(Orientation::GUI+Vector(0, 8));
 	}
 
 
@@ -699,6 +730,8 @@ void TowerDefense::printModeSelected(float tinterp)
 
 void TowerDefense::clear()
 	{
+	this->application->removeListener(*this);
+
 	level.clear();
 
 	interface->clear();
@@ -717,12 +750,16 @@ void TowerDefense::clear()
 
 void TowerDefense::pause()
 	{
-	//
+	this->application->removeListener(*this);
 	}
 
 void TowerDefense::resume()
 	{
-	//
+	this->application->addListener(Engine::Core::AppEvent::Type::KEY_DOWN, *this);
+	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_MOVE, *this);
+	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_KEY_DOWN, *this);
+	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_KEY_UP, *this);
+	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_WHEEL, *this);
 	}
 
 

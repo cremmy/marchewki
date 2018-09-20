@@ -19,7 +19,7 @@ using namespace Engine::Core;
 
 const unsigned UPDATE_FPS=60u;
 
-Application::Application(): running(false), updatetime(0.0f), printtime(0.0f), fps(0.0f)
+Application::Application(): running(false), updatetime(0.0f), printtime(0.0f), fps(0.0f), toBePopped(0)
 	{
 	states.reserve(8);
 	}
@@ -183,6 +183,12 @@ void Application::run()
 					break;
 				}
 
+			if(toBePopped>0)
+				{
+				popState();
+				--toBePopped;
+				}
+
 			if(i>=4u)
 				{
 				// Za duzo update'ow w kolejce, obcinanie
@@ -193,6 +199,9 @@ void Application::run()
 			}
 
 		tmpupdatetime+=SDL_GetTicks()-LOOP_TIME_START;
+
+		if(states.empty())
+			break;
 
 		// Print
 		const unsigned PRINT_TIME_START=SDL_GetTicks();
@@ -310,6 +319,16 @@ bool Application::pushState(Base::ApplicationState* state)
 	states.push_back(state);
 
 	LOG_SUCCESS("Application.pushState: Nowy stan wrzucony na stos");
+
+	return true;
+	}
+
+bool Application::popStateSafe()
+	{
+	++toBePopped;
+
+	if(toBePopped>(int)states.size())
+		toBePopped=states.size();
 
 	return true;
 	}

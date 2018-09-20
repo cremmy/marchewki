@@ -37,7 +37,7 @@ namespace Game
 		}
 	namespace TurretBaseResourceDrain
 		{
-		const float PLAYER_BASE=                 0.01f;
+		const float PLAYER_BASE=                 0.005f;
 		const float PLAYER_CARROT_FIELD=         0.0f;
 		const float PLAYER_UNIT_SINGLE_TARGET=   0.01f;
 		const float PLAYER_UNIT_AREA_OF_EFFECT=  0.05f;
@@ -127,6 +127,8 @@ namespace Game
 	const float SPAWNER_TIMEOUT_SPREAD=         45.0f;
 	const float SPAWNER_COOLDOWN_SPREAD_PRE=    15.0f;
 	const float SPAWNER_COOLDOWN_SPREAD_POST=   SPAWNER_COOLDOWN_SPAWNING*0.66f;
+	const float SPAWNER_SPREAD_CHANCE=          1.0f;
+	const float SPAWNER_COOLDOWN_OVERCHARGE=    60.0f;
 
 	const int SPAWNER_SPREAD_DISTANCE=          2;
 	}

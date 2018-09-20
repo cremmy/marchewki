@@ -128,10 +128,15 @@ void Level::update(float dt)
 
 	//LOG_DEBUG("Resources: %f", resources);
 
+	const float PLAYER_HP=getField({0, 0})->turret->getHP();
+
 	//for(auto unit: units)
 	for(auto it=units.begin(); it!=units.end(); ++it)
 		{
 		Unit* unit=*it;
+
+		if(PLAYER_HP<=0.0f && turretsPlayer<4u)
+			unit->damage(DamageType::SINGLE_TARGET, 0.5f*dt);
 
 		if(!unit->isAlive() && !unit->isLocked())
 			{

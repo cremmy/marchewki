@@ -34,6 +34,8 @@ namespace Game
 				STATE_SPREADING_POST,
 				STATE_PANIC,
 				STATE_OVERCHARGE,
+
+				STATE_FINISHED,
 				};
 
 			virtual bool updateFieldOwners() override;
@@ -44,6 +46,9 @@ namespace Game
 			const WaveDef* waveCurDef;
 
 			float spreadCooldown;
+			int spreadCount;
+
+			float overchargeCooldown;
 
 			/*Engine::Graphics::SpritePtr spriteEnemy;*/
 
@@ -52,6 +57,7 @@ namespace Game
 			void initStateSpreading();
 			void initStatePanic();
 			void initStateOvercharge();
+			void initStateFinished();
 
 			void updateStateSpawning(float dt);
 			void updateStateNormal(float dt);
@@ -64,7 +70,7 @@ namespace Game
 			static int getNearbySpawnerCount(const Level* level, const Engine::Math::VectorI& fposition);
 
 		public:
-			TSpawner(): Turret(), state(STATE_PRE_SPAWN), wave(0), waveUnit(0), waveCurDef(nullptr), spreadCooldown(0.0f)
+			TSpawner(): Turret(), state(STATE_PRE_SPAWN), wave(0), waveUnit(0), waveCurDef(nullptr), spreadCooldown(0.0f), spreadCount(0), overchargeCooldown(0.0f)
 				{
 				//
 				}

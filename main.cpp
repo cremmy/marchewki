@@ -30,22 +30,22 @@
  *    + Marchewkowe pole
  * + Zbierajki wypadające z pokonanych wrogów
  * + Jednostka gracza zbierająca zbierajki
- * - Niszczenie wież wroga/zajmowanie pól wroga
- * ~ Tworzenie nowych wież wroga (tworzenie pierwszej gdy brak jakichkolwiek)
+ * + Niszczenie wież wroga/zajmowanie pól wroga
+ * + Tworzenie nowych wież wroga (tworzenie pierwszej gdy brak jakichkolwiek)
  * + Ograniczenie dostępnego terenu pod budowę wież przez gracza
  * + Obsługa zasobów
  * - Obsługa HP gracza
  *    + Utrata HP po wejściu wroga do bazy
  *    + Powolna utrata HP gdy zasoby==0
- *    - Koniec gry gdy HP=0
+ *    + Koniec gry gdy HP=0
  * - Wygranie gry
  * + Interfejs graficzny
- * ~ Obsługa reguł gry
+ * + Obsługa reguł gry
  * + Zliczanie wież w pobliżu ścieżki
  * + Ruch kamery strzałkami
  * - Nie odznaczać przy ruchu kamerą?
  * + Miny generują zasoby - więcej gdy na cooldownie?
- * - Okienko z opisem wieży (hover nad przyciskiem)
+ * + Okienko z opisem wieży (hover nad przyciskiem)
  * - Tutorial
  * - Menu główne
  */
@@ -66,6 +66,7 @@
 
 #include "game/state/debug.h"
 #include "game/state/towerdefense.h"
+#include "game/state/menu.h"
 
 #include "game/ui/panel.h"
 
@@ -103,7 +104,8 @@ int main(int, char**)
 		}
 
 	//if(app.pushState(new Game::State::Debug()))
-	if(app.pushState(new Game::State::TowerDefense()))
+	//if(app.pushState(new Game::State::TowerDefense()))
+	if(app.pushState(new Game::State::Menu()))
 		{
 		app.run();
 		}

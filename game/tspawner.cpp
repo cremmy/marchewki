@@ -204,7 +204,7 @@ void TSpawner::initStateNormal()
 	cooldown=waveCurDef->cooldownWave;
 	waveUnit=0;
 
-	spreadCooldown=SPAWNER_TIMEOUT_SPREAD;
+	spreadCooldown=SPAWNER_TIMEOUT_SPREAD*(spreadCount+1)*(1.0f+(level->getEnemyTurretCount()-1)/10.0f);
 	}
 
 void TSpawner::initStateSpreading()
@@ -235,6 +235,13 @@ void TSpawner::initStateOvercharge()
 	cooldown=0.0f;
 	wave=0;
 	waveUnit=0;
+
+	overchargeCooldown=SPAWNER_COOLDOWN_OVERCHARGE;
+	}
+
+void TSpawner::initStateFinished()
+	{
+	state=STATE_FINISHED;
 	}
 
 void TSpawner::update(float dt)
@@ -270,6 +277,10 @@ void TSpawner::update(float dt)
 			updateStateOvercharge(dt);
 		break;
 
+		case STATE_FINISHED:
+			//
+		break;
+
 		default:
 		case STATE_NORMAL:
 			updateStateNormal(dt);
@@ -294,22 +305,26 @@ void TSpawner::updateStateNormal(float dt)
 
 	if(spreadCooldown>0.0f)
 		spreadCooldown-=dt;
+	if(overchargeCooldown>0.0f)
+		overchargeCooldown-=dt;
 
 	if(cooldown>0.0f)
 		return;
 
-	if(!isFieldSafe(level, fposition) || hp<0.5f)
+	if(((const Level*)level)->getField({0, 0})->turret->getHP()<=0.0f)
+		initStateFinished();
+	else if(!isFieldSafe(level, fposition) || hp<0.5f)
 		{
 		return initStatePanic();
 		}
 	else if(isRuleEnabled(RULE_ENEMY_BUILD_TURRETS) && spreadCooldown<=0.0f)
 		{
-		if(canSpread())
+		if(canSpread() && spreadCount<2 && (rand()/(RAND_MAX+1.0f)<SPAWNER_SPREAD_CHANCE))
 			return initStateSpreading();
 
-		spreadCooldown=SPAWNER_TIMEOUT_SPREAD;
+		spreadCooldown=SPAWNER_TIMEOUT_SPREAD*(spreadCount+1)*(1.0f+(level->getEnemyTurretCount()-1)/3.0f);
 		}
-	else if(spreadCooldown<=0.0f && getNearbySpawnerCount(level, fposition)>4)
+	else if(overchargeCooldown<=0.0f && getNearbySpawnerCount(level, fposition)>4 && wave>WAVE_COUNT*0.75f)
 		{
 		return initStateOvercharge();
 		}
@@ -383,7 +398,7 @@ void TSpawner::updateStateSpreading(float dt)
 				break;
 				}
 
-			LOG_INFO("Zasiedlono pole %d,%d", newFPosition.x, newFPosition.y);
+			LOG_INFO("Zasiedlono pole %d,%d (Zrodlo: %d,%d:%p)", newFPosition.x, newFPosition.y, fposition.x, fposition.y, this);
 
 			good=true;
 			break;
@@ -408,7 +423,7 @@ void TSpawner::updateStateSpreading(float dt)
 						break;
 						}
 
-					LOG_INFO("Zasiedlono pole %d,%d (nie losowo)", newFPosition.x, newFPosition.y);
+					LOG_INFO("Zasiedlono pole %d,%d (nie losowo) (Zrodlo: %d,%d:%p)", newFPosition.x, newFPosition.y, fposition.x, fposition.y, this);
 
 					good=true;
 					break;
@@ -421,7 +436,9 @@ void TSpawner::updateStateSpreading(float dt)
 			if(!good)
 				{
 				LOG_WARNING("Nie znaleziono pola zdatnego do zasiedlenia");
-				return initStateOvercharge();
+
+				if(overchargeCooldown<=0.0f)
+					return initStateOvercharge();
 				}
 
 			return;
@@ -429,6 +446,8 @@ void TSpawner::updateStateSpreading(float dt)
 
 		cooldown=SPAWNER_COOLDOWN_SPREAD_POST;
 		state=STATE_SPREADING_POST;
+
+		++spreadCount;
 		}
 	else
 		{
@@ -501,6 +520,7 @@ void TSpawner::updateStateOvercharge(float dt)
 		if(wave>10)
 			{
 			hp-=0.4f;
+
 			return initStateNormal();
 			}
 

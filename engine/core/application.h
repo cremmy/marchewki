@@ -38,6 +38,8 @@ namespace Engine
 				float printtime;
 				float fps;
 
+				int toBePopped;
+
 				void pushEvent(const AppEvent& e);
 
 			public:
@@ -49,6 +51,7 @@ namespace Engine
 				void clear();
 
 				bool pushState(Base::ApplicationState* state);
+				bool popStateSafe();
 				bool popState();
 
 				void addListener(AppEvent::Type type, AppEventListener& listener);
