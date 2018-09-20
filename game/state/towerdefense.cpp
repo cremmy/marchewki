@@ -82,6 +82,8 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_WHEEL, *this);
 
 	setRuleset(RULESET_HARD);
+	disableRule(RULE_DRAIN_HP);
+	disableRule(RULE_DRAIN_RESOURCES);
 
 	if(!level.init(8, 6))
 		{
@@ -131,6 +133,7 @@ bool TowerDefense::init(Engine::Core::Application *application)
 		false);
 
 	ifaceBtnTSingle=new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_tsingle.xml"), &ifaceReceiver, IFACE_BUILD_SINGLE);
+	//ifaceBtnTSingle=new UI::Button(96, 96, "KARTOFLE", &ifaceReceiver, IFACE_BUILD_SINGLE);
 	ifaceBtnTAOE=   new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_taoe.xml"), &ifaceReceiver, IFACE_BUILD_AOE);
 	ifaceBtnTMine=  new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_tmine.xml"), &ifaceReceiver, IFACE_BUILD_MINE);
 	ifaceBtnTCarrot=new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_tcarrot.xml"), &ifaceReceiver, IFACE_BUILD_CARROT_FIELD);

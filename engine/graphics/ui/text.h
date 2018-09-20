@@ -120,6 +120,7 @@ namespace Engine
 					inline int getH() const {return h;}
 					inline int getRealW() const {return rw;}
 					inline int getRealH() const {return rh;}
+					inline bool isEmpty() const {return str.empty();}
 					inline std::string getStr() const {return str;}
 					inline int getOptions() const {return opts;}
 					inline float getAlpha() const {return alpha;}

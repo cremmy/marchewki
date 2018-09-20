@@ -50,7 +50,8 @@ namespace Game
 
 			float overchargeCooldown;
 
-			/*Engine::Graphics::SpritePtr spriteEnemy;*/
+			Engine::Graphics::SpritePtr markerOvercharge;
+			Engine::Graphics::SpritePtr markerSpreading;
 
 			void initStateSpawning();
 			void initStateNormal();
@@ -86,7 +87,7 @@ namespace Game
 			virtual bool attachToLevel(Level* level, const Engine::Math::VectorI& fposition) override;
 			virtual bool removeFromLevel() override;
 			virtual void update(float dt) override;
-			//virtual void print(float tinterp) override;
+			virtual void print(float tinterp) override;
 
 			virtual TurretType getType() const override {return TurretType::ENEMY_SPAWNER;}
 			virtual bool isWalkable() const override {return true;}

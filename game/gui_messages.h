@@ -21,6 +21,12 @@ namespace Game
 	const std::string GUI_MESSAGE_BTN_CARROT_FIELD= "Koszt: %c (Utrzymanie: %d)\nUlepszenie: %u\nUsuniêcie: %s\nPole marchewkowe. Nie zu¿ywa zasobów. Aby wygraæ, na ca³ej planszy posadŸ marchewki. [R]";
 	const std::string GUI_MESSAGE_BTN_UPGRADE=      "Koszt: %c\nUlepszenie zaznaczonego obiektu. [A]";
 	const std::string GUI_MESSAGE_BTN_SELL=         "Koszt: %c\nUsuniêcie zaznaczonego obiektu. [C]";
+	
+	
+	const std::string MENU_BTN_NEW_GAME=         "Nowa gra";
+	const std::string MENU_BTN_TUTORIAL=         "Samouczek";
+	const std::string MENU_BTN_OPTIONS=          "Opcje";
+	const std::string MENU_BTN_EXIT=             "Wyjœcie";
 	}
 
 

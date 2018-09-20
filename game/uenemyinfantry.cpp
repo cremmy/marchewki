@@ -215,7 +215,8 @@ void UEnemyInfantry::damage(DamageType dmgType, float dmg)
 
 	if(hp<=0.0f)
 		{
-		level->spawnCollectible(position, 1.0f);
+		//level->spawnCollectible(position, 1.0f);
+		level->spawnCollectible(position, maxhp);
 		}
 	}
 

@@ -13,7 +13,8 @@ using namespace Game::UI;
 
 void Window::update(float dt)
 	{
-	background.update(dt);
+	if(background)
+		background.update(dt);
 
 	Panel::update(dt);
 	}
@@ -25,26 +26,29 @@ void Window::print(float tinterp)
 
 	// TODO sprawdzanie czy resizeBackground jest prawdą
 
-	if(resizeBackground)
+	if(background)
 		{
-		const Vector RESIZE_FACTOR(
-			size.x/background.getCurrentFrame().getWidth(),
-			size.y/background.getCurrentFrame().getHeight(),
-			1,
-			1);
-
-		Render::getInstance().draw(
-			Orientation(
-				{(float)position.x, (float)position.y},
-				Orientation::GUI,
-				RESIZE_FACTOR),
-			background);
-		}
-	else
-		{
-		for(int y=0; y<size.y; y+=background.getCurrentFrame().getHeight())
+		if(resizeBackground)
 			{
-			Render::getInstance().draw(Orientation::GUI+Vector(position.x, position.y+y), background);
+			const Vector RESIZE_FACTOR(
+				size.x/background.getCurrentFrame().getWidth(),
+				size.y/background.getCurrentFrame().getHeight(),
+				1,
+				1);
+
+			Render::getInstance().draw(
+				Orientation(
+					{(float)position.x, (float)position.y},
+					Orientation::GUI,
+					RESIZE_FACTOR),
+				background);
+			}
+		else
+			{
+			for(int y=0; y<size.y; y+=background.getCurrentFrame().getHeight())
+				{
+				Render::getInstance().draw(Orientation::GUI+Vector(position.x, position.y+y), background);
+				}
 			}
 		}
 

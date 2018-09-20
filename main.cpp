@@ -34,20 +34,24 @@
  * + Tworzenie nowych wież wroga (tworzenie pierwszej gdy brak jakichkolwiek)
  * + Ograniczenie dostępnego terenu pod budowę wież przez gracza
  * + Obsługa zasobów
- * - Obsługa HP gracza
+ * + Obsługa HP gracza
  *    + Utrata HP po wejściu wroga do bazy
  *    + Powolna utrata HP gdy zasoby==0
  *    + Koniec gry gdy HP=0
- * - Wygranie gry
+ * + Wygranie gry
  * + Interfejs graficzny
  * + Obsługa reguł gry
  * + Zliczanie wież w pobliżu ścieżki
  * + Ruch kamery strzałkami
- * - Nie odznaczać przy ruchu kamerą?
+ * ~ Nie odznaczać przy ruchu kamerą?
  * + Miny generują zasoby - więcej gdy na cooldownie?
  * + Okienko z opisem wieży (hover nad przyciskiem)
  * - Tutorial
  * - Menu główne
+ */
+/* FIXME:
+ * - Animacja spawnerów czasem nie wraca na idle
+ * - Spawnery wracają do stanu 'spawning'?
  */
 /* Balans:
  *  + Za duży drain z pól na wczesnych etapach gry
@@ -104,8 +108,8 @@ int main(int, char**)
 		}
 
 	//if(app.pushState(new Game::State::Debug()))
-	//if(app.pushState(new Game::State::TowerDefense()))
-	if(app.pushState(new Game::State::Menu()))
+	if(app.pushState(new Game::State::TowerDefense()))
+	//if(app.pushState(new Game::State::Menu()))
 		{
 		app.run();
 		}

@@ -1,22 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<sprite name="base">
+<sprite name="turret_spawner">
 	<image name="default">turret_spawner.png</image>
 
 	<animation name="idle">
-		<direction name="right" fps="0" loopto="0">
-			<frame x="96" y="0" w="96" h="96" offsetx="49" offsety="71">
-				<point name="from" x="48" y="77" />
-			</frame>
-		</direction>
-	</animation>
-	<animation name="ready">
 		<direction name="right" fps="0" loopto="0">
 			<frame x="0" y="0" w="96" h="96" offsetx="49" offsety="71">
 				<point name="from" x="48" y="77" />
 			</frame>
 		</direction>
 	</animation>
-	<animation name="deusvult">
+	<animation name="spreading">
 		<direction name="right" fps="0" loopto="0">
 			<frame x="0" y="96" w="96" h="96" offsetx="49" offsety="71">
 				<point name="from" x="48" y="77" />

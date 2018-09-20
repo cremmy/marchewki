@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<sprite name="turret_spawner_spreading">
+	<image name="default">turret_spawner.png</image>
+
+	<animation name="idle">
+		<direction name="right" fps="0" loopto="0">
+			<frame x="96" y="48" w="32" h="48" offsetx="17" offsety="41"></frame>
+		</direction>
+	</animation>
+</sprite>

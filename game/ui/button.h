@@ -9,6 +9,7 @@
 
 #include "../../engine/graphics/spriteptr.h"
 #include "../../engine/graphics/ui/text.h"
+
 #include "panel.h"
 
 namespace Game
@@ -19,6 +20,7 @@ namespace Game
 			{
 			protected:
 				Engine::Graphics::SpritePtr sprite;
+				Engine::Graphics::UI::Text text;
 
 				int* receiver;
 				int receiverCode;
@@ -32,11 +34,20 @@ namespace Game
 
 			public:
 				Button(const Engine::Graphics::SpritePtr& sprite, int* receiver, int code):
-					Panel({sprite.getCurrentFrame().getWidth(), sprite.getCurrentFrame().getHeight()}), sprite(sprite),
+					Panel({sprite.getCurrentFrame().getWidth(), sprite.getCurrentFrame().getHeight()}), sprite(sprite), text(),
 					receiver(receiver), receiverCode(code),
 					wasClicked(false), wasHovered(false)
 					{
 					//
+					}
+				Button(int w, int h, const std::string& text, int* receiver, int code):
+					Panel({w, h}), sprite(), text("font/dejavu.xml", text, w, h),
+					receiver(receiver), receiverCode(code),
+					wasClicked(false), wasHovered(false)
+					{
+					this->text.setAlignCenter();
+					this->text.setAlignMiddle();
+					this->text.update();
 					}
 				virtual ~Button()
 					{

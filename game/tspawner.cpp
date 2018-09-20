@@ -8,6 +8,7 @@
 #include "tspawner.h"
 
 #include "../engine/debug/log.h"
+#include "../engine/render/render.h"
 
 #include "consts.h"
 #include "level.h"
@@ -125,10 +126,14 @@ bool TSpawner::init()
 		LOG_ERROR("Nie udalo sie wczytac sprite");
 		return false;
 		}
-
-	/*if(!(spriteEnemy=Engine::Graphics::SpritePtr("sprite/unit_enemy_infantry.xml")))
+	if(!(markerOvercharge=Engine::Graphics::SpritePtr("sprite/turret_spawner_overcharge.xml")))
 		{
-		LOG_ERROR("Nie udalo sie wczytac sprite");
+		LOG_ERROR("Nie udalo sie wczytac sprite (overcharge)");
+		return false;
+		}
+	/*if(!(markerSpreading=Engine::Graphics::SpritePtr("sprite/turret_spawner_spreading.xml")))
+		{
+		LOG_ERROR("Nie udalo sie wczytac sprite (spreading)");
 		return false;
 		}*/
 
@@ -183,19 +188,26 @@ bool TSpawner::removeFromLevel()
 
 void TSpawner::initStateSpawning()
 	{
+	sprite.setAnimation(0u);
 	state=STATE_SPAWNING;
 
 	wave=0;
 	waveUnit=0;
-	waveCurDef=nullptr;
+	waveCurDef=&WAVE_DEFINITIONS[wave];
 
 	cooldown=SPAWNER_COOLDOWN_SPAWNING;
 
-	level->addEmitter(new ParticleEmitter(ParticleEmitterType::EXPLOSION, level->getFieldPosition(fposition), cooldown, Engine::Graphics::SpritePtr("sprite/particle_spawn.xml"), 0.6f, 4.0f, 96.0f, 256.0f, 1.0f));
+	level->addEmitter(new ParticleEmitter(
+		ParticleEmitterType::EXPLOSION,
+		level->getFieldPosition(fposition),
+		cooldown,
+		Engine::Graphics::SpritePtr("sprite/particle_spawn.xml"),
+		4.0f, 4.0f, 96.0f, 128.0f, 2.5f));
 	}
 
 void TSpawner::initStateNormal()
 	{
+	sprite.setAnimation(0u);
 	state=STATE_NORMAL;
 
 	wave=0;
@@ -212,10 +224,11 @@ void TSpawner::initStateSpreading()
 	if(!isRuleEnabled(RULE_ENEMY_BUILD_TURRETS))
 		return;
 
+	sprite.setAnimation("spreading");
 	state=STATE_SPREADING;
 
 	wave=0;
-	waveCurDef=nullptr;
+	waveCurDef=&WAVE_DEFINITIONS[wave];
 
 	cooldown=SPAWNER_COOLDOWN_SPREAD_PRE;
 	waveUnit=0;
@@ -223,30 +236,49 @@ void TSpawner::initStateSpreading()
 
 void TSpawner::initStatePanic()
 	{
+	sprite.setAnimation(0u);
 	state=STATE_PANIC;
 
-	//cooldown=waveCurDef->cooldownWave;
+	if(!waveCurDef)
+		{
+		wave=0;
+		waveUnit=0;
+		waveCurDef=&WAVE_DEFINITIONS[wave];
+		}
+	cooldown=waveCurDef->cooldownWave;
+
+	level->addEmitter(new ParticleEmitter(
+		ParticleEmitterType::LINEAR_UP,
+		level->getFieldPosition(fposition),
+		waveCurDef->cooldownWave + (waveCurDef->uinfantry+waveCurDef->uarmored)*waveCurDef->cooldownUnit*0.25,
+		Engine::Graphics::SpritePtr("sprite/particle_red.xml"),
+		100, 8, 200, 250, 1.0f));
 	}
 
 void TSpawner::initStateOvercharge()
 	{
+	sprite.setAnimation(0u);
 	state=STATE_OVERCHARGE;
 
 	cooldown=0.0f;
 	wave=0;
 	waveUnit=0;
+	waveCurDef=&WAVE_DEFINITIONS[wave];
 
 	overchargeCooldown=SPAWNER_COOLDOWN_OVERCHARGE;
 	}
 
 void TSpawner::initStateFinished()
 	{
+	sprite.setAnimation(0u);
 	state=STATE_FINISHED;
 	}
 
 void TSpawner::update(float dt)
 	{
 	sprite.update(dt);
+	markerOvercharge.update(dt);
+	//markerSpreading.update(dt);
 
 	if(hp<=0.0f)
 		return;
@@ -341,8 +373,7 @@ void TSpawner::updateStateNormal(float dt)
 			}
 		else
 			{
-			initStateSpreading();
-			//return;
+			//return initStateSpreading();
 			}
 
 		waveCurDef=&WAVE_DEFINITIONS[wave];
@@ -374,6 +405,8 @@ void TSpawner::updateStateSpreading(float dt)
 		{
 		if(cooldown>0.0f)
 			return;
+
+		sprite.setAnimation(0u);
 
 		// Wybierz losowe pole w zasięgu
 		if(!canSpread())
@@ -440,8 +473,6 @@ void TSpawner::updateStateSpreading(float dt)
 				if(overchargeCooldown<=0.0f)
 					return initStateOvercharge();
 				}
-
-			return;
 			}
 
 		cooldown=SPAWNER_COOLDOWN_SPREAD_POST;
@@ -465,7 +496,15 @@ void TSpawner::updateStatePanic(float dt)
 
 	if(!isRuleEnabled(RULE_ENEMY_SPAWN_UNITS))
 		{
-		cooldown=1.0f;
+		if(!isFieldExtraSafe(level, fposition))
+			{
+			hp=0.0f;
+			return;
+			}
+
+		hp=0.75f;
+
+		return initStateNormal();
 		}
 	else if(waveUnit>=(waveCurDef->uinfantry+waveCurDef->uarmored)*4)
 		{
@@ -483,7 +522,7 @@ void TSpawner::updateStatePanic(float dt)
 		{
 		const int ALL_UNITS_IN_WAVE=waveCurDef->uinfantry+waveCurDef->uarmored;
 
-		cooldown=waveCurDef->cooldownUnit*0.25;
+		cooldown=waveCurDef->cooldownUnit*0.25f;
 
 		if((waveUnit%ALL_UNITS_IN_WAVE)<waveCurDef->uarmored)
 			level->spawnUnit(UnitType::ENEMY_ARMORED, fposition, Engine::Math::VectorI(0, 0), waveCurDef->hp*2.0f, level->getFieldDiagonalSize()*0.75f);
@@ -535,6 +574,27 @@ void TSpawner::updateStateOvercharge(float dt)
 			cooldown*=4.0f;
 			++wave;
 			}
+		}
+	}
+
+
+void TSpawner::print(float tinterp)
+	{
+	using namespace Engine::Math;
+	using namespace Engine::Render;
+
+	Turret::print(tinterp);
+
+	if(state==STATE_OVERCHARGE)
+		{
+		const Camera& cam=*Render::getInstance().getCurrentCamera();
+
+		const Vector pos=level->getFieldPosition(fposition);
+		const Orientation billboard=cam.getBillboard(pos);
+
+		glEnable(GL_DEPTH_TEST);
+		Render::getInstance().draw(billboard+Vector(0.0f, 0.0f, 2.0f), markerOvercharge);
+		glDisable(GL_DEPTH_TEST);
 		}
 	}
 

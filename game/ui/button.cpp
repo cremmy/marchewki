@@ -32,10 +32,16 @@ void Button::print(float tinterp)
 		}
 	else if(wasHovered)
 		{
-		Render::getInstance().setColor(Vector(0.95f, 1.0f, 0.95f, 1.0f));
+		if(sprite)
+			Render::getInstance().setColor(Vector(0.95f, 1.0f, 0.95f, 1.0f));
+		else
+			Render::getInstance().setColor(Vector(0.75f, 1.0f, 0.75f, 1.0f));
 		}
 
-	Render::getInstance().draw(Orientation::GUI+Vector(position.x, position.y), sprite);
+	if(sprite)
+		Render::getInstance().draw(Orientation::GUI+Vector(position.x, position.y), sprite);
+	if(!text.isEmpty())
+		text.print(Orientation::GUI+Vector(position.x, position.y));
 	Render::getInstance().setColor(Vector(1, 1, 1, 1));
 
 	if(wasHovered && hoverBackground)

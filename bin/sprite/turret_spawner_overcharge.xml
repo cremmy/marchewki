@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<sprite name="turret_spawner_overcharge">
+	<image name="default">turret_spawner.png</image>
+
+	<animation name="idle">
+		<direction name="right" fps="4" loopto="0">
+			<frame x="96" y="0" w="32" h="48" offsetx="17" offsety="48"></frame>
+			<frame x="96" y="0" w="32" h="48" offsetx="17" offsety="49"></frame>
+			<frame x="96" y="0" w="32" h="48" offsetx="17" offsety="50"></frame>
+			<frame x="96" y="0" w="32" h="48" offsetx="17" offsety="51"></frame>
+			<frame x="96" y="0" w="32" h="48" offsetx="17" offsety="51"></frame>
+			<frame x="96" y="0" w="32" h="48" offsetx="17" offsety="50"></frame>
+			<frame x="96" y="0" w="32" h="48" offsetx="17" offsety="49"></frame>
+			<frame x="96" y="0" w="32" h="48" offsetx="17" offsety="48"></frame>
+		</direction>
+	</animation>
+</sprite>
