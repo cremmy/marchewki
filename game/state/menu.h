@@ -26,22 +26,24 @@ namespace Game
 					IFACE_GOTO_NEW_GAME=     0x1<<0,
 					IFACE_START_TUTORIAL=    0x1<<1,
 					IFACE_GOTO_OPTIONS=      0x1<<2,
-					IFACE_EXIT=              0x1<<3,
-					IFACE_BACK=              0x1<<4,
+					IFACE_GOTO_HELP=         0x1<<3,
+					IFACE_EXIT=              0x1<<4,
+					IFACE_BACK=              0x1<<5,
 
-					IFACE_START_SANDBOX=     0x1<<5,
-					IFACE_START_EASY=        0x1<<6,
-					IFACE_START_MEDIUM=      0x1<<7,
-					IFACE_START_HARD=        0x1<<8,
-					IFACE_GOTO_CUSTOM=       0x1<<9,
+					IFACE_START_SANDBOX=     0x1<<8,
+					IFACE_START_EASY=        0x1<<9,
+					IFACE_START_MEDIUM=      0x1<<10,
+					IFACE_START_HARD=        0x1<<11,
+					IFACE_GOTO_CUSTOM=       0x1<<12,
 
-					IFACE_START_CUSTOM=      0x1<<10,
+					IFACE_START_CUSTOM=      0x1<<16,
 					};
 
 				UI::Window* wndMain;
 				UI::Button* btnMainNewGame;
 				UI::Button* btnMainTutorial;
 				UI::Button* btnMainOptions;
+				UI::Button* btnMainHelp;
 				UI::Button* btnMainExit;
 
 				UI::Window* wndNewGame;
@@ -68,6 +70,9 @@ namespace Game
 				UI::CheckButton* chkOptionsSounds;
 				UI::CheckButton* chkOptionsMusic;
 				UI::Button* btnOptionsBack;
+
+				UI::Window* wndHelp;
+				UI::Button* btnHelpBack;
 
 				UI::Window* currentWindow;
 				int receiver;

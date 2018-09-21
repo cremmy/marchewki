@@ -101,6 +101,9 @@ void SoundPlayer::clear()
 
 void SoundPlayer::play(const std::string& path, int volume, int channel, int loops)
 	{
+	if(!enabledSound)
+		return;
+
 	Mix_Chunk* chunk=loadSample(path);
 
 	if(!chunk)
@@ -121,6 +124,9 @@ void SoundPlayer::play(const std::string& path, int volume, int channel, int loo
 
 void SoundPlayer::music(const std::string& path, unsigned fadeinms, unsigned fadeoutms)
 	{
+	if(!enabledMusic)
+		return;
+
 	LOG_INFO("SoundPlayer.music: Odtwarzanie muzyki \"%s\"", path.c_str());
 
 	if(Mix_PlayingMusic())

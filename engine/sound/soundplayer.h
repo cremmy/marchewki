@@ -40,6 +40,9 @@ namespace Engine
 				unsigned nextFadeIn;
 				std::string nextMusic;
 
+				bool enabledSound;
+				bool enabledMusic;
+
 			public:
 				inline static SoundPlayer& getInstance()
 					{
@@ -58,6 +61,14 @@ namespace Engine
 
 				void music(const std::string& path, unsigned fadeinms=0u, unsigned fadeoutms=500u);
 				void stop(unsigned fadeoutms=500u);
+
+				bool isSoundEnabled() const {return enabledSound;}
+				bool isMusicEnabled() const {return enabledMusic;}
+
+				void enableSound() {enabledSound=true;}
+				void enableMusic() {enabledMusic=true;}
+				void disableSound() {enabledSound=false;}
+				void disableMusic() {enabledMusic=false;}
 			};
 
 		inline SoundPlayer& getInstance() {return SoundPlayer::getInstance();}

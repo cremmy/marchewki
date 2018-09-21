@@ -23,10 +23,28 @@ namespace Game
 	const std::string GUI_MESSAGE_BTN_SELL=         "Koszt: %c\nUsuniêcie zaznaczonego obiektu. [C]";
 	
 	
-	const std::string MENU_BTN_NEW_GAME=         "Nowa gra";
-	const std::string MENU_BTN_TUTORIAL=         "Samouczek";
-	const std::string MENU_BTN_OPTIONS=          "Opcje";
-	const std::string MENU_BTN_EXIT=             "Wyjœcie";
+	const std::string MENU_BTN_NEW_GAME=            "Nowa gra";
+	const std::string MENU_BTN_TUTORIAL=            "Samouczek";
+	const std::string MENU_BTN_OPTIONS=             "Opcje";
+	const std::string MENU_BTN_HELP=                "Pomoc";
+	const std::string MENU_BTN_EXIT=                "Wyjœcie";
+	const std::string MENU_BTN_GAME_SANDBOX=        "Sandbox";
+	const std::string MENU_BTN_GAME_EASY=           "£atwy";
+	const std::string MENU_BTN_GAME_MEDIUM=         "Œredni";
+	const std::string MENU_BTN_GAME_HARD=           "Trudny";
+	const std::string MENU_BTN_GAME_CUSTOM=         "W³asne zasady";
+	const std::string MENU_BTN_BACK=                "Powrót";
+	const std::string MENU_BTN_START=               "Start";
+	const std::string MENU_CHK_RULE_BUILD_COST=     "Gracz: Koszty budowania";
+	const std::string MENU_CHK_RULE_ENEMY_SPAWN=    "Wróg: Tworzenie jednostek";
+	const std::string MENU_CHK_RULE_DRAIN_HP=       "Gracz: Utrata zdrowia";
+	const std::string MENU_CHK_RULE_DRAIN_RESOURCES="Gracz: Zu¿ywanie zasobów";
+	const std::string MENU_CHK_RULE_ENEMY_SPREAD=   "Wróg: Rozbudowa";
+	const std::string MENU_CHK_RULE_PREFER_CARROTS= "Wróg: Preferowanie marchewek";
+	const std::string MENU_CHK_RULE_AVOID_TURRETS=  "Wróg: Unikanie wie¿";
+	const std::string MENU_CHK_RULE_PLAYER_STOMP=   "Gracz: Deptanie marchewek";
+	const std::string MENU_CHK_SOUNDS=              "DŸwiêki";
+	const std::string MENU_CHK_MUSIC=               "Muzyka";
 	}
 
 

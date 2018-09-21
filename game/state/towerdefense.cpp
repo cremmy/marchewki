@@ -55,12 +55,16 @@ std::string prepareTurretMessage(const std::string& base, float cost, float drai
 	return ret;
 	}
 
-TowerDefense::TowerDefense(): state(State::PLAYING), mode(Mode::NONE), level(), playerBase(nullptr), camera(),
+TowerDefense::TowerDefense(float resources, float hp, int fieldWidth, int fieldHeight):
+	state(State::PLAYING), mode(Mode::NONE), level(), playerBase(nullptr), camera(),
 	camTargetAngle(1), camCurrentAngle(1),
 	camTargetZoomName(Zoom::ZOOM_100), camTargetZoom(1.0f), camCurrentZoom(1.0f),
 	ifaceReceiver(0), interface(nullptr), ifaceBtnTSingle(nullptr), ifaceBtnTAOE(nullptr), ifaceBtnTMine(nullptr), ifaceBtnTCarrot(nullptr), ifaceBtnUpgrade(nullptr), ifaceBtnSell(nullptr)
 	{
-	//
+	startSettings.resources=resources;
+	startSettings.hp=hp;
+	startSettings.fieldWidth=fieldWidth;
+	startSettings.fieldHeight=fieldHeight;
 	}
 
 TowerDefense::~TowerDefense()
@@ -81,11 +85,7 @@ bool TowerDefense::init(Engine::Core::Application *application)
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_KEY_UP, *this);
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_WHEEL, *this);
 
-	setRuleset(RULESET_HARD);
-	disableRule(RULE_DRAIN_HP);
-	disableRule(RULE_DRAIN_RESOURCES);
-
-	if(!level.init(8, 6))
+	if(!level.init(startSettings.fieldWidth, startSettings.fieldHeight))
 		{
 		LOG_ERROR("Nie udalo sie zainicjowac poziomu");
 		return false;
@@ -106,13 +106,13 @@ bool TowerDefense::init(Engine::Core::Application *application)
 		LOG_ERROR("Nie udalo sie wstawic spawnera");
 		return false;
 		}
-	level.addResources(6.66f);
+	level.addResources(startSettings.resources);
 
 	// Moja paranoja nie pozwala mi zaakceptować tego kodu
 	// ...ale moja wiara w 'jakoś to będzie' pozwala mi zostawić modyfikacje na później
 	//                                                                              ...czyli nigdy, o ile będzie działało
 	playerBase=(TPlayerBase*)(((const Level&)level).getField({0, 0})->turret);
-	playerBase->setHP(5.0f);
+	playerBase->setHP(startSettings.hp);
 
 	// Preload spritów
 	spriteCache.push_back(Engine::Graphics::SpritePtr("sprite/collectible.xml"));
@@ -560,13 +560,23 @@ bool TowerDefense::update(float dt)
 			ss << std::setprecision(2) << level.getResources();
 		else
 			ss << ">9000.00";
-		ss << "\n" << ((RES_DRAIN<0.0f)?"+":"-");
-		ss << std::setprecision(2) << std::abs(RES_DRAIN);
-		ss << "\nHP: ";
-		if(playerBase->getHP()>0.0f)
-			ss << std::setprecision(2) << playerBase->getHP();
+		if(isRuleEnabled(RULE_DRAIN_RESOURCES))
+			{
+			ss << "\n" << ((RES_DRAIN<0.0f)?"+":"-");
+			ss << std::setprecision(2) << std::abs(RES_DRAIN);
+			}
 		else
-			ss << "0.0";
+			{
+			ss << "\n";
+			}
+		if(isRuleEnabled(RULE_DRAIN_HP))
+			{
+			ss << "\nHP: ";
+			if(playerBase->getHP()>0.0f)
+				ss << std::setprecision(2) << playerBase->getHP();
+			else
+				ss << "0.0";
+			}
 		ifaceResourcesText.setStr(ss.str());
 		ifaceResourcesText.update();
 		}

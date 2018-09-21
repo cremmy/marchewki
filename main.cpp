@@ -50,13 +50,14 @@
  * - Menu główne
  */
 /* FIXME:
- * - Animacja spawnerów czasem nie wraca na idle
- * - Spawnery wracają do stanu 'spawning'?
+ * + Animacja spawnerów czasem nie wraca na idle
+ * ~ Spawnery wracają do stanu 'spawning'?
  */
 /* Balans:
  *  + Za duży drain z pól na wczesnych etapach gry
  *  + Jedna wieża nie radzi sobie z początkowymi falami
  *  ? Drain z pól zalezny od procentowego zajęcia planszy?
+ *  - Drain z pól nie powinien być zależny od aktualnych zasobów
  */
 // SDL_main
 #include <cstdio>
@@ -107,11 +108,22 @@ int main(int, char**)
 		return __LINE__;
 		}
 
-	//if(app.pushState(new Game::State::Debug()))
-	if(app.pushState(new Game::State::TowerDefense()))
-	//if(app.pushState(new Game::State::Menu()))
+	if(Engine::Render::getInstance().getWindowWidth()<640 || Engine::Render::getInstance().getWindowHeight()<480)
 		{
-		app.run();
+		LOG_ERROR("Utworzone okno jest za male, AAAAAAAAAAAaaaaaaaaaa");
+		/*if(app.pushState(new Game::State::Error()))
+			{
+			app.run();
+			}*/
+		}
+	else
+		{
+		//if(app.pushState(new Game::State::Debug()))
+		//if(app.pushState(new Game::State::TowerDefense()))
+		if(app.pushState(new Game::State::Menu()))
+			{
+			app.run();
+			}
 		}
 
 	Engine::Sound::getInstance().clear();

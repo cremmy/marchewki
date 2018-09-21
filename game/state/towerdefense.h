@@ -104,11 +104,19 @@ namespace Game
 					const Level::Field* field;
 					} modeSelectedData;
 
+				struct
+					{
+					float resources;
+					float hp;
+					int fieldWidth;
+					int fieldHeight;
+					} startSettings;
+
 				std::list<Engine::Graphics::SpritePtr> spriteCache;
 
 			public:
 				// TODO parametry gry w konstruktorze (początkowe zasoby, reguły, wielkość planszy)
-				TowerDefense();
+				TowerDefense(float resources, float hp, int fieldWidth, int fieldHeight);
 				virtual ~TowerDefense();
 
 				virtual bool init(Engine::Core::Application *application);

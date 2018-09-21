@@ -47,6 +47,9 @@ namespace Game
 				virtual bool hover(const Engine::Math::VectorI& position);
 
 				bool isChecked() const {return checked;}
+				void check() {checked=true;}
+				void uncheck() {checked=false;}
+				void setChecked(bool s) {checked=s;}
 			};
 
 		} /* namespace UI */
