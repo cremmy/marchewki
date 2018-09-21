@@ -780,7 +780,7 @@ void TowerDefense::initModeBuilding(TurretType turret)
 	{
 	LOG_DEBUG("Mode: BUILDING; Turret: %d", turret);
 
-	if(playerBase->getHP()<=0.0f)
+	if(state!=State::PLAYING)
 		return initModeNone();
 
 	mode=Mode::BUILDING;
@@ -818,7 +818,7 @@ void TowerDefense::initModeSelected(const Engine::Math::VectorI fposition)
 	{
 	LOG_DEBUG("Mode: SELECTED; Field: %d,%d", fposition.x, fposition.y);
 
-	if(playerBase->getHP()<=0.0f)
+	if(state!=State::PLAYING)
 		return initModeNone();
 
 	mode=Mode::SELECTED;

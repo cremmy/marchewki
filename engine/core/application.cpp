@@ -255,7 +255,7 @@ void Application::run()
 			printtime=tmpprinttime/(float)tmpprintcount;
 			fps=tmpprintcount;
 
-			LOG_DEBUG("[upd %.2f][prt %.2f][fps %.2f]", updatetime, printtime, fps);
+			//LOG_DEBUG("[upd %.2f][prt %.2f][fps %.2f]", updatetime, printtime, fps);
 
 			tmpupdatecount=0;
 			tmpupdatetime=0;

@@ -32,13 +32,25 @@ bool TPlayerBase::updateFieldOwners()
 	{
 	using namespace Engine::Math;
 
+	const int FIELD_RANGE=(upgrade>=3)?2:1;
+	const int FIELD_RANGE_MAX=2;
+
+	// Zwolnij poprzednie pola
+	// ^ Potrzebne na wypadek downgrade wieży
+	for(int y=-FIELD_RANGE_MAX; y<=FIELD_RANGE_MAX; ++y)
+		{
+		for(int x=-FIELD_RANGE_MAX; x<=FIELD_RANGE_MAX; ++x)
+			{
+			fieldRelease(fposition+VectorI(x, y), Level::Field::Owner::PLAYER);
+			}
+		}
+
+	// Zajmij pola na nowo
 	if(!fieldClaim(fposition, Level::Field::Owner::PLAYER))
 		{
 		LOG_ERROR("Nie udalo sie ustawic wlasciciela pola %d,%d", fposition.x, fposition.y);
 		return false;
 		}
-
-	const int FIELD_RANGE=(upgrade>=3)?2:1;
 
 	for(int y=-FIELD_RANGE; y<=FIELD_RANGE; ++y)
 		{

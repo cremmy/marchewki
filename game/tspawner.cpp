@@ -121,6 +121,11 @@ bool TSpawner::isFieldExtraSafe(const Level* level, const Engine::Math::VectorI&
 
 bool TSpawner::init()
 	{
+	if(sprite)
+		{
+		LOG_ERROR("%p: already init'ed");
+		}
+
 	if(!(sprite=Engine::Graphics::SpritePtr("sprite/turret_spawner.xml")))
 		{
 		LOG_ERROR("Nie udalo sie wczytac sprite");
@@ -188,6 +193,8 @@ bool TSpawner::removeFromLevel()
 
 void TSpawner::initStateSpawning()
 	{
+	LOG_DEBUG("%p: state change (from: %d to: %s)", this, state, __FUNCTION__);
+
 	sprite.setAnimation(0u);
 	state=STATE_SPAWNING;
 
@@ -207,6 +214,8 @@ void TSpawner::initStateSpawning()
 
 void TSpawner::initStateNormal()
 	{
+	LOG_DEBUG("%p: state change (from: %d to: %s)", this, state, __FUNCTION__);
+
 	sprite.setAnimation(0u);
 	state=STATE_NORMAL;
 
@@ -224,6 +233,8 @@ void TSpawner::initStateSpreading()
 	if(!isRuleEnabled(RULE_ENEMY_BUILD_TURRETS))
 		return;
 
+	LOG_DEBUG("%p: state change (from: %d to: %s)", this, state, __FUNCTION__);
+
 	sprite.setAnimation("spreading");
 	state=STATE_SPREADING;
 
@@ -236,6 +247,8 @@ void TSpawner::initStateSpreading()
 
 void TSpawner::initStatePanic()
 	{
+	LOG_DEBUG("%p: state change (from: %d to: %s)", this, state, __FUNCTION__);
+
 	sprite.setAnimation(0u);
 	state=STATE_PANIC;
 
@@ -257,6 +270,8 @@ void TSpawner::initStatePanic()
 
 void TSpawner::initStateOvercharge()
 	{
+	LOG_DEBUG("%p: state change (from: %d to: %s)", this, state, __FUNCTION__);
+
 	sprite.setAnimation(0u);
 	state=STATE_OVERCHARGE;
 
@@ -270,6 +285,8 @@ void TSpawner::initStateOvercharge()
 
 void TSpawner::initStateFinished()
 	{
+	LOG_DEBUG("%p: state change (from: %d to: %s)", this, state, __FUNCTION__);
+
 	sprite.setAnimation(0u);
 	state=STATE_FINISHED;
 	}
@@ -344,7 +361,9 @@ void TSpawner::updateStateNormal(float dt)
 		return;
 
 	if(((const Level*)level)->getField({0, 0})->turret->getHP()<=0.0f)
-		initStateFinished();
+		{
+		return initStateFinished();
+		}
 	else if(!isFieldSafe(level, fposition) || hp<0.5f)
 		{
 		return initStatePanic();
@@ -381,7 +400,7 @@ void TSpawner::updateStateNormal(float dt)
 		cooldown=waveCurDef->cooldownWave;
 		waveUnit=0;
 
-		sprite.setAnimation(waveCurDef->level);
+		//sprite.setAnimation(waveCurDef->level); // Grrrr, zapomniałem to usunąć i się zastanawiałem czemu ot tak wskakuje animacja 'spreading'
 		//LOG_DEBUG("[wave %d][cd %.2f][i %2d a %2d cd %.2f][hp %.2f]", wave, waveCurDef->cooldownWave, waveCurDef->uinfantry, waveCurDef->uarmored, waveCurDef->cooldownUnit, waveCurDef->hp);
 		}
 	else
@@ -471,7 +490,10 @@ void TSpawner::updateStateSpreading(float dt)
 				LOG_WARNING("Nie znaleziono pola zdatnego do zasiedlenia");
 
 				if(overchargeCooldown<=0.0f)
+					{
+					LOG_INFO("SPREADING -> OVERCHARGE");
 					return initStateOvercharge();
+					}
 				}
 			}
 
