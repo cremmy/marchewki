@@ -45,6 +45,8 @@ namespace Game
 	const std::string MENU_CHK_RULE_PLAYER_STOMP=   "Gracz: Deptanie marchewek";
 	const std::string MENU_CHK_SOUNDS=              "DŸwiêki";
 	const std::string MENU_CHK_MUSIC=               "Muzyka";
+	const std::string MENU_VAL_LEVEL_WIDTH=         "Szerokoœæ planszy";
+	const std::string MENU_VAL_LEVEL_HEIGHT=        "Wysokoœæ planszy";
 	}
 
 

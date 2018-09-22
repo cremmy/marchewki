@@ -12,6 +12,7 @@
 
 #include "../ui/button.h"
 #include "../ui/checkbutton.h"
+#include "../ui/valueselector.h"
 #include "../ui/window.h"
 
 namespace Game
@@ -63,6 +64,8 @@ namespace Game
 				UI::CheckButton* chkCustomRulePreferCarrots;
 				UI::CheckButton* chkCustomRuleAvoidTurrets;
 				UI::CheckButton* chkCustomRulePlayerStomp;
+				UI::ValueSelector* valCustomWidth;
+				UI::ValueSelector* valCustomHeight;
 				UI::Button* btnCustomStart;
 				UI::Button* btnCustomBack;
 

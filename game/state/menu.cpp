@@ -25,7 +25,7 @@ using namespace Game::State;
 Menu::Menu(): wndMain(nullptr), btnMainNewGame(nullptr), btnMainTutorial(nullptr), btnMainOptions(nullptr), btnMainHelp(nullptr), btnMainExit(nullptr),
 	wndNewGame(nullptr), btnNewGameSandbox(nullptr), btnNewGameEasy(nullptr), btnNewGameMedium(nullptr), btnNewGameHard(nullptr), btnNewGameCustom(nullptr), btnNewGameBack(nullptr),
 	wndCustom(nullptr), chkCustomRuleBuildCost(nullptr), chkCustomRuleEnemySpawn(nullptr), chkCustomRuleDrainHP(nullptr), chkCustomRuleDrainRes(nullptr), chkCustomRuleEnemySpread(nullptr),
-	chkCustomRulePreferCarrots(nullptr), chkCustomRuleAvoidTurrets(nullptr), chkCustomRulePlayerStomp(nullptr), btnCustomStart(nullptr), btnCustomBack(nullptr),
+	chkCustomRulePreferCarrots(nullptr), chkCustomRuleAvoidTurrets(nullptr), chkCustomRulePlayerStomp(nullptr), valCustomWidth(nullptr), valCustomHeight(nullptr), btnCustomStart(nullptr), btnCustomBack(nullptr),
 	wndOptions(nullptr), chkOptionsSounds(nullptr), chkOptionsMusic(nullptr), btnOptionsBack(nullptr),
 	wndHelp(nullptr), btnHelpBack(nullptr),
 	currentWindow(nullptr), receiver(0)
@@ -73,6 +73,8 @@ Menu::Menu(): wndMain(nullptr), btnMainNewGame(nullptr), btnMainTutorial(nullptr
 	chkCustomRulePreferCarrots=new UI::CheckButton(BTN_W, BTN_H, MENU_CHK_RULE_PREFER_CARROTS, isRuleEnabled(RULE_ENEMY_PREFER_CARROTS));
 	chkCustomRuleAvoidTurrets=new UI::CheckButton(BTN_W, BTN_H, MENU_CHK_RULE_AVOID_TURRETS, isRuleEnabled(RULE_ENEMY_AVOID_TURRETS));
 	chkCustomRulePlayerStomp=new UI::CheckButton(BTN_W, BTN_H, MENU_CHK_RULE_PLAYER_STOMP, isRuleEnabled(RULE_PLAYER_STOMPS_CARROTS));
+	valCustomWidth=new UI::ValueSelector(BTN_W, BTN_H, MENU_VAL_LEVEL_WIDTH, 4, 20, 7);
+	valCustomHeight=new UI::ValueSelector(BTN_W, BTN_H, MENU_VAL_LEVEL_HEIGHT, 4, 20, 7);
 	btnCustomStart=new UI::Button(BTN_W, BTN_H, MENU_BTN_START, &receiver, IFACE_START_CUSTOM);
 	btnCustomBack=new UI::Button(BTN_W, BTN_H, MENU_BTN_BACK, &receiver, IFACE_BACK);
 	wndCustom->addChild(chkCustomRuleBuildCost,     {(W-BTN_W)/2, BTN_H* 2}, true);
@@ -83,8 +85,10 @@ Menu::Menu(): wndMain(nullptr), btnMainNewGame(nullptr), btnMainTutorial(nullptr
 	wndCustom->addChild(chkCustomRulePreferCarrots, {(W-BTN_W)/2, BTN_H* 7}, true);
 	wndCustom->addChild(chkCustomRuleAvoidTurrets,  {(W-BTN_W)/2, BTN_H* 8}, true);
 	wndCustom->addChild(chkCustomRulePlayerStomp,   {(W-BTN_W)/2, BTN_H* 9}, true);
-	wndCustom->addChild(btnCustomStart,             {(W-BTN_W)/2, BTN_H*11}, true);
-	wndCustom->addChild(btnCustomBack,              {(W-BTN_W)/2, BTN_H*13}, true);
+	wndCustom->addChild(valCustomWidth,             {(W-BTN_W)/2, BTN_H*10}, true);
+	wndCustom->addChild(valCustomHeight,            {(W-BTN_W)/2, BTN_H*11}, true);
+	wndCustom->addChild(btnCustomStart,             {(W-BTN_W)/2, BTN_H*13}, true);
+	wndCustom->addChild(btnCustomBack,              {(W-BTN_W)/2, BTN_H*15}, true);
 
 	wndOptions=new UI::Window({W, H}, Engine::Graphics::SpritePtr());
 	chkOptionsSounds=new UI::CheckButton(BTN_W, BTN_H, MENU_CHK_SOUNDS, Engine::Sound::getInstance().isSoundEnabled());
@@ -232,7 +236,7 @@ bool Menu::update(float dt)
 				if(chkCustomRuleAvoidTurrets->isChecked()) enableRule(RULE_ENEMY_AVOID_TURRETS);
 				if(chkCustomRulePlayerStomp->isChecked()) enableRule(RULE_PLAYER_STOMPS_CARROTS);
 
-				application->pushState(new TowerDefense(6.66, 5, 20, 20));
+				application->pushState(new TowerDefense(6.66, 5, valCustomWidth->getValue(), valCustomHeight->getValue()));
 				}
 			else if(receiver&IFACE_BACK)
 				{
