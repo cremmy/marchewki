@@ -48,6 +48,8 @@
  * + Okienko z opisem wieży (hover nad przyciskiem)
  * - Tutorial
  * - Menu główne
+ * - Hover nawet na wyłączonych
+ * - Alternatywnie: koszt budowania na przyciskach
  */
 /* FIXME:
  * + Animacja spawnerów czasem nie wraca na idle
