@@ -18,6 +18,11 @@ namespace Engine
 				tx(0.0f), ty(0.0f), p2(0.0f), p3(0.0f),
 				nx(0.0f), ny(0.0f), nz(0.0f), p4(0.0f),
 				ntx(0.0f), nty(0.0f), ntz(0.0f), p5(0.0f) {}
+			Vertex(float x, float y, float z):
+				x(x), y(y), z(z), p1(0.0f),
+				tx(0.0f), ty(0.0f), p2(0.0f), p3(0.0f),
+				nx(0.0f), ny(0.0f), nz(0.0f), p4(0.0f),
+				ntx(0.0f), nty(0.0f), ntz(0.0f), p5(0.0f) {}
 			Vertex(float x, float y, float z, float tx, float ty):
 				x(x), y(y), z(z), p1(0.0f),
 				tx(tx), ty(ty), p2(0.0f), p3(0.0f),

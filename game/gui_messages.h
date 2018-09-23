@@ -47,6 +47,9 @@ namespace Game
 	const std::string MENU_CHK_MUSIC=               "Muzyka";
 	const std::string MENU_VAL_LEVEL_WIDTH=         "Szerokoœæ planszy";
 	const std::string MENU_VAL_LEVEL_HEIGHT=        "Wysokoœæ planszy";
+	const std::string MENU_BTN_RESUME_GAME=         "Powrót do gry";
+	const std::string MENU_BTN_RETURN_TO_MENU=      "Powrót do menu";
+	const std::string MENU_BTN_RETURN_TO_OS=        "Zamknij program";
 	}
 
 
