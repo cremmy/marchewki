@@ -24,7 +24,7 @@ namespace Game
 	
 	
 	const std::string MENU_BTN_NEW_GAME=            "Nowa gra";
-	const std::string MENU_BTN_TUTORIAL=            "Samouczek";
+	const std::string MENU_BTN_TUTORIAL=            "Tutorial";
 	const std::string MENU_BTN_OPTIONS=             "Opcje";
 	const std::string MENU_BTN_HELP=                "Pomoc";
 	const std::string MENU_BTN_EXIT=                "Wyjœcie";

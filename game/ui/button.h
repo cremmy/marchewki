@@ -49,6 +49,16 @@ namespace Game
 					this->text.setAlignMiddle();
 					this->text.update();
 					}
+				Button(const Engine::Graphics::SpritePtr& sprite, const std::string& text, int* receiver, int code):
+					Panel({sprite.getCurrentFrame().getWidth(), sprite.getCurrentFrame().getHeight()}), sprite(sprite),
+					text("font/dejavu.xml", text, sprite.getCurrentFrame().getWidth(), sprite.getCurrentFrame().getHeight()),
+					receiver(receiver), receiverCode(code),
+					wasClicked(false), wasHovered(false)
+					{
+					this->text.setAlignCenter();
+					this->text.setAlignMiddle();
+					this->text.update();
+					}
 				virtual ~Button()
 					{
 					//
@@ -62,6 +72,7 @@ namespace Game
 				virtual bool hover(const Engine::Math::VectorI& position);
 
 				void setHoverMessage(const std::string& text);
+				Engine::Graphics::UI::Text& getTextObject() {return text;}
 			};
 
 		} /* namespace UI */

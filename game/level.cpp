@@ -92,10 +92,14 @@ void Level::update(float dt)
 
 	resources-=getResourceDrain(!isRuleEnabled(RULE_DRAIN_RESOURCES))*dt;
 
-	if(isRuleEnabled(RULE_DRAIN_HP) && resources<0.0f)
+	if(resources<0.0f)
 		{
-		Turret* pbase=getField({0, 0})->turret;
-		pbase->setHP(pbase->getHP()+resources);
+		if(isRuleEnabled(RULE_DRAIN_HP))
+			{
+			Turret* pbase=getField({0, 0})->turret;
+			pbase->setHP(pbase->getHP()+resources);
+			}
+
 		resources=0.0f;
 		}
 
@@ -113,7 +117,11 @@ void Level::update(float dt)
 				{
 				if(buildTurret(newSpawnerFPos, TurretType::ENEMY_SPAWNER))
 					{
-					//LOG_INFO("Wstawiono spawner");
+					LOG_INFO("Wstawiono spawner");
+					turretEnemySpawnCooldown=0.0f;
+					}
+				else
+					{
 					turretEnemySpawnCooldown=0.0f;
 					}
 				}
@@ -1028,14 +1036,21 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 
 	if(!refreshPath())
 		{
-		LOG_WARNING("Nie mozna umiescic wiezy w %d,%d", fposition.x, fposition.y);
-
-		if(!destroyTurret(fposition, true))
+		if(type!=TurretType::ENEMY_SPAWNER)
 			{
-			LOG_ERROR("...i nie udalo sie tez jej skasowac, AAAAaaaaa");
-			}
+			LOG_WARNING("Nie mozna umiescic wiezy w %d,%d", fposition.x, fposition.y);
 
-		return false;
+			if(!destroyTurret(fposition, true))
+				{
+				LOG_ERROR("...i nie udalo sie tez jej skasowac, AAAAaaaaa");
+				}
+
+			return false;
+			}
+		else
+			{
+			LOG_WARNING("Wstawianie spawnera, brak dojścia do bazy gracza");
+			}
 		}
 
 	if(isRuleEnabled(RULE_BUILDING_COST))

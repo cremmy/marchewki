@@ -43,14 +43,22 @@ const int KEYBOARD_CAM_MOVEMENT_SPEED_Y=12;
 
 MusicBox mb;
 
+std::string to_string(float val, int precision)
+	{
+	std::stringstream ss;
+	ss.precision(precision);
+	ss << val;
+	return ss.str();
+	}
+
 std::string prepareTurretMessage(const std::string& base, float cost, float drain, float upgrade, float sell)
 	{
 	std::string ret=base;
 
-	ret=std::regex_replace(ret, std::regex("%c"), std::to_string(cost));
-	ret=std::regex_replace(ret, std::regex("%d"), std::to_string(drain));
-	ret=std::regex_replace(ret, std::regex("%u"), std::to_string(upgrade));
-	ret=std::regex_replace(ret, std::regex("%s"), std::to_string(sell));
+	ret=std::regex_replace(ret, std::regex("%c"), to_string(cost, 2));
+	ret=std::regex_replace(ret, std::regex("%d"), to_string(drain, 2));
+	ret=std::regex_replace(ret, std::regex("%u"), to_string(upgrade, 2));
+	ret=std::regex_replace(ret, std::regex("%s"), to_string(sell, 2));
 
 	return ret;
 	}
@@ -132,13 +140,21 @@ bool TowerDefense::init(Engine::Core::Application *application)
 		Engine::Graphics::SpritePtr("sprite/gui_bg.xml"),
 		false);
 
-	ifaceBtnTSingle=new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_tsingle.xml"), &ifaceReceiver, IFACE_BUILD_SINGLE);
-	//ifaceBtnTSingle=new UI::Button(96, 96, "KARTOFLE", &ifaceReceiver, IFACE_BUILD_SINGLE);
-	ifaceBtnTAOE=   new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_taoe.xml"), &ifaceReceiver, IFACE_BUILD_AOE);
-	ifaceBtnTMine=  new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_tmine.xml"), &ifaceReceiver, IFACE_BUILD_MINE);
-	ifaceBtnTCarrot=new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_tcarrot.xml"), &ifaceReceiver, IFACE_BUILD_CARROT_FIELD);
+	ifaceBtnTSingle=new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_tsingle.xml"), to_string(TurretBaseCostConstruction::PLAYER_UNIT_SINGLE_TARGET, 2), &ifaceReceiver, IFACE_BUILD_SINGLE);
+	ifaceBtnTAOE=   new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_taoe.xml"), to_string(TurretBaseCostConstruction::PLAYER_UNIT_AREA_OF_EFFECT, 2), &ifaceReceiver, IFACE_BUILD_AOE);
+	ifaceBtnTMine=  new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_tmine.xml"), to_string(TurretBaseCostConstruction::PLAYER_UNIT_MINE, 2), &ifaceReceiver, IFACE_BUILD_MINE);
+	ifaceBtnTCarrot=new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_tcarrot.xml"), to_string(TurretBaseCostConstruction::PLAYER_CARROT_FIELD, 2), &ifaceReceiver, IFACE_BUILD_CARROT_FIELD);
 	ifaceBtnUpgrade=new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_upgrade.xml"), &ifaceReceiver, IFACE_TURRET_UPGRADE);
 	ifaceBtnSell=   new UI::Button(Engine::Graphics::SpritePtr("sprite/gui_btn_sell.xml"), &ifaceReceiver, IFACE_TURRET_SELL);
+
+	ifaceBtnTSingle->getTextObject().setAlignRight();
+	ifaceBtnTSingle->getTextObject().setAlignTop();
+	ifaceBtnTAOE->getTextObject().setAlignRight();
+	ifaceBtnTAOE->getTextObject().setAlignTop();
+	ifaceBtnTMine->getTextObject().setAlignRight();
+	ifaceBtnTMine->getTextObject().setAlignTop();
+	ifaceBtnTCarrot->getTextObject().setAlignRight();
+	ifaceBtnTCarrot->getTextObject().setAlignTop();
 
 	interface->addChild(ifaceBtnTSingle, {8, 96+96*0}, true);
 	interface->addChild(ifaceBtnTAOE,    {8, 96+96*1}, true);
@@ -510,19 +526,29 @@ bool TowerDefense::update(float dt)
 			state=State::DEFEAT;
 			}
 
-		ifaceBtnTSingle->disable();
-		ifaceBtnTAOE->disable();
-		ifaceBtnTMine->disable();
-		ifaceBtnTCarrot->disable();
+		if(isRuleEnabled(RULE_BUILDING_COST))
+			{
+			ifaceBtnTSingle->disable();
+			ifaceBtnTAOE->disable();
+			ifaceBtnTMine->disable();
+			ifaceBtnTCarrot->disable();
 
-		if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_SINGLE_TARGET))
+			if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_SINGLE_TARGET))
+				ifaceBtnTSingle->enable();
+			if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_AREA_OF_EFFECT))
+				ifaceBtnTAOE->enable();
+			if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_MINE))
+				ifaceBtnTMine->enable();
+			if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_CARROT_FIELD))
+				ifaceBtnTCarrot->enable();
+			}
+		else
+			{
 			ifaceBtnTSingle->enable();
-		if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_AREA_OF_EFFECT))
 			ifaceBtnTAOE->enable();
-		if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_UNIT_MINE))
 			ifaceBtnTMine->enable();
-		if(level.getResources()>=getTurretConstructionCost(TurretType::PLAYER_CARROT_FIELD))
 			ifaceBtnTCarrot->enable();
+			}
 
 		interface->hover({mx, my});
 		interface->update(dt);
@@ -556,14 +582,26 @@ bool TowerDefense::update(float dt)
 		const float RES_DRAIN=level.getResourceDrain();
 		std::stringstream ss;
 		ss.setf(std::ios::fixed);
-		if(level.getResources()<=9000)
+		if(level.getResources()<=9000.0f)
+			{
 			ss << std::setprecision(2) << level.getResources();
+			}
 		else
+			{
 			ss << ">9000.00";
+			}
+
 		if(isRuleEnabled(RULE_DRAIN_RESOURCES))
 			{
-			ss << "\n" << ((RES_DRAIN<0.0f)?"+":"-");
-			ss << std::setprecision(2) << std::abs(RES_DRAIN);
+			if(std::abs(RES_DRAIN)<666.0f)
+				{
+				ss << "\n" << ((RES_DRAIN<0.0f)?"+":"-");
+				ss << std::setprecision(2) << std::abs(RES_DRAIN);
+				}
+			else
+				{
+				ss << "\n> " << ((RES_DRAIN<0.0f)?"+":"-") << "666.00";
+				}
 			}
 		else
 			{
@@ -636,14 +674,14 @@ void TowerDefense::updateModeSelected(float dt)
 	ifaceBtnUpgrade->disable();
 	ifaceBtnSell->disable();
 
-	if(level.getResources()>=UPGRADE_COST && turret->isUpgradable() && turret->getUpgrade()<turret->getMaxUpgrade())
+	if((!isRuleEnabled(RULE_BUILDING_COST) || level.getResources()>=UPGRADE_COST) && turret->isUpgradable() && turret->getUpgrade()<turret->getMaxUpgrade())
 		ifaceBtnUpgrade->enable();
-	if(level.getResources()>=SELL_COST && turret->isRemovable())
+	if((!isRuleEnabled(RULE_BUILDING_COST) || level.getResources()>=SELL_COST) && turret->isRemovable())
 		ifaceBtnSell->enable();
 
 	if(ifaceReceiver&IFACE_TURRET_UPGRADE)
 		{
-		if(level.getResources()<UPGRADE_COST)
+		if(isRuleEnabled(RULE_BUILDING_COST) && level.getResources()<UPGRADE_COST)
 			{
 			// TODO Sygnał dźwiękowy (zasoby)
 			LOG_WARNING("Za malo zasobow (%.2f -> %.2f)", level.getResources(), UPGRADE_COST);
@@ -657,19 +695,20 @@ void TowerDefense::updateModeSelected(float dt)
 			return;
 			}
 
-		level.addResources(-UPGRADE_COST);
+		if(isRuleEnabled(RULE_BUILDING_COST))
+			level.addResources(-UPGRADE_COST);
 		LOG_INFO("Ulepszono wieze, zasoby: %.2f (-%.2f)", level.getResources(), UPGRADE_COST);
 		}
 	if(ifaceReceiver&IFACE_TURRET_SELL)
 		{
-		if(level.getResources()<SELL_COST)
+		if(isRuleEnabled(RULE_BUILDING_COST) && level.getResources()<SELL_COST)
 			{
 			// TODO Sygnał dźwiękowy (zasoby)
 			LOG_WARNING("Za malo zasobow (%.2f -> %.2f)", level.getResources(), SELL_COST);
 			return;
 			}
 
-		if(!level.destroyTurret(modeSelectedData.fposition))
+		if(!level.destroyTurret(modeSelectedData.fposition, !isRuleEnabled(RULE_BUILDING_COST)))
 			{
 			// TODO Sygnał dźwiękowy (fail)
 			LOG_WARNING("Nie udalo sie usunac wiezy");

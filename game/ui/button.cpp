@@ -14,7 +14,8 @@ using namespace Game::UI;
 
 void Button::update(float dt)
 	{
-	//
+	if(!text.isEmpty())
+		text.update();
 	}
 
 void Button::print(float tinterp)
@@ -83,8 +84,8 @@ bool Button::hover(const Engine::Math::VectorI& position)
 	{
 	if(!hitCheck(position))
 		return false;
-	if(!enabled)
-		return true;
+	//if(!enabled)
+	//	return true;
 
 	wasHovered=true;
 	hoverPosition=position;

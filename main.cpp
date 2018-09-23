@@ -47,9 +47,9 @@
  * + Miny generują zasoby - więcej gdy na cooldownie?
  * + Okienko z opisem wieży (hover nad przyciskiem)
  * - Tutorial
- * - Menu główne
- * - Hover nawet na wyłączonych
- * - Alternatywnie: koszt budowania na przyciskach
+ * ~ Menu główne
+ * + Hover nawet na wyłączonych
+ * + Alternatywnie: koszt budowania na przyciskach
  */
 /* FIXME:
  * + Animacja spawnerów czasem nie wraca na idle
@@ -59,7 +59,7 @@
  *  + Za duży drain z pól na wczesnych etapach gry
  *  + Jedna wieża nie radzi sobie z początkowymi falami
  *  ? Drain z pól zalezny od procentowego zajęcia planszy?
- *  - Drain z pól nie powinien być zależny od aktualnych zasobów
+ *  + Drain z pól nie powinien być zależny od aktualnych zasobów
  */
 // SDL_main
 #include <cstdio>
