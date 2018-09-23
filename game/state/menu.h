@@ -9,6 +9,7 @@
 
 #include "../../engine/base/applicationstate.h"
 #include "../../engine/core/appeventlistener.h"
+#include "../../engine/graphics/imageptr.h"
 
 #include "../ui/button.h"
 #include "../ui/checkbutton.h"
@@ -79,6 +80,8 @@ namespace Game
 
 				UI::Window* currentWindow;
 				int receiver;
+
+				Engine::Graphics::ImagePtr background;
 
 			public:
 				Menu();

@@ -122,6 +122,10 @@ bool Menu::init(Engine::Core::Application *application)
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_MOVE, *this);
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_KEY_DOWN, *this);
 
+	background=Engine::Graphics::ImagePtr("image/menu_bg.png");
+	if(!background)
+		return false;
+
 	return true;
 	}
 
@@ -266,9 +270,17 @@ bool Menu::update(float dt)
 
 void Menu::print(float tinterp)
 	{
+	using namespace Engine::Math;
 	using namespace Engine::Render;
 
+	const int W=Render::getInstance().getWindowWidth();
+	//const int H=Render::getInstance().getWindowHeight();
+	const int BG_W=background->getW();
+	//const int BG_H=background->getH();
+
 	Render::getInstance().setRenderMode(Engine::Render::RenderMode::GUI);
+	Render::getInstance().draw(Orientation::GUI+Vector((W-BG_W)/2, 0), background);
+
 	currentWindow->print(tinterp);
 	}
 
@@ -280,6 +292,8 @@ void Menu::clear()
 void Menu::pause()
 	{
 	this->application->removeListener(*this);
+
+	background=nullptr;
 	}
 
 void Menu::resume()
@@ -287,5 +301,7 @@ void Menu::resume()
 	this->application->addListener(Engine::Core::AppEvent::Type::KEY_DOWN, *this);
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_MOVE, *this);
 	this->application->addListener(Engine::Core::AppEvent::Type::MOUSE_KEY_DOWN, *this);
+
+	background=Engine::Graphics::ImagePtr("image/menu_bg.png");
 	}
 
