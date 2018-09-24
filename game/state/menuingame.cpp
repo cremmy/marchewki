@@ -35,7 +35,7 @@ MenuIngame::MenuIngame(): wndMain(nullptr), btnMainResume(nullptr), btnMainHelp(
 	wndMain=new UI::Window({W, H}, Engine::Graphics::SpritePtr());
 	btnMainResume=new UI::Button(BTN_W, BTN_H, MENU_BTN_RESUME_GAME, &receiver, IFACE_RESUME_GAME);
 	btnMainHelp=new UI::Button(BTN_W, BTN_H, MENU_BTN_HELP, &receiver, IFACE_GOTO_HELP);
-	btnMainRules=new UI::Button(BTN_W, BTN_H, MENU_BTN_OPTIONS, &receiver, IFACE_GOTO_RULES);
+	btnMainRules=new UI::Button(BTN_W, BTN_H, MENU_BTN_RULES, &receiver, IFACE_GOTO_RULES);
 	btnMainExitMenu=new UI::Button(BTN_W, BTN_H, MENU_BTN_RETURN_TO_MENU, &receiver, IFACE_GOTO_MENU);
 	btnMainExitOS=new UI::Button(BTN_W, BTN_H, MENU_BTN_RETURN_TO_OS, &receiver, IFACE_GOTO_OS);
 	wndMain->addChild(btnMainResume,   {(W-BTN_W)/2, BTN_H*2}, true);

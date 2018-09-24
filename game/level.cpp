@@ -143,7 +143,7 @@ void Level::update(float dt)
 		{
 		Unit* unit=*it;
 
-		if(PLAYER_HP<=0.0f && turretsPlayer<4u)
+		if(PLAYER_HP<=0.0f && turretsPlayer-farmsPlayer<4u)
 			unit->damage(DamageType::SINGLE_TARGET, 0.5f*dt);
 
 		if(!unit->isAlive() && !unit->isLocked())

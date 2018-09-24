@@ -128,9 +128,9 @@ int main(int, char**)
 			}
 		}
 
+	app.clear();
 	Engine::Sound::getInstance().clear();
 	Engine::Render::getInstance().clear();
-	app.clear();
 
 	LOG_INFO("Stop");
 

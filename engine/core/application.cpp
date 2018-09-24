@@ -347,7 +347,7 @@ bool Application::popState()
 	delete states.back();
 	states.pop_back();
 
-	if(states.size()>0u)
+	if(running && states.size()>0u)
 		{
 		LOG_INFO("Application.popState: Wznawianie poprzedniego stanu, \"%s\"...", states.back()->getName().c_str());
 

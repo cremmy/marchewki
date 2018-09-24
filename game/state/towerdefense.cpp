@@ -415,6 +415,22 @@ bool TowerDefense::update(float dt)
 			}
 		}
 
+	if(SDL_GetMouseState(nullptr, nullptr)&SDL_BUTTON(SDL_BUTTON_LEFT))
+		{
+		if(mode==Mode::BUILDING && modeBuildData.turret==TurretType::PLAYER_CARROT_FIELD && ((const Level&)level).getField(fposMouse))
+			{
+			if(level.buildTurret(fposMouse, modeBuildData.turret))
+				{
+				initModeNone();
+				}
+			else
+				{
+				LOG_WARNING("Nie udalo sie wstawic wiezy");
+				// TODO Sygnał dźwiękowy (fail)
+				}
+			}
+		}
+
 	/*****************************************************************************/
 	/**** Klawiaturowy ruch kamery ***********************************************/
 	/*****************************************************************************/
