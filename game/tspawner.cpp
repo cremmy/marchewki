@@ -110,7 +110,7 @@ bool TSpawner::isFieldExtraSafe(const Level* level, const Engine::Math::VectorI&
 			if(!field)
 				continue;
 
-			if(field->owner==Level::Field::Owner::PLAYER)
+			if(field->owner==Level::Field::Owner::PLAYER && !(field->turret && field->turret->getType()==TurretType::PLAYER_CARROT_FIELD))
 				return false;
 			}
 		}
@@ -433,6 +433,30 @@ void TSpawner::updateStateSpreading(float dt)
 			return initStateNormal();
 			}
 
+		auto spreadToField=[this](const VectorI& fposition)->bool
+			{
+			if(!canSpreadToField(level, fposition))
+				return false;
+
+			const Level::Field* field=((const Level*)level)->getField(fposition);
+
+			// Zwolnij pole marchewkowe
+			if(field->turret && field->turret->getType()==TurretType::PLAYER_CARROT_FIELD)
+				{
+				level->destroyTurret(fposition, true);
+				}
+
+			if(!level->buildTurret(fposition, TurretType::ENEMY_SPAWNER))
+				{
+				LOG_WARNING("Nie udalo sie zasiedlic pola %d,%d", fposition.x, fposition.y);
+				return false;
+				}
+
+			LOG_INFO("Zasiedlono pole %d,%d (Zrodlo: %d,%d:%p)", fposition.x, fposition.y, fposition.x, fposition.y, this);
+
+			return true;
+			};
+
 		bool good=false;
 		for(int i=0; i<4*SPAWNER_SPREAD_DISTANCE*SPAWNER_SPREAD_DISTANCE; ++i)
 			{
@@ -441,16 +465,8 @@ void TSpawner::updateStateSpreading(float dt)
 
 			const VectorI newFPosition=fposition+VectorI(ox, oy);
 
-			if(!canSpreadToField(level, newFPosition))
+			if(!spreadToField(newFPosition))
 				continue;
-
-			if(!level->buildTurret(newFPosition, TurretType::ENEMY_SPAWNER))
-				{
-				LOG_WARNING("Nie udalo sie zasiedlic pola %d,%d", newFPosition.x, newFPosition.y);
-				break;
-				}
-
-			LOG_INFO("Zasiedlono pole %d,%d (Zrodlo: %d,%d:%p)", newFPosition.x, newFPosition.y, fposition.x, fposition.y, this);
 
 			good=true;
 			break;
@@ -466,16 +482,8 @@ void TSpawner::updateStateSpreading(float dt)
 					{
 					const VectorI newFPosition=fposition+VectorI(ox, oy);
 
-					if(!canSpreadToField(level, newFPosition))
+					if(!spreadToField(newFPosition))
 						continue;
-
-					if(!level->buildTurret(newFPosition, TurretType::ENEMY_SPAWNER))
-						{
-						LOG_WARNING("Nie udalo sie zasiedlic pola %d,%d", newFPosition.x, newFPosition.y);
-						break;
-						}
-
-					LOG_INFO("Zasiedlono pole %d,%d (nie losowo) (Zrodlo: %d,%d:%p)", newFPosition.x, newFPosition.y, fposition.x, fposition.y, this);
 
 					good=true;
 					break;
@@ -648,7 +656,7 @@ bool TSpawner::canSpreadToField(const Level* level, const Engine::Math::VectorI&
 
 	if(!field)
 		return false;
-	if(field->turret)// && field->turret->getType()!=TurretType::PLAYER_CARROT_FIELD)
+	if(field->turret && field->turret->getType()!=TurretType::PLAYER_CARROT_FIELD)
 		return false;
 
 	if(!isFieldExtraSafe(level, fposition))
