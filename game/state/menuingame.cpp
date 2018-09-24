@@ -109,6 +109,7 @@ bool MenuIngame::update(float dt)
 			if(e.data.keyboard.key==SDLK_ESCAPE)
 				{
 				application->popStateSafe();
+				return false;
 				}
 			}
 		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_KEY_DOWN && e.data.mouse.key==1)
@@ -131,6 +132,7 @@ bool MenuIngame::update(float dt)
 			if(receiver&IFACE_RESUME_GAME)
 				{
 				application->popStateSafe();
+				return false;
 				}
 			else if(receiver&IFACE_GOTO_HELP)
 				{
@@ -153,10 +155,12 @@ bool MenuIngame::update(float dt)
 				{
 				application->popStateSafe();
 				application->popStateSafe();
+				return false;
 				}
 			else if(receiver&IFACE_GOTO_OS)
 				{
 				application->stop();
+				return false;
 				}
 			}
 		else if(currentWindow==wndRules)
@@ -174,9 +178,14 @@ bool MenuIngame::update(float dt)
 				if(chkRulesPlayerStomp->isChecked()) enableRule(RULE_PLAYER_STOMPS_CARROTS);
 
 				if(receiver&IFACE_BACK)
+					{
 					currentWindow=wndMain;
+					}
 				else
+					{
 					application->popStateSafe();
+					return false;
+					}
 				}
 			}
 		else if(currentWindow==wndHelp)

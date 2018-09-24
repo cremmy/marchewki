@@ -53,8 +53,6 @@ bool Menu::init(Engine::Core::Application *application)
 
 	resume();
 
-	currentWindow=wndMain;
-
 	return true;
 	}
 
@@ -316,5 +314,9 @@ void Menu::resume()
 	wndHelp->addChild(btnHelpBack, {(W-BTN_W)/2, BTN_H*2}, true);
 
 	background=Engine::Graphics::ImagePtr("image/menu_bg.png");
+
+	currentWindow=wndMain;
+
+	//cooldown=0.25f;
 	}
 
