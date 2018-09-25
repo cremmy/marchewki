@@ -18,6 +18,7 @@
 #include "../rules.h"
 
 #include "towerdefense.h"
+#include "tutorial.h"
 
 using namespace Game;
 using namespace Game::State;
@@ -98,7 +99,7 @@ bool Menu::update(float dt)
 				}
 			else if(receiver&IFACE_START_TUTORIAL)
 				{
-				//
+				application->pushState(new Tutorial());
 				}
 			else if(receiver&IFACE_GOTO_OPTIONS)
 				{

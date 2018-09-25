@@ -56,7 +56,7 @@ namespace Game
 					IFACE_BUILD_MINE=        0x1<<2,
 					IFACE_BUILD_CARROT_FIELD=0x1<<3,
 					IFACE_TURRET_UPGRADE=    0x1<<4,
-					IFACE_TURRET_SELL=        0x1<<5,
+					IFACE_TURRET_SELL=       0x1<<5,
 					};
 
 				void initModeNone();

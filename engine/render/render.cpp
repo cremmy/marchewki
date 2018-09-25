@@ -123,7 +123,7 @@ bool Render::init(int w, int h, const std::string& title, const std::string& ico
 		}
 
 	/**** Okno ****/
-	window=SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, fullscreenflag|SDL_WINDOW_OPENGL|SDL_WINDOW_HIDDEN);
+	window=SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, fullscreenflag|SDL_WINDOW_OPENGL);
 
 	if(!window)
 		{

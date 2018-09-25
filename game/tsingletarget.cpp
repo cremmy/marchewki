@@ -48,7 +48,7 @@ bool TSingleTarget::updateFieldOwners()
 		{
 		for(int x=-upgrade-1; x<=upgrade+1; ++x)
 			{
-			if(MathUtils::taxiDistance(fposition, fposition+VectorI(x, y))>upgrade+1)
+			if(MathUtils::taxiDistance(fposition, fposition+VectorI(x, y))>upgrade/2+1)
 				{
 				continue;
 				}
@@ -89,7 +89,7 @@ bool TSingleTarget::removeFromLevel()
 		{
 		for(int x=-upgrade-1; x<=upgrade+1; ++x)
 			{
-			if(MathUtils::taxiDistance(fposition, fposition+VectorI(x, y))>upgrade+1)
+			if(MathUtils::taxiDistance(fposition, fposition+VectorI(x, y))>upgrade/2+1)
 				{
 				continue;
 				}
@@ -169,8 +169,8 @@ float TSingleTarget::getRange() const
 		{
 		case 3:  return FIELD_DIAGONAL*2.0f;
 		case 2:  return FIELD_DIAGONAL*1.875f;
-		case 1:  return FIELD_DIAGONAL*1.6f;
-		default: return FIELD_DIAGONAL*1.2f;
+		case 1:  return FIELD_DIAGONAL*1.75f;
+		default: return FIELD_DIAGONAL*1.5f;
 		}
 	}
 
@@ -178,9 +178,9 @@ float TSingleTarget::getCooldown() const
 	{
 	switch(upgrade)
 		{
-		case 3:  return 1.0f;
-		case 2:  return 1.125f;
-		case 1:  return 1.25f;
+		case 3:  return 0.9f;
+		case 2:  return 1.05f;
+		case 1:  return 1.2f;
 		default: return 1.5f;
 		}
 	}

@@ -46,10 +46,13 @@
  * ~ Nie odznaczać przy ruchu kamerą?
  * + Miny generują zasoby - więcej gdy na cooldownie?
  * + Okienko z opisem wieży (hover nad przyciskiem)
- * - Tutorial
  * ~ Menu główne
  * + Hover nawet na wyłączonych
  * + Alternatywnie: koszt budowania na przyciskach
+ * - Tutorial
+ * - Grafika: ekran wczytywania
+ * - Grafika: tło menu
+ * - State: Help?
  */
 /* FIXME:
  * + Animacja spawnerów czasem nie wraca na idle
@@ -80,7 +83,7 @@
 int main(int, char**)
 	{
 #ifdef BUILD_RELEASE
-	Engine::Debug::Log::setOut(fopen("log.txt", "w"));
+	//Engine::Debug::Log::setOut(fopen("log.txt", "w"));
 	Engine::Debug::Log::setLevel(Engine::Debug::Log::PRODUCTION);
 #endif
 
@@ -97,7 +100,7 @@ int main(int, char**)
 		}
 
 #ifdef BUILD_RELEASE
-	if(!Engine::Render::getInstance().init(1024, 768, "Marchewki", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED_FULLSCREEN))
+	if(!Engine::Render::getInstance().init(1024, 768, "Marchewki", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED))
 #else
 	if(!Engine::Render::getInstance().init(1024, 768, "Marchewki", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED))
 #endif
@@ -110,7 +113,7 @@ int main(int, char**)
 		return __LINE__;
 		}
 
-	if(Engine::Render::getInstance().getWindowWidth()<640 || Engine::Render::getInstance().getWindowHeight()<480)
+	if(Engine::Render::getInstance().getWindowWidth()<1024 || Engine::Render::getInstance().getWindowHeight()<768)
 		{
 		LOG_ERROR("Utworzone okno jest za male, AAAAAAAAAAAaaaaaaaaaa");
 		/*if(app.pushState(new Game::State::Error()))

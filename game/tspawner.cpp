@@ -595,7 +595,7 @@ void TSpawner::updateStateOvercharge(float dt)
 
 		cooldown=std::max(0.75f - 0.5f*wave, 0.5f);
 
-		level->spawnUnit(UnitType::ENEMY_ARMORED, fposition, Engine::Math::VectorI(0, 0), 20.0f, level->getFieldDiagonalSize()*0.4f);
+		level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 20.0f, level->getFieldDiagonalSize()*0.4f);
 
 		++waveUnit;
 

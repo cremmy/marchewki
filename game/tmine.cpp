@@ -113,7 +113,7 @@ void TMine::update(float dt)
 					{
 					unit->damage(
 						DamageType::AOE_TRAP,
-						TurretBaseDamage::PLAYER_UNIT_AREA_OF_EFFECT + (TurretBaseDamage::PLAYER_UNIT_AREA_OF_EFFECT-TurretBaseDamage::PLAYER_UNIT_AREA_OF_EFFECT)*(upgrade/(float)MAX_UPGRADE));
+						TurretBaseDamage::PLAYER_UNIT_MINE + (TurretBaseDamage::PLAYER_UNIT_MINE-TurretBaseDamage::PLAYER_UNIT_MINE)*(upgrade/(float)MAX_UPGRADE));
 					}
 
 				cooldown+=getCooldown();
