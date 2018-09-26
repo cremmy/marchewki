@@ -20,39 +20,12 @@
  *  ~ Jeśli wieża obok jednostki wroga jest polem marchewkowym, to idź do niej. Po wejściu na to pole, HP gracza spada o 1.
  */
 /* TODO:
- *  + Paski zdrowia pod osłabionymi jednostkami wroga
- *  + Świeczki informujące o poziomie wieży
- *  + Pociski wylatujące z wież?
- *  + Wieże:
- *    + Pojedyncza
- *    + Obszarowa
- *    + Mina
- *    + Marchewkowe pole
- * + Zbierajki wypadające z pokonanych wrogów
- * + Jednostka gracza zbierająca zbierajki
- * + Niszczenie wież wroga/zajmowanie pól wroga
- * + Tworzenie nowych wież wroga (tworzenie pierwszej gdy brak jakichkolwiek)
- * + Ograniczenie dostępnego terenu pod budowę wież przez gracza
- * + Obsługa zasobów
- * + Obsługa HP gracza
- *    + Utrata HP po wejściu wroga do bazy
- *    + Powolna utrata HP gdy zasoby==0
- *    + Koniec gry gdy HP=0
- * + Wygranie gry
- * + Interfejs graficzny
- * + Obsługa reguł gry
- * + Zliczanie wież w pobliżu ścieżki
- * + Ruch kamery strzałkami
- * ~ Nie odznaczać przy ruchu kamerą?
- * + Miny generują zasoby - więcej gdy na cooldownie?
- * + Okienko z opisem wieży (hover nad przyciskiem)
- * ~ Menu główne
- * + Hover nawet na wyłączonych
- * + Alternatywnie: koszt budowania na przyciskach
- * - Tutorial
+ * + Tutorial
  * - Grafika: ekran wczytywania
  * - Grafika: tło menu
- * - State: Help?
+ * - State: Help
+ * - Muzyka
+ * - Optymalizacje wydajności (pola do tablicy vertexów, zrzucenie wszystkiego do jednej bitmapy, itp)
  */
 /* FIXME:
  * + Animacja spawnerów czasem nie wraca na idle
