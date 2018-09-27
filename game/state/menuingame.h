@@ -50,9 +50,6 @@ namespace Game
 				UI::Button* btnCustomResume;
 				UI::Button* btnCustomBack;
 
-				UI::Window* wndHelp;
-				UI::Button* btnHelpBack;
-
 				UI::Window* currentWindow;
 				int receiver;
 

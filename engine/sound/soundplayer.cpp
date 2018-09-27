@@ -14,7 +14,7 @@ using namespace Engine::Sound;
 
 SoundPlayer* SoundPlayer::instance; // Hmm... Czy to nie powinno byc wyzerowane? =D
 
-SoundPlayer::SoundPlayer(): currentMusic(nullptr), nextFadeIn(0u), nextMusic("")
+SoundPlayer::SoundPlayer(): currentMusic(nullptr), nextFadeIn(0u), nextMusic(""), enabledSound(true), enabledMusic(true)
 	{
 	//
 	}

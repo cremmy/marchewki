@@ -17,6 +17,7 @@
 #include "../../engine/debug/log.h"
 #include "../../engine/render/camera.h"
 #include "../../engine/render/render.h"
+#include "../../engine/sound/soundplayer.h"
 
 #include "../consts.h"
 #include "../gui_messages.h"
@@ -25,8 +26,6 @@
 #include "../rules.h"
 #include "../tplayerbase.h"
 #include "../turret.h"
-
-#include "../musicbox.h"
 
 #include "../ui/button.h"
 #include "../ui/window.h"
@@ -40,8 +39,6 @@ const float CAMERA_DISTANCE=1024.0f;
 
 const int KEYBOARD_CAM_MOVEMENT_SPEED_X=16;
 const int KEYBOARD_CAM_MOVEMENT_SPEED_Y=12;
-
-MusicBox mb;
 
 std::string to_string(float val, int precision)
 	{
@@ -370,8 +367,7 @@ bool TowerDefense::update(float dt)
 			// Czy kliknięto w któryś przycisk?
 			if(interface->click({e.data.mouse.x, e.data.mouse.y}))
 				{
-				// nanana
-				// TODO Sygnał dźwiękowy kliknięcia w przycisk?
+				Engine::Sound::getInstance().play("sounds/gui_click.ogg");
 				}
 			else
 				{
@@ -389,7 +385,7 @@ bool TowerDefense::update(float dt)
 							else
 								{
 								LOG_WARNING("Nie udalo sie wstawic wiezy");
-								// TODO Sygnał dźwiękowy (fail)
+								Engine::Sound::getInstance().play("sounds/gui_error.ogg");
 								}
 						break;
 
@@ -426,7 +422,7 @@ bool TowerDefense::update(float dt)
 			else
 				{
 				LOG_WARNING("Nie udalo sie wstawic wiezy");
-				// TODO Sygnał dźwiękowy (fail)
+				Engine::Sound::getInstance().play("sounds/gui_error.ogg");
 				}
 			}
 		}
@@ -527,9 +523,9 @@ bool TowerDefense::update(float dt)
 		level.update(dt);
 		}
 
-	//mb.setCreepiness(playerBase->getUpgrade()/(float)(playerBase->getMaxUpgrade()-1));
+	mb.setCreepiness(playerBase->getUpgrade()/(float)(playerBase->getMaxUpgrade()-1)*0.75f);
 	//mb.setCreepiness(1.0f);
-	//mb.update(dt);
+	mb.update(dt);
 
 	if(state==State::PLAYING)
 		{
@@ -699,7 +695,7 @@ void TowerDefense::updateModeSelected(float dt)
 		{
 		if(isRuleEnabled(RULE_BUILDING_COST) && level.getResources()<UPGRADE_COST)
 			{
-			// TODO Sygnał dźwiękowy (zasoby)
+			Engine::Sound::getInstance().play("sounds/gui_error.ogg");
 			LOG_WARNING("Za malo zasobow (%.2f -> %.2f)", level.getResources(), UPGRADE_COST);
 			return;
 			}
@@ -719,14 +715,14 @@ void TowerDefense::updateModeSelected(float dt)
 		{
 		if(isRuleEnabled(RULE_BUILDING_COST) && level.getResources()<SELL_COST)
 			{
-			// TODO Sygnał dźwiękowy (zasoby)
+			Engine::Sound::getInstance().play("sounds/gui_error.ogg");
 			LOG_WARNING("Za malo zasobow (%.2f -> %.2f)", level.getResources(), SELL_COST);
 			return;
 			}
 
 		if(!level.destroyTurret(modeSelectedData.fposition, !isRuleEnabled(RULE_BUILDING_COST)))
 			{
-			// TODO Sygnał dźwiękowy (fail)
+			Engine::Sound::getInstance().play("sounds/gui_error.ogg");
 			LOG_WARNING("Nie udalo sie usunac wiezy");
 			return;
 			}

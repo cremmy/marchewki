@@ -173,8 +173,6 @@ bool Level::refreshPath()
 			}
 		}
 
-	// TODO Sprawdzic czy nie ma miejsc z ktorych nie da sie dojsc do bazy
-	// TODO Zamiast sprawdzać spójnośc, proponuję wyznaczyć ścieżkę
 	/*for(auto& row: nodes)
 		{
 		for(auto& node: row)

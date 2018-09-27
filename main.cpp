@@ -4,17 +4,6 @@
  *  Created on: 20 lip 2018
  *      Author: crm
  */
-/* Opis gry:
- *  - Siatka pól - neutralne, gracza i przeciwnika
- *  - Utrzymanie każdego pola kosztuje gracza zasoby
- *  - Neutralne pola co jakiś czas zmieniają się w pola przeciwnika (przeciwnik się powoli rozrasta?)
- *  - Pola przeciwnika falami emitują jednostki
- *  - Im więcej pól zajęte przez przeciwnika, tym silniejsze jednostki idą
- *
- *  - Gracz może zbudować wieżę, która zajmuje sąsiednie pola (o ile nie są wrogie)
- *  - Gracz może zbudowć farmę marchewek, która nie zużywa zasobów i nie zajmuje sąsiednich pól
- *
- */
 /* Pomysły:
  *  ~ Muzyka z 'pozytywki' - pojedyncze sample odtwarzane według pewnego wzoru, im wyższy poziom bazy tym większa część sampli przełączana jest na przesterowane/fałszywe
  *  ~ Jeśli wieża obok jednostki wroga jest polem marchewkowym, to idź do niej. Po wejściu na to pole, HP gracza spada o 1.
@@ -23,13 +12,10 @@
  * + Tutorial
  * - Grafika: ekran wczytywania
  * - Grafika: tło menu
- * - State: Help
- * - Muzyka
+ * + State: Help
+ * ? Muzyka
  * - Optymalizacje wydajności (pola do tablicy vertexów, zrzucenie wszystkiego do jednej bitmapy, itp)
- */
-/* FIXME:
- * + Animacja spawnerów czasem nie wraca na idle
- * ~ Spawnery wracają do stanu 'spawning'?
+ * + Timeout zbierajek (z czasem tracą na wartości)
  */
 /* Balans:
  *  + Za duży drain z pól na wczesnych etapach gry
@@ -74,6 +60,7 @@ int main(int, char**)
 
 #ifdef BUILD_RELEASE
 	if(!Engine::Render::getInstance().init(1024, 768, "Marchewki", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED_FULLSCREEN))
+	//if(!Engine::Render::getInstance().init(1024, 768, "Marchewki", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED))
 #else
 	if(!Engine::Render::getInstance().init(1024, 768, "Marchewki", "image/icon.png", Engine::Render::FullScreenMode::WINDOWED))
 #endif
@@ -97,7 +84,7 @@ int main(int, char**)
 	else
 		{
 		//if(app.pushState(new Game::State::Debug()))
-		//if(app.pushState(new Game::State::TowerDefense()))
+		//if(app.pushState(new Game::State::TowerDefense(600, 600, 7, 7)))
 		if(app.pushState(new Game::State::Menu()))
 			{
 			app.run();

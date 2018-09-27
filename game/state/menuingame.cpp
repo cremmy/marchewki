@@ -12,7 +12,9 @@
 #include "../../engine/debug/log.h"
 #include "../../engine/render/camera.h"
 #include "../../engine/render/render.h"
+#include "../../engine/sound/soundplayer.h"
 
+#include "../state/help.h"
 #include "../gui_messages.h"
 #include "../rules.h"
 
@@ -22,7 +24,7 @@ using namespace Game::State;
 MenuIngame::MenuIngame(): wndMain(nullptr), btnMainResume(nullptr), btnMainHelp(nullptr), btnMainRules(nullptr), btnMainExitMenu(nullptr), btnMainExitOS(nullptr),
 	wndRules(nullptr), chkRulesBuildCost(nullptr), chkRulesEnemySpawn(nullptr), chkRulesDrainHP(nullptr), chkRulesDrainRes(nullptr),
 	chkRulesEnemySpread(nullptr), chkRulesPreferCarrots(nullptr), chkRulesAvoidTurrets(nullptr), chkRulesPlayerStomp(nullptr),
-	btnCustomResume(nullptr), btnCustomBack(nullptr), wndHelp(nullptr), btnHelpBack(nullptr), currentWindow(nullptr), receiver(0)
+	btnCustomResume(nullptr), btnCustomBack(nullptr), currentWindow(nullptr), receiver(0)
 	{
 	using namespace Engine::Render;
 
@@ -66,10 +68,6 @@ MenuIngame::MenuIngame(): wndMain(nullptr), btnMainResume(nullptr), btnMainHelp(
 	wndRules->addChild(btnCustomResume,       {(W-BTN_W)/2, BTN_H*11}, true);
 	wndRules->addChild(btnCustomBack,         {(W-BTN_W)/2, BTN_H*13}, true);
 
-	wndHelp=new UI::Window({W, H}, Engine::Graphics::SpritePtr());
-	btnHelpBack=new UI::Button(BTN_W, BTN_H, MENU_BTN_BACK, &receiver, IFACE_BACK);
-	wndHelp->addChild(btnHelpBack, {(W-BTN_W)/2, BTN_H*2}, true);
-
 	currentWindow=wndMain;
 	}
 
@@ -77,7 +75,6 @@ MenuIngame::~MenuIngame()
 	{
 	delete wndMain;
 	delete wndRules;
-	delete wndHelp;
 	}
 
 
@@ -108,8 +105,8 @@ bool MenuIngame::update(float dt)
 			{
 			if(e.data.keyboard.key==SDLK_ESCAPE)
 				{
-				application->popStateSafe();
-				return false;
+				//application->popStateSafe();
+				receiver|=IFACE_BACK;
 				}
 			}
 		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_KEY_DOWN && e.data.mouse.key==1)
@@ -117,7 +114,7 @@ bool MenuIngame::update(float dt)
 			// Czy kliknięto w któryś przycisk?
 			if(currentWindow->click({e.data.mouse.x, e.data.mouse.y}))
 				{
-				// TODO Sygnał dźwiękowy kliknięcia w przycisk?
+				Engine::Sound::getInstance().play("sounds/gui_click.ogg");
 				}
 			}
 		}
@@ -129,14 +126,14 @@ bool MenuIngame::update(float dt)
 		{
 		if(currentWindow==wndMain)
 			{
-			if(receiver&IFACE_RESUME_GAME)
+			if((receiver&IFACE_RESUME_GAME) || (receiver&IFACE_BACK))
 				{
 				application->popStateSafe();
 				return false;
 				}
 			else if(receiver&IFACE_GOTO_HELP)
 				{
-				currentWindow=wndHelp;
+				application->pushState(new State::Help());
 				}
 			else if(receiver&IFACE_GOTO_RULES)
 				{
@@ -186,13 +183,6 @@ bool MenuIngame::update(float dt)
 					application->popStateSafe();
 					return false;
 					}
-				}
-			}
-		else if(currentWindow==wndHelp)
-			{
-			if(receiver&IFACE_BACK)
-				{
-				currentWindow=wndMain;
 				}
 			}
 

@@ -13,6 +13,7 @@
 #include "../../engine/render/camera.h"
 
 #include "../level.h"
+#include "../musicbox.h"
 #include "../turret_type.h"
 
 namespace Game
@@ -92,6 +93,7 @@ namespace Game
 				UI::Button* ifaceBtnSell;
 				Engine::Graphics::SpritePtr ifaceResourcesIcon;
 				Engine::Graphics::UI::Text ifaceResourcesText;
+				MusicBox mb;
 
 				struct
 					{
@@ -115,7 +117,6 @@ namespace Game
 				std::list<Engine::Graphics::SpritePtr> spriteCache;
 
 			public:
-				// TODO parametry gry w konstruktorze (początkowe zasoby, reguły, wielkość planszy)
 				TowerDefense(float resources, float hp, int fieldWidth, int fieldHeight);
 				virtual ~TowerDefense();
 

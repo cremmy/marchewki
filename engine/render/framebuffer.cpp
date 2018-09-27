@@ -26,14 +26,14 @@ bool FrameBuffer::init(int w, int h, Buffers flag)
 		}
 	else
 		{
-		GLint boundrbid;
+		GLint boundrbid=0;
 		glGetIntegerv(GL_RENDERBUFFER_BINDING, &boundrbid);
 
 		if((err=glGetError())!=GL_NO_ERROR)
 			{
 			LOG_ERROR("FrameBuffer.init: %d", __LINE__);
 			LOG_ERROR("FrameBuffer.init: Blad: %s", gluErrorString(err));
-			return false;
+			//return false;
 			}
 
 		glGenRenderbuffers(1, &rbid);
@@ -69,7 +69,8 @@ bool FrameBuffer::init(int w, int h, Buffers flag)
 			LOG_DEBUG("FrameBuffer.init: RenderBuffer zrobiony");
 			}
 
-		glBindRenderbuffer(GL_RENDERBUFFER, boundrbid);
+		if(boundrbid)
+			glBindRenderbuffer(GL_RENDERBUFFER, boundrbid);
 		}
 
 	// Tekstura
@@ -132,22 +133,44 @@ bool FrameBuffer::init(int w, int h, Buffers flag)
 		{
 		LOG_DEBUG("FrameBuffer.init: Bind color");
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tcid, 0);
+
+		if((err=glGetError())!=GL_NO_ERROR)
+			{
+			LOG_ERROR("FrameBuffer.init: %d", __LINE__);
+			LOG_ERROR("FrameBuffer.init: Blad: %s", gluErrorString(err));
+			//return false;
+			}
 		}
 
 	if(flag&FBO_STENCIL_BUFFER)
 		{
 		LOG_DEBUG("FrameBuffer.init: Bind depth/stencil");
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbid);
+
+		if((err=glGetError())!=GL_NO_ERROR)
+			{
+			LOG_ERROR("FrameBuffer.init: %d", __LINE__);
+			LOG_ERROR("FrameBuffer.init: Blad: %s", gluErrorString(err));
+			//return false;
+			}
 		}
 	else if(flag&FBO_DEPTH_BUFFER)
 		{
 		LOG_DEBUG("FrameBuffer.init: Bind depth");
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbid);
+
+		if((err=glGetError())!=GL_NO_ERROR)
+			{
+			LOG_ERROR("FrameBuffer.init: %d", __LINE__);
+			LOG_ERROR("FrameBuffer.init: Blad: %s", gluErrorString(err));
+			//return false;
+			}
 		}
 
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE)
+	if(GLenum status=glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE)
 		{
 		LOG_ERROR("FrameBuffer.init: FrameBuffer nie jest kompletny");
+		LOG_ERROR("FrameBuffer.init: Blad: %d", status);
 
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, boundfbid);
 

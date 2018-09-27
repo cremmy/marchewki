@@ -30,6 +30,15 @@ void Collectible::update(float dt)
 	{
 	sprite.update(dt);
 
+	if(timeout>0.0f)
+		{
+		timeout-=dt;
+		}
+	else if(value>0.1f)
+		{
+		value-=dt*0.1f;
+		}
+
 	if(collected)
 		{
 		position.z+=128.0f*dt;
@@ -37,6 +46,11 @@ void Collectible::update(float dt)
 		if(position.z>256.0f)
 			{
 			alive=false;
+
+			/*if(timeout<=0.0f)
+				{
+				locked=false;
+				}*/
 			}
 		}
 	}

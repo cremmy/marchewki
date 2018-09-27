@@ -9,6 +9,7 @@
 
 #include "../engine/debug/log.h"
 #include "../engine/render/render.h"
+#include "../engine/sound/soundplayer.h"
 
 #include "collectible.h"
 #include "consts.h"
@@ -1055,6 +1056,28 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 
 	if(isRuleEnabled(RULE_BUILDING_COST))
 		resources-=turret->getConstructionCost();
+
+	switch(type)
+		{
+		case TurretType::PLAYER_UNIT_SINGLE_TARGET:
+			//Engine::Sound::getInstance().play("sounds/turret_single.ogg");
+			Engine::Sound::getInstance().play("sounds/gui_click.ogg");
+		break;
+
+		case TurretType::PLAYER_UNIT_AREA_OF_EFFECT:
+			//Engine::Sound::getInstance().play("sounds/turret_aoe.ogg");
+			Engine::Sound::getInstance().play("sounds/gui_click.ogg");
+		break;
+
+		case TurretType::PLAYER_UNIT_MINE:
+			//Engine::Sound::getInstance().play("sounds/turret_mine.ogg");
+			Engine::Sound::getInstance().play("sounds/gui_click.ogg");
+		break;
+
+		default:
+			//
+		break;
+		}
 
 	return true;
 	}

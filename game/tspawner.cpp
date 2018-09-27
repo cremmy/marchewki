@@ -9,6 +9,7 @@
 
 #include "../engine/debug/log.h"
 #include "../engine/render/render.h"
+#include "../engine/sound/soundplayer.h"
 
 #include "consts.h"
 #include "level.h"

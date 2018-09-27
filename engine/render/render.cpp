@@ -203,8 +203,10 @@ bool Render::init(int w, int h, const std::string& title, const std::string& ico
 
 	LOG_SUCCESS("Render.init: Zainicjalizowano GLEWa");
 
+#ifdef BUILD_DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(debugCallback, nullptr);
+#endif
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -318,7 +320,7 @@ bool Render::init(int w, int h, const std::string& title, const std::string& ico
 			LOG_INFO("Render.init: Wyswietlanie ekranu wczytywania");
 
 			setRenderMode(RenderMode::GUI);
-			draw(Math::Orientation::GUI, loading);
+			draw(Math::Orientation::GUI+Math::Vector(getWindowWidth()-loading->getW(), getWindowHeight()-loading->getH())*0.5f, loading);
 			update();
 			}
 		}

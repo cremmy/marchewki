@@ -75,9 +75,6 @@ namespace Game
 				UI::CheckButton* chkOptionsMusic;
 				UI::Button* btnOptionsBack;
 
-				UI::Window* wndHelp;
-				UI::Button* btnHelpBack;
-
 				UI::Window* currentWindow;
 				int receiver;
 

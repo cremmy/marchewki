@@ -9,18 +9,18 @@
 
 #include <string>
 
-const char VIVALDI[]="C E E E D C G   "
-					 "G F E E E D C G   "
-					 "G F E F G F E D   "
-					 "C E E E D C G   "
-					 "G F E E E D C G   "
-					 "G F E F G F E D   "
-					 "C G F E F G A G   "
-					 "C G F E F G A G   "
-					 "C A G   F E D C D C C   "
-					 "C G F E F G A G   "
-					 "C G F E F G A G   "
-					 "C A G   F E D C D C C     ";
+const char VIVALDI[]="C1E1E1E1D C G4"
+					 "G F E1E1E1D C G4"
+					 "G F E1F G F1E1D3"
+					 "C1E1E1E1D C G4"
+					 "G F E1E1E1D C G4"
+					 "G F E1F G F1E2D4"
+					 "C2G1F E F G1A1G4"
+					 "C2G1F E F G1A1G4"
+					 "C A1G3F E D C D C   "
+					 "C2G1F E F G1A1G4"
+					 "C2G1F E F G1A1G4"
+					 "C A G   F E D C D C    ";
 
 namespace Game
 	{
@@ -50,12 +50,13 @@ namespace Game
 			float speed;       // Nuty na sekundę
 			float timer;       // Licznik czasu
 			unsigned step;     // Licznik aktualnej nuty
+			int wait;
 			std::string notes;
 
 			float creepiness;
 
 		public:
-			MusicBox(): speed(1.0f), timer(0.0f), step(0u), notes(), creepiness(0.0f)
+			MusicBox(): speed(1.0f), timer(0.0f), step(0u), wait(0), notes(), creepiness(0.0f)
 				{
 				//
 				}

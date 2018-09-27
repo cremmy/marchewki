@@ -1,1 +1,0 @@
-Marchewki.exe > log.txt

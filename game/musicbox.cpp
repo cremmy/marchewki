@@ -54,7 +54,7 @@ const char* getNotePath(MusicBox::Note note)
 
 void MusicBox::update(float dt)
 	{
-	const float SPEED=0.25f;
+	const float SPEED=0.15f;
 
 	timer+=dt*speed;
 
@@ -63,22 +63,35 @@ void MusicBox::update(float dt)
 
 	timer-=SPEED;
 
+	if(wait>0)
+		{
+		--wait;
+		return;
+		}
+
 	// Zagraj nutkę
 	const char CNOTE=notes[step];
 	const Note  NOTE=getNote(CNOTE);
+
+	// Inkrementacja kroku
+	++step;
+	if(step>=notes.size())
+		{
+		step=0u;
+		}
+
+	if(CNOTE>'0' && CNOTE<='9')
+		{
+		wait=CNOTE-'0';
+		LOG_DEBUG("wait: %d", wait);
+		return;
+		}
 
 	if(NOTE!=NOTE_INVALID)
 		{
 		int offset=(rand()/(RAND_MAX+1.0f)<=creepiness)?(NOTE_C_CREEPY-NOTE_C):0;
 		LOG_DEBUG("off: %d", offset);
 
-		Engine::Sound::getInstance().play(getNotePath((Note)((int)NOTE+offset)));
-		}
-
-	// Inkrementacja kroku
-	step++;
-	if(step>=notes.size())
-		{
-		step=0u;
+		Engine::Sound::getInstance().play(getNotePath((Note)((int)NOTE+offset)), 32);
 		}
 	}

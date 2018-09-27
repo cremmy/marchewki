@@ -10,6 +10,8 @@
 #include "../engine/math/math.h"
 #include "../engine/graphics/spriteptr.h"
 
+#include "consts.h"
+
 namespace Game
 	{
 	class Collectible
@@ -24,8 +26,10 @@ namespace Game
 			bool alive;
 			bool collected;
 
+			float timeout;
+
 		public:
-			Collectible(): value(0.0f), locked(false), alive(true), collected(false)
+			Collectible(): value(0.0f), locked(false), alive(true), collected(false), timeout(COLLECTIBLE_TIMEOUT)
 				{
 				//
 				}

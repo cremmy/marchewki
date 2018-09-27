@@ -7,8 +7,6 @@
 
 #pragma once
 
-// TODO pozamieniać stałe na poniższe wartości
-
 namespace Game
 	{
 	/*****************************************************************************/
@@ -131,6 +129,8 @@ namespace Game
 	const float SPAWNER_COOLDOWN_OVERCHARGE=    60.0f;
 
 	const int SPAWNER_SPREAD_DISTANCE=          2;
+
+	const float COLLECTIBLE_TIMEOUT=            10.0f;
 	}
 
 

@@ -19,6 +19,7 @@
 
 #include "towerdefense.h"
 #include "tutorial.h"
+#include "help.h"
 
 using namespace Game;
 using namespace Game::State;
@@ -28,7 +29,6 @@ Menu::Menu(): wndMain(nullptr), btnMainNewGame(nullptr), btnMainTutorial(nullptr
 	wndCustom(nullptr), chkCustomRuleBuildCost(nullptr), chkCustomRuleEnemySpawn(nullptr), chkCustomRuleDrainHP(nullptr), chkCustomRuleDrainRes(nullptr), chkCustomRuleEnemySpread(nullptr),
 	chkCustomRulePreferCarrots(nullptr), chkCustomRuleAvoidTurrets(nullptr), chkCustomRulePlayerStomp(nullptr), valCustomWidth(nullptr), valCustomHeight(nullptr), btnCustomStart(nullptr), btnCustomBack(nullptr),
 	wndOptions(nullptr), chkOptionsSounds(nullptr), chkOptionsMusic(nullptr), btnOptionsBack(nullptr),
-	wndHelp(nullptr), btnHelpBack(nullptr),
 	currentWindow(nullptr), receiver(0)
 	{
 	//
@@ -40,7 +40,6 @@ Menu::~Menu()
 	delete wndNewGame;
 	delete wndCustom;
 	delete wndOptions;
-	delete wndHelp;
 	}
 
 
@@ -73,7 +72,8 @@ bool Menu::update(float dt)
 			{
 			if(e.data.keyboard.key==SDLK_ESCAPE)
 				{
-				application->stop();
+				//application->stop();
+				receiver|=IFACE_BACK;
 				}
 			}
 		else if(e.getType()==Engine::Core::AppEvent::Type::MOUSE_KEY_DOWN && e.data.mouse.key==1)
@@ -81,7 +81,7 @@ bool Menu::update(float dt)
 			// Czy kliknięto w któryś przycisk?
 			if(currentWindow->click({e.data.mouse.x, e.data.mouse.y}))
 				{
-				// TODO Sygnał dźwiękowy kliknięcia w przycisk?
+				Engine::Sound::getInstance().play("sounds/gui_click.ogg");
 				}
 			}
 		}
@@ -107,9 +107,9 @@ bool Menu::update(float dt)
 				}
 			else if(receiver&IFACE_GOTO_HELP)
 				{
-				currentWindow=wndHelp;
+				application->pushState(new State::Help());
 				}
-			else if(receiver&IFACE_EXIT)
+			else if((receiver&IFACE_EXIT) || (receiver&IFACE_BACK))
 				{
 				application->stop();
 				}
@@ -182,13 +182,6 @@ bool Menu::update(float dt)
 				currentWindow=wndMain;
 				}
 			}
-		else if(currentWindow==wndHelp)
-			{
-			if(receiver&IFACE_BACK)
-				{
-				currentWindow=wndMain;
-				}
-			}
 
 		receiver=0;
 		}
@@ -225,13 +218,11 @@ void Menu::pause()
 	delete wndNewGame;
 	delete wndCustom;
 	delete wndOptions;
-	delete wndHelp;
 
 	wndMain=nullptr;
 	wndNewGame=nullptr;
 	wndCustom=nullptr;
 	wndOptions=nullptr;
-	wndHelp=nullptr;
 
 	background=nullptr;
 	}
@@ -309,10 +300,6 @@ void Menu::resume()
 	wndOptions->addChild(chkOptionsSounds, {(W-BTN_W)/2, BTN_H*2}, true);
 	wndOptions->addChild(chkOptionsMusic,  {(W-BTN_W)/2, BTN_H*3}, true);
 	wndOptions->addChild(btnOptionsBack,   {(W-BTN_W)/2, BTN_H*5}, true);
-
-	wndHelp=new UI::Window({W, H}, Engine::Graphics::SpritePtr());
-	btnHelpBack=new UI::Button(BTN_W, BTN_H, MENU_BTN_BACK, &receiver, IFACE_BACK);
-	wndHelp->addChild(btnHelpBack, {(W-BTN_W)/2, BTN_H*2}, true);
 
 	background=Engine::Graphics::ImagePtr("image/menu_bg.png");
 
