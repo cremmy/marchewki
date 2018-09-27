@@ -422,7 +422,7 @@ bool TowerDefense::update(float dt)
 			else
 				{
 				LOG_WARNING("Nie udalo sie wstawic wiezy");
-				Engine::Sound::getInstance().play("sounds/gui_error.ogg");
+				//Engine::Sound::getInstance().play("sounds/gui_error.ogg");
 				}
 			}
 		}

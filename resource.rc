@@ -1,0 +1,9 @@
+icon ICON "icon.ico"
+icon_16 ICON "icon.ico"
+
+1 VERSIONINFO
+FILEVERSION     2018,9,27,0
+PRODUCTVERSION  2018,9,27,0
+BEGIN
+
+END

@@ -29,6 +29,8 @@ bool FrameBuffer::init(int w, int h, Buffers flag)
 		GLint boundrbid=0;
 		glGetIntegerv(GL_RENDERBUFFER_BINDING, &boundrbid);
 
+		LOG_DEBUG("Aktualnie zbindowany render buffer: %d", boundrbid);
+
 		if((err=glGetError())!=GL_NO_ERROR)
 			{
 			LOG_ERROR("FrameBuffer.init: %d", __LINE__);
@@ -83,6 +85,13 @@ bool FrameBuffer::init(int w, int h, Buffers flag)
 		GLint boundtid;
 		glGetIntegerv(GL_TEXTURE_BINDING_2D, &boundtid);
 
+		if((err=glGetError())!=GL_NO_ERROR)
+			{
+			LOG_ERROR("FrameBuffer.init: %d", __LINE__);
+			LOG_ERROR("FrameBuffer.init: Blad: %s", gluErrorString(err));
+			//return false;
+			}
+
 		glGenTextures(1, &tcid);
 
 		if(!tcid)
@@ -118,6 +127,13 @@ bool FrameBuffer::init(int w, int h, Buffers flag)
 	GLint boundfbid;
 	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &boundfbid);
 
+	if((err=glGetError())!=GL_NO_ERROR)
+		{
+		LOG_ERROR("FrameBuffer.init: %d", __LINE__);
+		LOG_ERROR("FrameBuffer.init: Blad: %s", gluErrorString(err));
+		//return false;
+		}
+
 	glGenFramebuffers(1, &fbid);
 
 	if(!fbid)
@@ -127,11 +143,20 @@ bool FrameBuffer::init(int w, int h, Buffers flag)
 		return false;
 		}
 
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbid);
+	LOG_DEBUG("Bindowanie FBO: %d", fbid);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, fbid);
+
+	if((err=glGetError())!=GL_NO_ERROR)
+		{
+		LOG_ERROR("FrameBuffer.init: %d", __LINE__);
+		LOG_ERROR("FrameBuffer.init: Blad: %s", gluErrorString(err));
+		//return false;
+		}
 
 	if(flag&FBO_COLOR_BUFFER)
 		{
-		LOG_DEBUG("FrameBuffer.init: Bind color");
+		LOG_DEBUG("FrameBuffer.init: Bind color, tex %d", tcid);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tcid, 0);
 
 		if((err=glGetError())!=GL_NO_ERROR)
@@ -171,6 +196,19 @@ bool FrameBuffer::init(int w, int h, Buffers flag)
 		{
 		LOG_ERROR("FrameBuffer.init: FrameBuffer nie jest kompletny");
 		LOG_ERROR("FrameBuffer.init: Blad: %d", status);
+
+		switch(status)
+			{
+			case GL_FRAMEBUFFER_UNDEFINED: LOG_ERROR("FrameBuffer.init: GL_FRAMEBUFFER_UNDEFINED "); break;
+			case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT : LOG_ERROR("FrameBuffer.init: GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT "); break;
+			case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT : LOG_ERROR("FrameBuffer.init: GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT "); break;
+			case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER : LOG_ERROR("FrameBuffer.init: GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER "); break;
+			case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER : LOG_ERROR("FrameBuffer.init: GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER "); break;
+			case GL_FRAMEBUFFER_UNSUPPORTED  : LOG_ERROR("FrameBuffer.init: GL_FRAMEBUFFER_UNSUPPORTED  "); break;
+			case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE  : LOG_ERROR("FrameBuffer.init: GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE  "); break;
+			case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS   : LOG_ERROR("FrameBuffer.init: GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS "); break;
+			case GL_INVALID_ENUM    : LOG_ERROR("FrameBuffer.init: GL_INVALID_ENUM "); break;
+			}
 
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, boundfbid);
 

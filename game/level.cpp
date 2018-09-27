@@ -1037,6 +1037,7 @@ bool Level::buildTurret(const Engine::Math::VectorI& fposition, TurretType type)
 
 	if(!refreshPath())
 		{
+		Engine::Sound::getInstance().play("sounds/gui_error.ogg");
 		if(type!=TurretType::ENEMY_SPAWNER)
 			{
 			LOG_WARNING("Nie mozna umiescic wiezy w %d,%d", fposition.x, fposition.y);

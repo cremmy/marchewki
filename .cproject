@@ -119,7 +119,10 @@
 									<listOptionValue builtIn="false" value="lua"/>
 								</option>
 								<option id="gnu.cpp.link.option.strip.403350530" name="Omit all symbol information (-s)" superClass="gnu.cpp.link.option.strip" useByScannerDiscovery="false" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.link.option.flags.1128762064" superClass="gnu.cpp.link.option.flags" useByScannerDiscovery="false" value="-mwindows" valueType="string"/>
+								<option id="gnu.cpp.link.option.flags.1128762064" name="Linker flags" superClass="gnu.cpp.link.option.flags" useByScannerDiscovery="false" value="-mwindows" valueType="string"/>
+								<option id="gnu.cpp.link.option.userobjs.1943882555" name="Other objects" superClass="gnu.cpp.link.option.userobjs" useByScannerDiscovery="false" valueType="userObjs">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/resource.res}&quot;"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.478584767" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
