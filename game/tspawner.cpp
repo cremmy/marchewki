@@ -596,7 +596,14 @@ void TSpawner::updateStateOvercharge(float dt)
 
 		cooldown=std::max(0.75f - 0.5f*wave, 0.5f);
 
-		level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 20.0f, level->getFieldDiagonalSize()*0.4f);
+		if(level->getPlayerTurretCount()<SPAWNER_OVERCHARGE_MIN_PLAYER_TURRET_COUNT)
+			{
+			level->spawnUnit(UnitType::ENEMY_INFANTRY, fposition, Engine::Math::VectorI(0, 0), 1.0f+level->getPlayerTurretCount(), level->getFieldDiagonalSize()*0.4f);
+			}
+		else
+			{
+			level->spawnUnit(UnitType::ENEMY_ARMORED, fposition, Engine::Math::VectorI(0, 0), 1.0f+level->getPlayerTurretCount()*0.5f, level->getFieldDiagonalSize()*0.4f);
+			}
 
 		++waveUnit;
 

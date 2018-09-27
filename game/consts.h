@@ -43,6 +43,7 @@ namespace Game
 		}
 
 	const float FIELD_RESOURCE_DRAIN=            0.005f; // VAL * resources * empty fields owned by player
+	const float DRAIN_MULTIPLIER_NO_ENEMIES=     1.5f; // drain * VAL
 
 	/*****************************************************************************/
 	/**** Obrażenia wież *********************************************************/
@@ -127,6 +128,8 @@ namespace Game
 	const float SPAWNER_COOLDOWN_SPREAD_POST=   SPAWNER_COOLDOWN_SPAWNING*0.66f;
 	const float SPAWNER_SPREAD_CHANCE=          1.0f;
 	const float SPAWNER_COOLDOWN_OVERCHARGE=    60.0f;
+
+	const int SPAWNER_OVERCHARGE_MIN_PLAYER_TURRET_COUNT=10;
 
 	const int SPAWNER_SPREAD_DISTANCE=          2;
 

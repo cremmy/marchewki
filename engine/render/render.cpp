@@ -320,7 +320,7 @@ bool Render::init(int w, int h, const std::string& title, const std::string& ico
 			LOG_INFO("Render.init: Wyswietlanie ekranu wczytywania");
 
 			setRenderMode(RenderMode::GUI);
-			draw(Math::Orientation::GUI+Math::Vector(getWindowWidth()-loading->getW(), getWindowHeight()-loading->getH())*0.5f, loading);
+			draw(Math::Orientation::GUI+Math::Vector(getWindowWidth()-loading->getW(), 0)*0.5f, loading);
 			update();
 			}
 		}

@@ -73,6 +73,8 @@ int main(int, char**)
 		return __LINE__;
 		}
 
+	SDL_Delay(500);
+
 	if(Engine::Render::getInstance().getWindowWidth()<1024 || Engine::Render::getInstance().getWindowHeight()<768)
 		{
 		LOG_ERROR("Utworzone okno jest za male, AAAAAAAAAAAaaaaaaaaaa");

@@ -708,7 +708,7 @@ float Level::getResourceDrain(bool gainOnly) const
 	if(!gainOnly)
 		ret+=getResourceDrainFields();
 
-	return ret;
+	return ret*((turretsEnemy>0)?1.0f:DRAIN_MULTIPLIER_NO_ENEMIES);
 	}
 
 float Level::getResourceDrainFields() const

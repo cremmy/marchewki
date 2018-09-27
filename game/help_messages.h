@@ -31,7 +31,7 @@ namespace Game
 	
 	const std::string HELP_BASICS=
 		"Aby wygraæ:\n 1. Zniszcz wszystkie królicze nory\n 2. Zbuduj marchewkowe pola na ka¿dym polu.\n\n"
-		"Sterowanie:\n Lewy przycisk myszy: Wybór pola (do ulepszenia lub sprzedania), zatwierdzenie budowy wie¿y\n Prawy przycisk myszy: ruch kamery\n Rolka: obrót kamery\n CTRL+Rolka: przybli¿enie/oddalenie kamery\n Q/W/E/R: Budowanie wie¿y\n A: Ulepszenie zaznaczonej wie¿y\n C: Sprzeda¿ zaznaczonej wiezy\n Spacja: Przyœpieszenie gry\n ESC: Menu\n\n"
+		"Sterowanie:\n Lewy przycisk myszy: Wybór pola (do ulepszenia lub sprzedania), zatwierdzenie budowy wie¿y\n Prawy przycisk myszy: ruch kamery\n Rolka: obrót kamery\n CTRL+Rolka: przybli¿enie/oddalenie kamery\n Q/W/E/R: Budowanie wie¿y\n A: Ulepszenie zaznaczonej wie¿y\n C: Sprzeda¿ zaznaczonej wie¿y\n Spacja: Przyœpieszenie gry\n ESC: Menu\n\n"
 		"Plansza sk³ada siê z trzech rodzajów pól: nale¿¹cych do gracza, wroga, lub neutralnych. Wie¿e mo¿esz zbudowaæ tylko na polu nale¿¹cym do ciebie. "
 		"Ka¿da wie¿a ma swoj¹ strefê wp³ywu i przejmuje pewn¹ liczbê s¹siednich pól (zale¿nie od poziomu ulepszenia).\n"
 		"Zbudowanie wie¿y kosztuje okreœlon¹ iloœæ zasobów. Dodatkowo, zasoby zu¿ywane s¹ stale przez wie¿e oraz zajête pola. Zabite jednostki wroga pozostawiaj¹ po sobie duszê, po któr¹ z bazy gracza co pewien czas wychodz¹ akolici. "
