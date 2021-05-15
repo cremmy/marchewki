@@ -7,6 +7,7 @@
 
 #include "spritemanager.h"
 
+#define TIXML_USE_STL
 #include <tinyxml.h>
 
 #include "../debug/log.h"

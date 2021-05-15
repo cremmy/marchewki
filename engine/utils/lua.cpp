@@ -264,10 +264,6 @@ bool Lua::error()
 			LOG_ERROR("%s: Problem z alokacja pamieci: %s", path.c_str(), lua_tostring(state, -1));
 		break;
 
-		case LUA_ERRGCMM:
-			LOG_ERROR("%s: Problem z garbage collectorem: %s", path.c_str(), lua_tostring(state, -1));
-		break;
-
 		case LUA_ERRERR:
 			LOG_ERROR("%s: Problem obsluga bledu: %s", path.c_str(), lua_tostring(state, -1));
 		break;
